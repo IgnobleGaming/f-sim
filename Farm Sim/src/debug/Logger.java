@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Logger {
 
-	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
 	private Date date = new Date();
 	private PrintWriter logger;
 	private boolean debug;
@@ -18,7 +18,7 @@ public class Logger {
 		this.debug = debug;
 
 		try {
-			logger = new PrintWriter(dateFormat.format(date));
+			logger = new PrintWriter(dateFormat.format(date) + ".txt");
 		} catch (FileNotFoundException e) {
 			System.out.println("Fuck, we can't even start a logger.");
 			e.printStackTrace();
