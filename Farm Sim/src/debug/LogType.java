@@ -1,5 +1,5 @@
 package debug;
 
 public enum LogType {
-CRITICAL, ERROR, WARNING, REPORT;
+CRITICAL, ERROR, WARNING, INFO;
 }

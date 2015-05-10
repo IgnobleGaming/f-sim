@@ -20,9 +20,10 @@ public class Main {
 	}
 
 	public void run() {
-		while (!Display.isCloseRequested()) {
+		while (true) {
 			switch(gameState) {
 			case INTRO:
+				System.out.println(gameState);
 				break;
 			case MAIN_MENU:
 				break;
@@ -34,5 +35,6 @@ public class Main {
 	
 	public static void main(String[] argv) {
 		Main main = new Main();
+		main.run();
 	}
 }
