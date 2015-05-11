@@ -8,8 +8,9 @@ import java.io.IOException;
 public abstract class IFile {
 	protected String Path = "";
 	protected long Size = 0;
-	protected int Hash = 0;
+	protected String Hash = "";
 	protected byte[] Data = null;
+	boolean InUse = false;
 	
 	public boolean Open(String Location, boolean Create, boolean WriteAccess) {
 		Path = Location;
@@ -35,6 +36,7 @@ public abstract class IFile {
 			}
 		
 			FS.close();
+			InUse = true;
 		
 			return true;
 		}
@@ -44,5 +46,19 @@ public abstract class IFile {
 			// logger here
 			return false;
 		}
+	}
+	
+	public void Delete()
+	{
+		InUse = false;
+		Path = "";
+		Size = 0;
+		Hash = "";
+		Data = null;
+	}
+	
+	public String getHash()
+	{
+		return "Hash";
 	}
 }
