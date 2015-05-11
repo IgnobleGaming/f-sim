@@ -1,4 +1,7 @@
-package interfaces;
+package interfaces.FileTypes;
+
+import interfaces.IFile;
+
 
 public class TextFile extends IFile {
 

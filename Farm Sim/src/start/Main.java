@@ -8,6 +8,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import debug.LogType;
 import debug.Logger;
 import interfaces.*;
+import interfaces.FileTypes.TextFile;
 
 public class Main {
 
