@@ -48,4 +48,8 @@ public class Logger {
 						+ ": null string passed into log.  Log-Type = " + type);
 		}
 	}
+	
+	public boolean isDebug() {
+		return debug;
+	}
 }
