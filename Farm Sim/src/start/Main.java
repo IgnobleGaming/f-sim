@@ -8,29 +8,29 @@ import org.newdawn.slick.util.ResourceLoader;
 import debug.LogType;
 import debug.Logger;
 import interfaces.*;
-import interfaces.FileTypes.TextFile;
+import interfaces.file.types.TextFile;
 
 public class Main {
 
 	private final String resources = "/res";
-	
+
 	private ResourceLoader res_loader;
 	private Logger log;
 	private State gameState;
-	
+
 	public void init() {
-		
+
 		gameState = State.INTRO;
 		res_loader = new ResourceLoader();
-		
+
 		log = new Logger(true);
-		
+
 		TextFile test = new TextFile("textfile.txt", false, false);
 		test.Open();
 		log.log(LogType.INFO, "INIT", test.getText());
-		
+
 		try {
-			Display.setDisplayMode(new DisplayMode(800,600));
+			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.create();
 		} catch (LWJGLException e) {
 			log.log(LogType.ERROR, "Main", "Problem creating display");
@@ -39,8 +39,10 @@ public class Main {
 	}
 
 	public void run() {
-		while (!Display.isCloseRequested()) { // needs to poll if close request but i aint created no damn dsplay yet,.
-			switch(gameState) {
+		while (!Display.isCloseRequested()) { // needs to poll if close request
+												// but i aint created no damn
+												// dsplay yet,.
+			switch (gameState) {
 			case INTRO:
 				Display.update();
 				break;

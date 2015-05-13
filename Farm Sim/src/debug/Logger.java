@@ -9,9 +9,10 @@ import java.io.File;
 
 public class Logger {
 
-	private Date date = new Date();	// not sure if need
-	private DateFormat dateFormat = DateFormat.getDateInstance(); // not sure if need
-	private PrintWriter logger;										
+	private Date date = new Date(); // not sure if need
+	private DateFormat dateFormat = DateFormat.getDateInstance(); // not sure if
+																	// need
+	private PrintWriter logger;
 	private boolean debug;
 
 	public Logger(boolean debug) {
@@ -19,12 +20,13 @@ public class Logger {
 		this.debug = debug;
 
 		try {
-			
-			File logFile = new File(System.getProperty("user.dir") + "\\f-sim" + ".log");
+
+			File logFile = new File(System.getProperty("user.dir") + "\\f-sim"
+					+ ".log");
 			logger = new PrintWriter(logFile);
-			
+
 		} catch (FileNotFoundException e) {
-			
+
 			System.out.println("Fuck, we can't even start a logger.");
 			e.printStackTrace();
 		}
@@ -32,8 +34,7 @@ public class Logger {
 
 	public void log(LogType type, String der_class, String str) {
 		if (debug) {
-			if (str != null)
-			{
+			if (str != null) {
 				switch (type) {
 				case CRITICAL:
 					logger.println("Critical: " + der_class + ": " + str);
@@ -50,13 +51,12 @@ public class Logger {
 					break;
 				}
 				logger.flush();
-			}
-			else
+			} else
 				logger.println(der_class
 						+ ": null string passed into log.  Log-Type = " + type);
 		}
 	}
-	
+
 	public boolean isDebug() {
 		return debug;
 	}

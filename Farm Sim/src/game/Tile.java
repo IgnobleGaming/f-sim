@@ -10,37 +10,38 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Tile {
-	
+
 	public enum Flag {
 		BLOCKED, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
-	
-	
+
 	private int Height;
 	private int Width;
 	private Texture Texture;
-	
+
 	private EnumSet<Flag> Flags;
-	//private Resource Res;
-	
+
+	// private Resource Res;
+
 	public Tile() {
 		init();
 	}
-	
+
 	public void init() {
 		try {
-			Texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
-			//height = fm[].getData();
-			//width  = fm[].getData();
+			Texture = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("butts"));
+			// height = fm[].getData();
+			// width = fm[].getData();
 		} catch (IOException e) {
-			
+
 		}
 	}
-	
+
 	public int getHeight() {
 		return Height;
 	}
-	
+
 	public int getWidth() {
 		return Width;
 	}
