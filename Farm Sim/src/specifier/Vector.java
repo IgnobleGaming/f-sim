@@ -1,5 +1,6 @@
 package specifier;
 
-public class Vector {
+public class Vector
+{
 	public float x, y, z;
 }

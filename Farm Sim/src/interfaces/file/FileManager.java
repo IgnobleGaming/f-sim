@@ -5,8 +5,7 @@ import interfaces.file.types.DummyFile;
 import java.util.Hashtable;
 
 /**
- * FileManager - Delegation class using a Hashtable container to hold all files
- * needed by the game.
+ * FileManager - Delegation class using a Hashtable container to hold all files needed by the game.
  * 
  * 
  * @author RaidMax
@@ -14,14 +13,16 @@ import java.util.Hashtable;
  *
  */
 
-public class FileManager {
+public class FileManager
+{
 
 	private final int MaxFiles = 65536;
 
 	protected Hashtable<String, IFile> Container;
 	protected int Size = 0;
 
-	public FileManager() {
+	public FileManager()
+	{
 		Container = new Hashtable<String, IFile>();
 	}
 
@@ -30,10 +31,10 @@ public class FileManager {
 	 * 
 	 * @param NewFile
 	 *            - File to be added to container.
-	 * @return - true if size has not reached limit and item was added,
-	 *         otherwise return false
+	 * @return - true if size has not reached limit and item was added, otherwise return false
 	 */
-	public boolean Add(IFile NewFile) {
+	public boolean Add(IFile NewFile)
+	{
 		if (Size < MaxFiles) // Do we have too many files?
 		{
 			Container.put(NewFile.getHash(), NewFile);
@@ -52,7 +53,8 @@ public class FileManager {
 	 *            - File to be removed, uses hash key for retrieval
 	 * @return
 	 */
-	public boolean Remove(IFile RemovingFile) {
+	public boolean Remove(IFile RemovingFile)
+	{
 		if (RemovingFile.InUse) // trying to remove a file that is still in use!
 			return false;
 
@@ -78,7 +80,8 @@ public class FileManager {
 	 *            - Hash of item to get
 	 * @return - item in question if it is found, dummyfile if not found
 	 */
-	public IFile Retrieve(String HashKey) {
+	public IFile Retrieve(String HashKey)
+	{
 		IFile LookingFor = Container.get(HashKey);
 
 		if (LookingFor.Hash == "FILE") // could not actually find the file, but

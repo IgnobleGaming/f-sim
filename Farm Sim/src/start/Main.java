@@ -10,7 +10,8 @@ import debug.Logger;
 import interfaces.*;
 import interfaces.file.types.TextFile;
 
-public class Main {
+public class Main
+{
 
 	private final String resources = "/res";
 
@@ -18,7 +19,8 @@ public class Main {
 	private Logger log;
 	private State gameState;
 
-	public void init() {
+	public void init()
+	{
 
 		gameState = State.INTRO;
 		res_loader = new ResourceLoader();
@@ -29,34 +31,40 @@ public class Main {
 		test.Open();
 		log.log(LogType.INFO, "INIT", test.getText());
 
-		try {
+		try
+		{
 			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.create();
-		} catch (LWJGLException e) {
+		} catch (LWJGLException e)
+		{
 			log.log(LogType.ERROR, "Main", "Problem creating display");
 			e.printStackTrace();
 		}
 	}
 
-	public void run() {
-		while (!Display.isCloseRequested()) { // needs to poll if close request
-												// but i aint created no damn
-												// dsplay yet,.
-			switch (gameState) {
-			case INTRO:
-				Display.update();
-				break;
-			case MAIN_MENU:
-				break;
-			case GAME:
-				break;
+	public void run()
+	{
+		while (!Display.isCloseRequested())
+		{ // needs to poll if close request
+			// but i aint created no damn
+			// dsplay yet,.
+			switch (gameState)
+			{
+				case INTRO:
+					Display.update();
+					break;
+				case MAIN_MENU:
+					break;
+				case GAME:
+					break;
 			}
 		}
 
 		System.out.println("test");
 	}
 
-	public static void main(String[] argv) {
+	public static void main(String[] argv)
+	{
 		Main main = new Main();
 		main.init();
 		main.run();

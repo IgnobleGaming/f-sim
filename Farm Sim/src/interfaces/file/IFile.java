@@ -8,7 +8,8 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public abstract class IFile {
+public abstract class IFile
+{
 	protected String Path = "";
 	protected int Size = 0;
 	protected String Hash = "";
@@ -18,17 +19,20 @@ public abstract class IFile {
 	protected boolean IsWriteable = false;
 	protected boolean WasCreated = false;
 
-	public IFile() {
+	public IFile()
+	{
 
 	}
 
-	public IFile(String Location, boolean Create, boolean WriteAccess) {
+	public IFile(String Location, boolean Create, boolean WriteAccess)
+	{
 		Path = System.getProperty("user.dir") + "\\" + Location;
 		WasCreated = Create;
 		IsWriteable = WriteAccess;
 	}
 
-	public boolean Open() {
+	public boolean Open()
+	{
 		File Buff = new File(Path);
 
 		if (Buff.length() > Integer.MAX_VALUE) // file requested is > 2.1GB no thank you ( also makes it safe to type cast long -> int)
@@ -45,10 +49,12 @@ public abstract class IFile {
 		else
 			Size = (int) Buff.length();
 
-		try {
+		try
+		{
 			DataInputStream FS = new DataInputStream(new FileInputStream(Buff));
 
-			if (Size > 0) {
+			if (Size > 0)
+			{
 				Data = new byte[(int) Size]; // bad because what if files size > int.maxvalue!!!
 				FS.readFully(Data, 0, (int) Size);
 			}
@@ -59,19 +65,22 @@ public abstract class IFile {
 			return true;
 		}
 
-		catch (IOException E) {
+		catch (IOException E)
+		{
 			// logger here
 			return false;
 		}
 	}
 
-	public void Close() {
+	public void Close()
+	{
 		Data = null;
 		InUse = false;
 		IsOpen = false;
 	}
 
-	public void Delete() {
+	public void Delete()
+	{
 		InUse = false;
 		Path = "";
 		Size = 0;
@@ -79,7 +88,8 @@ public abstract class IFile {
 		Data = null;
 	}
 
-	public boolean Modify(byte[] NewData) {
+	public boolean Modify(byte[] NewData)
+	{
 		Data = null;
 		Data = new byte[(int) NewData.length]; // update the in memory version
 
@@ -89,14 +99,16 @@ public abstract class IFile {
 
 		if (WasCreated) // since we created it this run, we also want to modify it on the disk!
 		{
-			try {
+			try
+			{
 				FileOutputStream OS = new FileOutputStream(Path);
 				OS.write(Data);
 				OS.close();
 				return true;
 			}
 
-			catch (IOException FError) {
+			catch (IOException FError)
+			{
 				return false;
 			}
 
@@ -105,11 +117,13 @@ public abstract class IFile {
 		return true;
 	}
 
-	public String getHash() {
+	public String getHash()
+	{
 		return Path;
 	}
 
-	public InputStream getInputStream() {
+	public InputStream getInputStream()
+	{
 		InputStream IS = new ByteArrayInputStream(Data);
 		return IS;
 	}

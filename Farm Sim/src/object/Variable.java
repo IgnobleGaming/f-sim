@@ -1,8 +1,10 @@
 package object;
 
-public class Variable<T> extends object.Object {
+public class Variable<T> extends object.Object
+{
 
-	public enum Flag {
+	public enum Flag
+	{
 		ReadOnly, CheatProtected, Latched, External, Configuration, Modifiable
 	}
 
@@ -16,8 +18,7 @@ public class Variable<T> extends object.Object {
 	protected T Min;
 	protected T Max;
 
-	public Variable(String Name, String Desc, T DefaultValue, T DefaultMin,
-			T DefaultMax, Flag DefaultFlag) // for number types
+	public Variable(String Name, String Desc, T DefaultValue, T DefaultMin, T DefaultMax, Flag DefaultFlag) // for number types
 	{
 		this.Name = Name;
 		Description = Desc;
@@ -28,9 +29,7 @@ public class Variable<T> extends object.Object {
 		Max = DefaultMax;
 	}
 
-	public Variable(String Name, String Desc, T DefaultValue, Flag DefaultFlag) // for
-																				// string
-																				// types
+	public Variable(String Name, String Desc, T DefaultValue, Flag DefaultFlag) // for string types
 	{
 		this.Name = Name;
 		Description = Desc;
@@ -39,44 +38,47 @@ public class Variable<T> extends object.Object {
 		Latched = DefaultValue;
 	}
 
-	public T Current() {
+	public T Current()
+	{
 		return Current;
 	}
 
-	public void Current(T NewValue) {
+	public void Current(T NewValue)
+	{
 
-		if (Min != null && Max != null) // only the case when working with
-										// number types
+		if (Min != null && Max != null) // only the case when working with number types
 		{
 			float val = (float) NewValue; // shitty work around < \/
-
 			if (val > (float) Max || val < (float) Min)
 				return;
 		}
 
 		if (CurrentFlag == Flag.Modifiable)
 			Current = NewValue;
-		else if (CurrentFlag == Flag.CheatProtected
-				&& (int) TheGame.Variables.get("sv_cheats").Current != 1)
+		else if (CurrentFlag == Flag.CheatProtected && (int) TheGame.Variables.get("sv_cheats").Current != 1)
 			Current = NewValue;
 		else if (CurrentFlag == Flag.Latched)
 			Latched = NewValue;
 		// log attempt to change protected variable
 	}
 
-	public T Default() {
+	public T Default()
+	{
 		return Default;
 	}
 
-	public T Latched() {
+	public T Latched()
+	{
 		return Latched;
 	}
 
-	public T Min() {
+	public T Min()
+	{
 		return Min;
 	}
 
-	public T Max() {
+	public T Max()
+	{
 		return Max;
 	}
 }

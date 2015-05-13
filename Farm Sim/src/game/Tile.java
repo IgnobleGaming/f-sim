@@ -9,9 +9,11 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class Tile {
+public class Tile
+{
 
-	public enum Flag {
+	public enum Flag
+	{
 		BLOCKED, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
 
@@ -23,42 +25,50 @@ public class Tile {
 
 	// private Resource Res;
 
-	public Tile() {
+	public Tile()
+	{
 		init();
 	}
 
-	public void init() {
-		try {
-			Texture = TextureLoader.getTexture("PNG",
-					ResourceLoader.getResourceAsStream("butts"));
+	public void init()
+	{
+		try
+		{
+			Texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
 			// height = fm[].getData();
 			// width = fm[].getData();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 
 		}
 	}
 
-	public int getHeight() {
+	public int getHeight()
+	{
 		return Height;
 	}
 
-	public int getWidth() {
+	public int getWidth()
+	{
 		return Width;
 	}
 
-	public void AddFlag(Flag NewFlag) {
+	public void AddFlag(Flag NewFlag)
+	{
 		if (!Flags.contains(Flag.LOCKED))
 			Flags.add(NewFlag);
 	}
 
-	public boolean CheckFlag(Flag check) {
+	public boolean CheckFlag(Flag check)
+	{
 		if (!Flags.contains(Flag.LOCKED) && Flags.contains(check))
 			return true;
 
 		return false;
 	}
 
-	public void RemoveFlag(Flag Removing) {
+	public void RemoveFlag(Flag Removing)
+	{
 		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
 			Flags.remove(Removing);
 	}
