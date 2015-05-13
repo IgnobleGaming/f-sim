@@ -1,18 +1,27 @@
 package game;
 
 import java.io.IOException;
+import java.util.EnumSet;
+
+import object.Entity.Flag;
+
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Tile {
 	
-	private int height;
-	private int width;
-	private Texture texture;
+	public enum Flag {
+		BLOCKED, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
+	}
 	
-	private boolean farmable;
-	private boolean occupied;
+	
+	private int Height;
+	private int Width;
+	private Texture Texture;
+	
+	private EnumSet<Flag> Flags;
+	//private Resource Res;
 	
 	public Tile() {
 		init();
@@ -20,7 +29,7 @@ public class Tile {
 	
 	public void init() {
 		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
+			Texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
 			//height = fm[].getData();
 			//width  = fm[].getData();
 		} catch (IOException e) {
@@ -29,18 +38,27 @@ public class Tile {
 	}
 	
 	public int getHeight() {
-		return height;
+		return Height;
 	}
 	
 	public int getWidth() {
-		return width;
+		return Width;
 	}
-	
-	public boolean isOccupied() {
-		return occupied;
+
+	public void AddFlag(Flag NewFlag) {
+		if (!Flags.contains(Flag.LOCKED))
+			Flags.add(NewFlag);
 	}
-	
-	public boolean isFarmable() {
-		return farmable;
+
+	public boolean CheckFlag(Flag check) {
+		if (!Flags.contains(Flag.LOCKED) && Flags.contains(check))
+			return true;
+
+		return false;
+	}
+
+	public void RemoveFlag(Flag Removing) {
+		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
+			Flags.remove(Removing);
 	}
 }
