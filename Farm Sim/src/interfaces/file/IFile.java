@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.file;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,22 +1,40 @@
-package interfaces;
+package interfaces.file;
 
-import interfaces.FileTypes.DummyFile;
+import interfaces.file.types.DummyFile;
 
 import java.util.Hashtable;
 
+/**
+ * FileManager - Delegation class using a Hashtable container to hold all 
+ * 		files needed by the game.
+ * 
+ * 
+ * @author RaidMax
+ * @author cocoa_muffs (in documentation only)
+ *
+ */
+
 public class FileManager {
-	int MaxFiles = 65536;
-	Hashtable<String, IFile> Container;
-	int Size = 0;
+	
+	private final int MaxFiles = 65536;
+	
+	protected Hashtable<String, IFile> Container;
+	protected int Size = 0;
 	
 	public FileManager()
 	{
 		Container = new Hashtable<String, IFile>();
 	}
 	
+	/**
+	 * Add - Adds a file to the container to be more portable
+	 * 
+	 * @param NewFile - File to be added to container.
+	 * @return - true if size has not reached limit and item was added, otherwise return false
+	 */
 	public boolean Add(IFile NewFile)
 	{
-		if (Size < MaxFiles)
+		if (Size < MaxFiles) // Do we have too many files?
 		{
 			Container.put(NewFile.getHash(), NewFile);
 			Size++;
@@ -27,6 +45,13 @@ public class FileManager {
 		return false;
 	}
 	
+	
+	/**
+	 * Remove - Removes a file from the container as it is no longer needed
+	 * 
+	 * @param RemovingFile - File to be removed, uses hash key for retrieval
+	 * @return
+	 */
 	public boolean Remove(IFile RemovingFile)
 	{
 		if (RemovingFile.InUse) // trying to remove a file that is still in use!

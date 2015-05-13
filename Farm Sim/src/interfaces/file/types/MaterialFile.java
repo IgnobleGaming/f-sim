@@ -1,9 +1,9 @@
-package interfaces.FileTypes;
+package interfaces.file.types;
 
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import interfaces.IFile;
+import interfaces.file.IFile;
 
 import java.io.IOException;
 
