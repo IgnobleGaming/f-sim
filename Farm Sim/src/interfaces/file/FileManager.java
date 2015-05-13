@@ -57,12 +57,12 @@ public class FileManager {
 		if (RemovingFile.InUse) // trying to remove a file that is still in use!
 			return false;
 		
-		IFile Result = Container.remove(RemovingFile.getHash());
-		if (Result != null)
+		IFile Result = Container.remove(RemovingFile.getHash()); // Gets hash to ensure item exists
+		if (Result != null) // Does it?
 		{
 			Result.Delete();
 			Size--;
-			return true;
+			return true; // GREAT!
 		}
 		
 		// log that file could not be found!
@@ -70,6 +70,13 @@ public class FileManager {
 		
 	}
 	
+	
+	/**
+	 * Retrieve - Gets an item, you dumbass
+	 * 
+	 * @param HashKey - Hash of item to get
+	 * @return - item in question if it is found, dummyfile if not found
+	 */
 	public IFile Retrieve(String HashKey)
 	{
 		IFile LookingFor = Container.get(HashKey);
