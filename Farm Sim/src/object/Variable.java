@@ -1,11 +1,11 @@
 package object;
 
-public class Variable<T> extends object.Object
+public class Variable<T> extends interfaces.Game
 {
 
 	public enum Flag
 	{
-		ReadOnly, CheatProtected, Latched, External, Configuration, Modifiable
+		ReadOnly, CheatProtected, Latched, External, Configuration, Developer, Modifiable
 	}
 
 	protected final String Name;
@@ -52,13 +52,14 @@ public class Variable<T> extends object.Object
 			if (val > (float) Max || val < (float) Min)
 				return;
 		}
-
 		if (CurrentFlag == Flag.Modifiable)
 			Current = NewValue;
-		else if (CurrentFlag == Flag.CheatProtected && (int) TheGame.Variables.get("sv_cheats").Current != 1)
+		else if (CurrentFlag == Flag.CheatProtected && (boolean)super.Variables.get("g_cheats").Current)
 			Current = NewValue;
 		else if (CurrentFlag == Flag.Latched)
 			Latched = NewValue;
+		else if (CurrentFlag == Flag.Developer && (boolean)super.Variables.get("g_developer").Current)
+			Current = NewValue;
 		// log attempt to change protected variable
 	}
 

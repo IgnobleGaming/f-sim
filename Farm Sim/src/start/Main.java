@@ -10,6 +10,8 @@ import debug.Logger;
 import interfaces.*;
 import interfaces.file.types.TextFile;
 
+import java.util.Calendar;
+
 public class Main
 {
 
@@ -18,6 +20,7 @@ public class Main
 	private ResourceLoader res_loader;
 	private Logger log;
 	private State gameState;
+	private Game GameObject;
 
 	public void init()
 	{
@@ -26,6 +29,9 @@ public class Main
 		res_loader = new ResourceLoader();
 
 		log = new Logger(true);
+		
+		GameObject = new Game();
+		GameObject.Init();
 
 		TextFile test = new TextFile("textfile.txt", false, false);
 		test.Open();
@@ -45,9 +51,8 @@ public class Main
 	public void run()
 	{
 		while (!Display.isCloseRequested())
-		{ // needs to poll if close request
-			// but i aint created no damn
-			// dsplay yet,.
+		{
+			GameObject.GameTime = Calendar.getInstance().getTimeInMillis(); // update our game time
 			switch (gameState)
 			{
 				case INTRO:
@@ -59,8 +64,6 @@ public class Main
 					break;
 			}
 		}
-
-		System.out.println("test");
 	}
 
 	public static void main(String[] argv)
