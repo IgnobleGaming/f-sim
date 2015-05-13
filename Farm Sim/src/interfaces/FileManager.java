@@ -1,5 +1,7 @@
 package interfaces;
 
+import interfaces.FileTypes.DummyFile;
+
 import java.util.Hashtable;
 
 public class FileManager {

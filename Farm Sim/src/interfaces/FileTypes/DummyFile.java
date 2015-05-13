@@ -1,8 +1,11 @@
-package interfaces;
+package interfaces.FileTypes;
+
+import interfaces.IFile;
+
 
 public class DummyFile extends IFile {
 
-	DummyFile()
+	public DummyFile()
 	{
 		Path = "FILE";
 		Size = 0;
