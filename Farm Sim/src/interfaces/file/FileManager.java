@@ -56,10 +56,9 @@ public class FileManager {
 		if (RemovingFile.InUse) // trying to remove a file that is still in use!
 			return false;
 
-		IFile Result = Container.remove(RemovingFile.getHash()); // Gets hash to
-																	// ensure
-																	// item
-																	// exists
+		// Gets hash to ensure item exists
+		IFile Result = Container.remove(RemovingFile.getHash());
+
 		if (Result != null) // Does it?
 		{
 			Result.Delete();
