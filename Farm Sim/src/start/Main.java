@@ -7,6 +7,8 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import debug.LogType;
 import debug.Logger;
+import interfaces.*;
+import interfaces.FileTypes.TextFile;
 
 public class Main {
 
@@ -22,6 +24,10 @@ public class Main {
 		res_loader = new ResourceLoader();
 		
 		log = new Logger(true);
+		
+		TextFile test = new TextFile("textfile.txt", false, false);
+		test.Open();
+		log.log(LogType.INFO, "INIT", test.getText());
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(800,600));
@@ -44,8 +50,10 @@ public class Main {
 				break;
 			}
 		}
+
+		System.out.println("test");
 	}
-	
+
 	public static void main(String[] argv) {
 		Main main = new Main();
 		main.init();
