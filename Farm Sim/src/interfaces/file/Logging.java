@@ -44,6 +44,7 @@ public class Logging
 		}		
 	}
 	
+	
 	public void Write (Type MessageType, String Message, Object... args)
 	{
 		if (LogHandle != null && start.Main.GameObject != null) // if it hasn't been initialized!
