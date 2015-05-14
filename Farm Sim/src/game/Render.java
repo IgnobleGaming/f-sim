@@ -12,6 +12,7 @@ import renderable.Renderable;
 public class Render
 {
 	private PriorityQueue<Renderable> RenderQueue;
+	private int maxfps = 60;
 	
 	public Render()
 	{
@@ -21,8 +22,9 @@ public class Render
 			RenderQueue = new PriorityQueue<Renderable>();
 			int width = (int) start.Main.GameObject.Variables().get("vid_width").Current();
 			int height = (int) start.Main.GameObject.Variables().get("vid_height").Current();
-			boolean vsync = (boolean) start.Main.GameObject.Variables().get("vid_vsync").Current();
-			start.Main.GameObject.Log().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b", width, height, vsync);
+			boolean vsync = (boolean) start.Main.GameObject.Variables().get("vid_vsync").Current();			
+			int maxfps = (int) start.Main.GameObject.Variables().get("vid_maxfps").Current();
+			start.Main.GameObject.Log().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
@@ -57,13 +59,12 @@ public class Render
 	{
 		if (!Display.isCloseRequested())
 		{
+			UpdateRenderable();
 			while (RenderQueue.size() > 0)
 			{
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 				RenderQueue.remove().Draw();
 			}
-			
-			int maxfps = (int) start.Main.GameObject.Variables().get("vid_maxfps").Current();
 			Display.update();
 			Display.sync(maxfps);
 			return true;
@@ -71,6 +72,14 @@ public class Render
 		
 		start.Main.GameObject.IsRunning = false;
 		return false;
+	}
+	
+	private void UpdateRenderable()
+	{
+		for (Renderable R : start.Main.GameObject.Objects())
+		{
+			RenderQueue.add(R);
+		}
 	}
 	
 	public void AddRenderElement(Renderable R)

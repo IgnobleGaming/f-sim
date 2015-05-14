@@ -13,7 +13,7 @@ public class GUIFont extends Renderable
 	
 	public enum Size 
 	{ 
-		TINY(4), SMALL(9), MEDIUM(12), LARGE(18), HUGE(24);
+		TINY(4), SMALL(12), MEDIUM(24), LARGE(36), HUGE(48);
 		private int val;
 		
 		private Size(int val)
@@ -36,5 +36,4 @@ public class GUIFont extends Renderable
 	{
 		Font.drawString(XPos, YPos, Text, FontColor);
 	}
-
 }

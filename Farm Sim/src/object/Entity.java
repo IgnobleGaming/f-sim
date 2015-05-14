@@ -1,11 +1,13 @@
 package object;
 
 import specifier.Vector;
+import specifier.Vector2D;
 import interfaces.file.types.MaterialFile;
+import renderable.Renderable;
 
 import java.util.*;
 
-public class Entity
+public class Entity extends Renderable
 {
 
 	public enum Flag
@@ -16,12 +18,12 @@ public class Entity
 	protected int ID;
 	protected String Name;
 	protected String Description;
-	protected Vector Position;
+	protected Vector2D Position;
 	protected Vector Velocity;
 	protected MaterialFile Sprite;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 
-	public Entity(String Name, String Desc, Vector Position, Vector Velocity, MaterialFile Sprite, Flag Flags)
+	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, MaterialFile Sprite, Flag Flags)
 	{
 		this.Name = Name;
 		this.Description = Desc;
@@ -59,13 +61,13 @@ public class Entity
 		return Description;
 	}
 
-	public void Position(Vector NewPosition)
+	public void Position(Vector2D NewPosition)
 	{
 		if (!Flags.contains(Flag.LOCKED))
 			Position = NewPosition;
 	}
 
-	public Vector Position()
+	public Vector2D Position()
 	{
 		return Position;
 	}

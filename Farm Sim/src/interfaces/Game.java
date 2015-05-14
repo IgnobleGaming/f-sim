@@ -6,7 +6,7 @@ import interfaces.file.types.TextFile;
 
 import java.util.*;
 
-import renderable.GUIFont;
+import renderable.*;
 import debug.LogType;
 import game.Controller;
 import game.Render;
@@ -18,12 +18,20 @@ public class Game
 	private Logging Log;
 	private Render Output;
 	private Map<String, object.Variable> Variables;
-	private List<Object> Objects;
+	private ArrayList<Renderable> Objects;
 	private FileManager Files;
 	private Controller Input;
 	private Calendar Date;
 	private long GameTime;
+	private State CurrentState;
 	public boolean IsRunning = true;
+	
+	public int SelectedEnt = 0;
+	
+	public enum State
+	{
+		INTRO, MAIN_MENU, GAME, INVENTORY, SETTINGS
+	};
 
 	public Game()
 	{
@@ -39,13 +47,16 @@ public class Game
 		Variables = new HashMap<String, object.Variable>();
 		InitializeVariables();
 		
-		Output = new Render();
-		
-		Objects = new ArrayList<Object>();
+		Output = new Render();	
+		Objects = new ArrayList<Renderable>();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
-
 		
+		CurrentState = State.INTRO;
+	}
+	
+	public void Testing()
+	{	
 		TextFile test = new TextFile("textfile.txt", false, false);
 		test.Open();
 		Files.Add(test);
@@ -56,6 +67,10 @@ public class Game
 			TextFile test2 = (TextFile)Files.Retrieve(test.getHash());
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
+		
+		renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
+		
+		Objects.add(testFont);
 	}
 	
 
@@ -67,8 +82,8 @@ public class Game
 		Variables.put("fs_cwd", new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));
 		Variables.put("fs_logfile", new object.Variable("fs_logfile", "name of the log file", "console.log", object.Variable.Flag.Latched));
 		
-		Variables.put("vid_width", new object.Variable("vid_width", "horizontal screen resolution", 800, object.Variable.Flag.Configuration));
-		Variables.put("vid_height", new object.Variable("vid_height", "vertical screen resolution", 600, object.Variable.Flag.Configuration));
+		Variables.put("vid_width", new object.Variable("vid_width", "horizontal screen resolution", 1280, object.Variable.Flag.Configuration));
+		Variables.put("vid_height", new object.Variable("vid_height", "vertical screen resolution", 720, object.Variable.Flag.Configuration));
 		Variables.put("vid_vsync", new object.Variable("vid_vsync", "vertical sync enabled", true, object.Variable.Flag.Configuration));
 		Variables.put("vid_maxfps", new object.Variable("vid_vsync", "vertical sync enabled", 60, object.Variable.Flag.Configuration));
 	}
@@ -94,8 +109,23 @@ public class Game
 		return Output;
 	}
 	
+	public Controller Input()
+	{
+		return Input;
+	}
+	
 	public Map<String, object.Variable> Variables()
 	{
 		return Variables;
+	}
+	
+	public State CurrentState()
+	{
+		return CurrentState;
+	}
+	
+	public ArrayList<Renderable> Objects()
+	{
+		return Objects;
 	}
 }
