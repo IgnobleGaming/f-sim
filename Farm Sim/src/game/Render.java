@@ -1,12 +1,15 @@
 package game;
 
+import interfaces.Variables;
 import interfaces.file.Logging;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.LWJGLException;
+
 import java.util.PriorityQueue;
+
 import renderable.Renderable;
 
 public class Render
@@ -18,13 +21,13 @@ public class Render
 	{
 		try
 		{
-			start.Main.GameObject.Log().Write(Logging.Type.INFO, "== GFX INIT ==");
+			Logging.getInstance().Write(Logging.Type.INFO, "== GFX INIT ==");
 			RenderQueue = new PriorityQueue<Renderable>();
-			int width = (int) start.Main.GameObject.Variables().get("vid_width").Current();
-			int height = (int) start.Main.GameObject.Variables().get("vid_height").Current();
-			boolean vsync = (boolean) start.Main.GameObject.Variables().get("vid_vsync").Current();			
-			int maxfps = (int) start.Main.GameObject.Variables().get("vid_maxfps").Current();
-			start.Main.GameObject.Log().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
+			int width = (int)Variables.GetInstance().Get("vid_width").Current();
+			int height = (int)Variables.GetInstance().Get("vid_height").Current();
+			boolean vsync = (boolean)Variables.GetInstance().Get("vid_vsync").Current();			
+			int maxfps = (int)Variables.GetInstance().Get("vid_maxfps").Current();
+			Logging.getInstance().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
@@ -50,7 +53,7 @@ public class Render
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		} catch (LWJGLException e)
 		{
-			start.Main.GameObject.Log().Write(Logging.Type.ERROR, "Unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
+			Logging.getInstance().Write(Logging.Type.ERROR, "Unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
 			System.exit(0);
 		}
 	}
@@ -76,7 +79,7 @@ public class Render
 	
 	private void UpdateRenderable()
 	{
-		for (Renderable R : start.Main.GameObject.Objects())
+		for (Renderable R : interfaces.Objects.GetInstance().Objs())
 		{
 			RenderQueue.add(R);
 		}

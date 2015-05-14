@@ -1,5 +1,6 @@
 package game;
 
+import interfaces.Objects;
 import interfaces.file.Logging;
 
 import org.lwjgl.input.Keyboard;
@@ -35,21 +36,21 @@ public class Controller
 	
 	private void ProcessInput(InputType input)
 	{
-		start.Main.GameObject.Log().Write(Logging.Type.INFO, "%s key was pressed!", input.toString());
+		//start.Main.GameObject.Log().Write(Logging.Type.INFO, "%s key was pressed!", input.toString());
 		
 		switch (input)
 		{
 			case UP:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.UP);
+				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.UP);
 				break;
 			case DOWN:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.DOWN);
+				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.DOWN);
 				break;
 			case LEFT:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.LEFT);
+				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.LEFT);
 				break;
 			case RIGHT:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.RIGHT);
+				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.RIGHT);
 				break;
 		}
 

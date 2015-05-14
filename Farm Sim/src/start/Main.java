@@ -11,8 +11,7 @@ public class Main
 	public void init()
 	{
 		gameState = State.INTRO;
-		GameObject = new Game();
-		GameObject.Init();
+		GameObject = Game.GetInstance();
 		GameObject.Testing();
 	}
 

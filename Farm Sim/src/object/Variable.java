@@ -1,5 +1,8 @@
 package object;
 
+import interfaces.Variables;
+import interfaces.file.Logging;
+
 public class Variable<T>
 {
 
@@ -57,13 +60,14 @@ public class Variable<T>
 		}
 		if (CurrentFlag == Flag.Modifiable)
 			Current = NewValue;
-		else if (CurrentFlag == Flag.CheatProtected && (boolean)start.Main.GameObject.Variables().get("g_cheats").Current)
+		else if (CurrentFlag == Flag.CheatProtected && (boolean)Variables.GetInstance().Get("g_cheats").Current)
 			Current = NewValue;
 		else if (CurrentFlag == Flag.Latched)
 			Latched = NewValue;
-		else if (CurrentFlag == Flag.Developer && (boolean)start.Main.GameObject.Variables().get("g_developer").Current)
+		else if (CurrentFlag == Flag.Developer && (boolean)Variables.GetInstance().Get("g_developer").Current)
 			Current = NewValue;
-		// log attempt to change protected variable
+		else
+			Logging.getInstance().Write(Logging.Type.WARNING, "Attempt to modify protected variable \"%\" failed", this.Name);
 	}
 
 	public T Default()
@@ -84,5 +88,15 @@ public class Variable<T>
 	public T Max()
 	{
 		return Max;
+	}
+	
+	public String Name()
+	{
+		return Name;
+	}
+	
+	public String Description()
+	{
+		return Description;
 	}
 }
