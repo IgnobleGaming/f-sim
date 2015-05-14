@@ -19,7 +19,7 @@ public class Entity
 	protected Vector Position;
 	protected Vector Velocity;
 	protected MaterialFile Sprite;
-	protected EnumSet<Flag> Flags; // sadly we can't `bitwise abd` :(
+	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 
 	public Entity(String Name, String Desc, Vector Position, Vector Velocity, MaterialFile Sprite, Flag Flags)
 	{

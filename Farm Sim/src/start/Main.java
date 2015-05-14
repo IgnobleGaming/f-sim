@@ -1,11 +1,7 @@
 package start;
 
-import debug.LogType;
-import debug.Logger;
 import interfaces.*;
-import interfaces.file.types.TextFile;
-
-import java.util.Calendar;
+import java.util.*;
 
 import renderable.GUIFont;
 
@@ -23,11 +19,13 @@ public class Main
 
 	public void run()
 	{		
-		renderable.GUIFont testFont = new renderable.GUIFont("Times New Roman", "This is test", GUIFont.Size.HUGE);
+		renderable.GUIFont testFont = new renderable.GUIFont("Times New Roman", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
+		Random rand = new Random();
 		while (GameObject.IsRunning)
 		{
 			GameObject.GameTime(Calendar.getInstance().getTimeInMillis()); // update our game time
 			GameObject.Output().AddRenderElement(testFont);
+			testFont.Position(rand.nextInt(800), rand.nextInt(600));
 			switch (gameState)
 			{
 				case INTRO:

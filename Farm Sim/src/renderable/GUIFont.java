@@ -8,9 +8,8 @@ public class GUIFont extends Renderable
 {
 	private TrueTypeFont Font;
 	private Font awtFont;
-	private int XPos = 100;
-	private int YPos = 100;
 	private String Text;
+	private Color FontColor;
 	
 	public enum Size 
 	{ 
@@ -23,17 +22,19 @@ public class GUIFont extends Renderable
 		}
 	};
 	
-	public GUIFont(String FontFamily, String Text, Size FontSize)
+	public GUIFont(String FontFamily, String Text, Size FontSize, Color FontColor, int x, int y)
 	{
 		this.Text = Text;
+		this.FontColor = FontColor;
 		awtFont = new Font(FontFamily, 0, FontSize.val);
 		Font = new TrueTypeFont(awtFont, true);
+		XPos = x;
+		YPos = y;
 	}
 	
 	public void Draw()
 	{
-		Color.white.bind();
-		Font.drawString(XPos, YPos, Text);
+		Font.drawString(XPos, YPos, Text, FontColor);
 	}
 
 }

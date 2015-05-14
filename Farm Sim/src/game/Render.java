@@ -17,10 +17,12 @@ public class Render
 	{
 		try
 		{
+			start.Main.GameObject.Log().Write(Logging.Type.INFO, "== GFX INIT ==");
 			RenderQueue = new PriorityQueue<Renderable>();
 			int width = (int) start.Main.GameObject.Variables().get("vid_width").Current();
 			int height = (int) start.Main.GameObject.Variables().get("vid_height").Current();
 			boolean vsync = (boolean) start.Main.GameObject.Variables().get("vid_vsync").Current();
+			start.Main.GameObject.Log().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b", width, height, vsync);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
@@ -31,7 +33,7 @@ public class Render
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_LIGHTING);
 
-			GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			GL11.glClearDepth(1);
 
 			GL11.glEnable(GL11.GL_BLEND);
@@ -56,10 +58,12 @@ public class Render
 		if (!Display.isCloseRequested())
 		{
 			while (RenderQueue.size() > 0)
+			{
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 				RenderQueue.remove().Draw();
+			}
 			
 			int maxfps = (int) start.Main.GameObject.Variables().get("vid_maxfps").Current();
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			Display.update();
 			Display.sync(maxfps);
 			return true;
