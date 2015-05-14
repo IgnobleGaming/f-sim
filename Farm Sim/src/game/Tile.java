@@ -14,7 +14,7 @@ public class Tile
 
 	public enum Flag
 	{
-		BLOCKED, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
+		BLOCKED, RESOURCE, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
 
 	private int Height;
@@ -23,7 +23,7 @@ public class Tile
 
 	private EnumSet<Flag> Flags;
 
-	// private Resource Res;
+	private Object Res;
 
 	public Tile()
 	{
@@ -34,6 +34,7 @@ public class Tile
 	{
 		try
 		{
+			// Change resourceLoader to file manager
 			Texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
 			// height = fm[].getData();
 			// width = fm[].getData();
@@ -43,14 +44,32 @@ public class Tile
 		}
 	}
 
-	public int getHeight()
+	public int Height()
 	{
 		return Height;
 	}
 
-	public int getWidth()
+	public int Width()
 	{
 		return Width;
+	}
+
+	public boolean interact()
+	{
+		if (Flags.contains(Flag.LOCKED) || !Flags.contains(Flag.INTERACTABLE))
+			return false;
+
+		return true;
+	}
+	
+	public void Resource(Object Resource)
+	{
+		if (!Flags.contains(Flag.RESOURCE))
+		{
+			this.Res = Resource;
+			Flags.add(Flag.INTERACTABLE);
+			Flags.add(Flag.OCCUPIED);
+		}
 	}
 
 	public void AddFlag(Flag NewFlag)
