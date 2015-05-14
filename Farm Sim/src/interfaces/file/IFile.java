@@ -29,6 +29,7 @@ public abstract class IFile
 		Path = System.getProperty("user.dir") + "\\" + Location;
 		WasCreated = Create;
 		IsWriteable = WriteAccess;
+		Hash = Location;
 	}
 
 	public boolean Open()
@@ -55,7 +56,7 @@ public abstract class IFile
 
 			if (Size > 0)
 			{
-				Data = new byte[(int) Size]; // bad because what if files size > int.maxvalue!!!
+				Data = new byte[(int)Size]; // bad because what if files size > int.maxvalue!!!
 				FS.readFully(Data, 0, (int) Size);
 			}
 
@@ -119,7 +120,7 @@ public abstract class IFile
 
 	public String getHash()
 	{
-		return Path;
+		return Hash;
 	}
 
 	public InputStream getInputStream()

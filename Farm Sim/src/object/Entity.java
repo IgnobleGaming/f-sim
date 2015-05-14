@@ -5,7 +5,7 @@ import interfaces.file.types.MaterialFile;
 
 import java.util.*;
 
-public class Entity extends interfaces.Game
+public class Entity
 {
 
 	public enum Flag

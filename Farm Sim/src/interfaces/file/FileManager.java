@@ -17,13 +17,20 @@ public class FileManager
 {
 
 	private final int MaxFiles = 65536;
-
 	protected Hashtable<String, IFile> Container;
 	protected int Size = 0;
+	private static FileManager Instance;
 
-	public FileManager()
+	private FileManager()
 	{
 		Container = new Hashtable<String, IFile>();
+	}
+	
+	public static FileManager getInstance()
+	{
+		if (Instance == null)
+			Instance = new FileManager();
+		return Instance;
 	}
 
 	/**
@@ -84,8 +91,7 @@ public class FileManager
 	{
 		IFile LookingFor = Container.get(HashKey);
 
-		if (LookingFor.Hash == "FILE") // could not actually find the file, but
-										// we don't want to return null
+		if (LookingFor == null) // could not actually find the file, but we don't want to return null
 			return new DummyFile();
 		else
 			return LookingFor;

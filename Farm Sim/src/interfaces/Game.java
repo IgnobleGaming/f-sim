@@ -2,34 +2,53 @@ package interfaces;
 
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
+import interfaces.file.types.TextFile;
 
 import java.util.*;
 
+import debug.LogType;
 import game.Controller;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 
 public class Game
 {
-	public Logging Log;
-	public Map<String, object.Variable> Variables;
-	public List<Object> Objects;
-	public FileManager Files;
-	public Controller Input;
-	public Calendar Date;
-	public long GameTime;
+	private Logging Log;
+	private Map<String, object.Variable> Variables;
+	private List<Object> Objects;
+	private FileManager Files;
+	private Controller Input;
+	private Calendar Date;
+	private long GameTime;
 
-	public void Init()
+	public Game()
 	{
 		Date = Calendar.getInstance();
-		GameTime = Date.getTimeInMillis();
-		Variables = new HashMap<String, object.Variable>();
-		Log = new Logging();
+		GameTime = Date.getTimeInMillis();		
+		Log = Logging.getInstance("sim_console.log", Logging.Level.DEBUG);	
+	}
+	
+	public void Init()
+	{
+		Log.Write(Logging.Type.INFO, "GAME Initialization ====== %d", GameTime);
+		
 		Objects = new ArrayList<Object>();
-		Files = new FileManager();
+		Files = FileManager.getInstance();
 		Input = new game.Controller();
 		
+		Variables = new HashMap<String, object.Variable>();
 		InitializeVariables();
+		
+		TextFile test = new TextFile("textfile.txt", false, false);
+		test.Open();
+		Files.Add(test);
+		
+		
+		if (Files.Retrieve(test.getHash()) instanceof TextFile)
+		{
+			TextFile test2 = (TextFile)Files.Retrieve(test.getHash());
+			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
+		}
 	}
 	
 
@@ -40,5 +59,26 @@ public class Game
 		Variables.put("g_developer", new object.Variable("g_developer", "developer mode enabled", false, object.Variable.Flag.Developer));
 		Variables.put("fs_cwd", new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));
 		Variables.put("fs_logfile", new object.Variable("fs_logfile", "name of the log file", "console.log", object.Variable.Flag.Latched));
+	}
+	
+	public long GameTime()
+	{
+		return GameTime;
+	}
+	
+	public void GameTime(long newTime)
+	{
+		if (newTime > GameTime)
+			GameTime = newTime;
+	}
+	
+	public Logging Log()
+	{
+		return Log;
+	}
+	
+	public Map<String, object.Variable> Variables()
+	{
+		return Variables;
 	}
 }

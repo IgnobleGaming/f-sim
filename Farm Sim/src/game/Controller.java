@@ -2,7 +2,7 @@ package game;
 
 import java.util.*;
 
-public class Controller extends interfaces.Game
+public class Controller
 {
 
 	private enum States
@@ -44,7 +44,7 @@ public class Controller extends interfaces.Game
 	public boolean AddInput(InputType Command)
 	{
 		InputType NewInput = Command;
-		if (InputQueue.size() < (int)Variables.get("c_maxinputqueue").Current())
+		if (InputQueue.size() < (int)start.Main.GameObject.Variables().get("c_maxinputqueue").Current())
 		{
 			InputQueue.add(NewInput);
 			return true;

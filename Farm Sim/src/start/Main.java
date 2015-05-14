@@ -20,7 +20,7 @@ public class Main
 	private ResourceLoader res_loader;
 	private Logger log;
 	private State gameState;
-	private Game GameObject;
+	public static Game GameObject;
 
 	public void init()
 	{
@@ -32,10 +32,6 @@ public class Main
 		
 		GameObject = new Game();
 		GameObject.Init();
-
-		TextFile test = new TextFile("textfile.txt", false, false);
-		test.Open();
-		log.log(LogType.INFO, "INIT", test.getText());
 
 		try
 		{
@@ -52,7 +48,7 @@ public class Main
 	{
 		while (!Display.isCloseRequested())
 		{
-			GameObject.GameTime = Calendar.getInstance().getTimeInMillis(); // update our game time
+			GameObject.GameTime(Calendar.getInstance().getTimeInMillis()); // update our game time
 			switch (gameState)
 			{
 				case INTRO:

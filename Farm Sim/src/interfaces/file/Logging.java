@@ -4,20 +4,35 @@ import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+import java.io.Console;
 
-public class Logging extends interfaces.Game
+public class Logging
 {
 	public enum Type
 	{
 		DEBUG, INFO, WARNING, ERROR, OUT
 	};
 	
-	private PrintWriter LogHandle;
-	
-	public Logging()
+	public enum Level
 	{
-		String LogPath = (String)super.Variables.get("fs_cwd").Current() + "\\" + (String)super.Variables.get("fs_logfile").Current();
+		DEBUG, ALL, PRODUCTION
+	};
+	
+	private PrintWriter LogHandle;
+	private String LogPath;
+	private Level LogLevel;
+	private Console Con;
+	
+	private static Logging Log;
+
+	private Logging(String LogPath, Level LogLevel)
+	{	
+		this.LogPath = LogPath;
+		this.LogLevel = LogLevel;
 		
+		if (LogLevel == Level.DEBUG)
+			Con = System.console();
+				
 		try
 		{
 			LogHandle = new PrintWriter(LogPath);
@@ -31,13 +46,27 @@ public class Logging extends interfaces.Game
 	
 	public void Write (Type MessageType, String Message, Object... args)
 	{
-		if (LogHandle != null) // if it hasn't been initialized!
+		if (LogHandle != null && start.Main.GameObject != null) // if it hasn't been initialized!
 		{
 			DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-			String dateFormatted = formatter.format(GameTime);
+			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
 			Message = String.format("%s [%s] - %s", dateFormatted, MessageType.toString(), Message);
 			LogHandle.println(String.format(Message, args));
+			LogHandle.flush();
 		}
 	}
-
+	
+	public static Logging getInstance(String LogPath, Level LogLevel)
+	{
+		if (Log == null)
+			Log = new Logging(LogPath, LogLevel);
+		return Log;
+	}
+	
+	public static Logging getInstance()
+	{
+		if (Log == null)
+			Log = new Logging("console.log", Level.DEBUG);
+		return Log;
+	}
 }

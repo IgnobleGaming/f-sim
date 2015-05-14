@@ -1,6 +1,6 @@
 package object;
 
-public class Variable<T> extends interfaces.Game
+public class Variable<T>
 {
 
 	public enum Flag
@@ -17,6 +17,7 @@ public class Variable<T> extends interfaces.Game
 	protected T Latched;
 	protected T Min;
 	protected T Max;
+	
 
 	public Variable(String Name, String Desc, T DefaultValue, T DefaultMin, T DefaultMax, Flag DefaultFlag) // for number types
 	{
@@ -27,6 +28,7 @@ public class Variable<T> extends interfaces.Game
 		Latched = DefaultValue;
 		Min = DefaultMin;
 		Max = DefaultMax;
+		CurrentFlag = DefaultFlag;
 	}
 
 	public Variable(String Name, String Desc, T DefaultValue, Flag DefaultFlag) // for string types
@@ -36,6 +38,7 @@ public class Variable<T> extends interfaces.Game
 		Current = DefaultValue;
 		Default = DefaultValue;
 		Latched = DefaultValue;
+		CurrentFlag = DefaultFlag;
 	}
 
 	public T Current()
@@ -54,11 +57,11 @@ public class Variable<T> extends interfaces.Game
 		}
 		if (CurrentFlag == Flag.Modifiable)
 			Current = NewValue;
-		else if (CurrentFlag == Flag.CheatProtected && (boolean)super.Variables.get("g_cheats").Current)
+		else if (CurrentFlag == Flag.CheatProtected && (boolean)start.Main.GameObject.Variables().get("g_cheats").Current)
 			Current = NewValue;
 		else if (CurrentFlag == Flag.Latched)
 			Latched = NewValue;
-		else if (CurrentFlag == Flag.Developer && (boolean)super.Variables.get("g_developer").Current)
+		else if (CurrentFlag == Flag.Developer && (boolean)start.Main.GameObject.Variables().get("g_developer").Current)
 			Current = NewValue;
 		// log attempt to change protected variable
 	}
