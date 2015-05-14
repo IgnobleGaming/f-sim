@@ -32,6 +32,11 @@ public class GUIFont extends Renderable
 		YPos = y;
 	}
 	
+	public void MoveUp()
+	{
+		YPos -= 15;
+	}
+	
 	public void Draw()
 	{
 		Font.drawString(XPos, YPos, Text, FontColor);

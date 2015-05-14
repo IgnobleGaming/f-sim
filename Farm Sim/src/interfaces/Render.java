@@ -1,6 +1,5 @@
-package game;
+package interfaces;
 
-import interfaces.Variables;
 import interfaces.file.Logging;
 
 import org.lwjgl.opengl.Display;
@@ -22,7 +21,7 @@ public class Render
 		try
 		{
 			Logging.getInstance().Write(Logging.Type.INFO, "== GFX INIT ==");
-			RenderQueue = new PriorityQueue<Renderable>();
+			RenderQueue = new PriorityQueue<Renderable>(new utilities.RenderPriorityCompare());
 			int width = (int)Variables.GetInstance().Get("vid_width").Current();
 			int height = (int)Variables.GetInstance().Get("vid_height").Current();
 			boolean vsync = (boolean)Variables.GetInstance().Get("vid_vsync").Current();			
@@ -63,11 +62,13 @@ public class Render
 		if (!Display.isCloseRequested())
 		{
 			UpdateRenderable();
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			
 			while (RenderQueue.size() > 0)
-			{
-				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 				RenderQueue.remove().Draw();
-			}
+			
+			GL11.glEnd();
+			
 			Display.update();
 			Display.sync(maxfps);
 			return true;
@@ -88,5 +89,10 @@ public class Render
 	public void AddRenderElement(Renderable R)
 	{
 		RenderQueue.add(R);
+	}
+	
+	public void Draw(float x, float y, float z, float w)
+	{
+		GL11.glVertex4f(x, y, z, w);
 	}
 }

@@ -1,14 +1,13 @@
 package renderable;
 
 import specifier.Direction;
-
+import java.util.Comparator;
 public abstract class Renderable
 {
-	private int Speed = 1;
-	private boolean Running;
 	protected int XPos;
 	protected int YPos;
-	
+	private int ZIndex;
+	public boolean Visible;
 	
 	public void Draw() {}
 	
@@ -16,18 +15,20 @@ public abstract class Renderable
 	{
 		XPos = x;
 		YPos = y;
+		ZIndex = 0;
+		Visible = true;
+	}
+	
+	public specifier.Vector2D Position()
+	{
+		return new specifier.Vector2D(XPos, YPos);
 	}
 	
 	public void Move(Direction.Relative Dir)
 	{
-		if(Running)
-			Speed = 2;
-		else
-			Speed = 1;
-		
-		
+		int Speed = 1;
 		switch (Dir)
-		{
+		{			
 			case UP:
 				YPos -= Speed * 2;
 				break;
@@ -43,7 +44,14 @@ public abstract class Renderable
 		}
 	}
 	
-	public void Running(boolean IsRunning) {
-		Running = IsRunning;
+	public int ZIndex()
+	{
+		return ZIndex;
+	}
+	
+	public void ZIndex(int I)
+	{
+		if (I > -1)
+			ZIndex = I;
 	}
 }

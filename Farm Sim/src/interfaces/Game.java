@@ -8,7 +8,6 @@ import java.util.*;
 
 import renderable.*;
 import game.Controller;
-import game.Render;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 
@@ -19,6 +18,7 @@ public class Game
 	private Variables GameVariables;
 	private FileManager Files;
 	private Controller Input;
+	private renderable.Console Con;
 	private Calendar Date;
 	private long GameTime;
 	private State CurrentState;
@@ -45,11 +45,13 @@ public class Game
 		
 		GameVariables = Variables.GetInstance();
 		InitializeVariables();
+		Con = renderable.Console.GetInstance();
 		
 		Output = new Render();	
 		//Objects = new ArrayList<Renderable>();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
+
 		
 		CurrentState = State.INTRO;
 	}
@@ -79,6 +81,8 @@ public class Game
 		}
 		
 		renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
+		Objects.GetInstance().Add(testFont);
+		Objects.GetInstance().Add(HUD.GetInstance());
 	}
 	
 
@@ -125,5 +129,10 @@ public class Game
 	public State CurrentState()
 	{
 		return CurrentState;
+	}
+	
+	public Console Con()
+	{
+		return Con;
 	}
 }

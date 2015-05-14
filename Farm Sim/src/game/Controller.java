@@ -39,7 +39,7 @@ public class Controller
 	
 	private void ProcessInput(InputType input)
 	{
-		//start.Main.GameObject.Log().Write(Logging.Type.INFO, "%s key was pressed!", input.toString());
+		//Logging.getInstance().Write(Logging.Type.INFO, "%s key was pressed!", input.toString());
 		
 		switch (input)
 		{

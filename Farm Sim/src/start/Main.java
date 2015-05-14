@@ -1,6 +1,8 @@
 package start;
 
 import interfaces.*;
+import interfaces.file.Logging;
+
 import java.util.*;
 
 public class Main
@@ -17,9 +19,15 @@ public class Main
 
 	public void run()
 	{		
+		long passed = 0;
 		while (GameObject.IsRunning)
 		{
 			GameObject.GameTime(Calendar.getInstance().getTimeInMillis()); // update our game time
+			if (GameObject.GameTime() - passed >= 1000)
+			{
+				GameObject.Log().Write(Logging.Type.INFO, "1 Second has Passed %d", passed);
+				passed = GameObject.GameTime();
+			}
 			GameObject.Input().Update();
 			switch (gameState)
 			{

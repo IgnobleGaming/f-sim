@@ -1,5 +1,7 @@
 package interfaces.file;
 
+import interfaces.Game;
+
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
@@ -20,8 +22,7 @@ public class Logging
 	
 	private PrintWriter LogHandle;
 	private String LogPath;
-	private Level LogLevel;
-	private Console Con;
+	private Level LogLevel;;
 	
 	private static Logging Log;
 
@@ -29,9 +30,6 @@ public class Logging
 	{	
 		this.LogPath = LogPath;
 		this.LogLevel = LogLevel;
-		
-		if (LogLevel == Level.DEBUG)
-			Con = System.console();
 				
 		try
 		{
@@ -51,9 +49,11 @@ public class Logging
 		{
 			DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
+			String ConMessage = String.format("[%s] - %s", MessageType.toString(), Message);
 			Message = String.format("%s [%s] - %s", dateFormatted, MessageType.toString(), Message);
-			LogHandle.println(String.format(Message, args));
-			LogHandle.flush();
+			Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
+			//LogHandle.println(String.format(Message, args));
+			//LogHandle.flush();
 		}
 	}
 	
