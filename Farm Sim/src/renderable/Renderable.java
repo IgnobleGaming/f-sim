@@ -4,8 +4,11 @@ import specifier.Direction;
 
 public abstract class Renderable
 {
+	private int Speed = 1;
+	private boolean Running;
 	protected int XPos;
 	protected int YPos;
+	
 	
 	public void Draw() {}
 	
@@ -17,20 +20,30 @@ public abstract class Renderable
 	
 	public void Move(Direction.Relative Dir)
 	{
+		if(Running)
+			Speed = 2;
+		else
+			Speed = 1;
+		
+		
 		switch (Dir)
 		{
 			case UP:
-				YPos -= 1;
+				YPos -= Speed * 2;
 				break;
 			case DOWN:
-				YPos += 1;
+				YPos += Speed * 2;
 				break;
 			case LEFT:
-				XPos -= 1;
+				XPos -= Speed * 2;
 				break;
 			case RIGHT:
-				XPos += 1;
+				XPos += Speed * 2;
 				break;
 		}
+	}
+	
+	public void Running(boolean IsRunning) {
+		Running = IsRunning;
 	}
 }

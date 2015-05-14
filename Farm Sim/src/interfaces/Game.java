@@ -79,8 +79,6 @@ public class Game
 		}
 		
 		renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
-		
-		interfaces.Objects.GetInstance().Add(testFont);
 	}
 	
 

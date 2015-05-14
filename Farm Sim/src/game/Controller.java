@@ -1,9 +1,12 @@
 package game;
 
+import interfaces.Game;
 import interfaces.Objects;
 import interfaces.file.Logging;
 
 import org.lwjgl.input.Keyboard;
+
+import renderable.Renderable;
 
 public class Controller
 {
@@ -19,7 +22,7 @@ public class Controller
 	public void Update()
 	{
 		ReadInput();
-		switch (start.Main.GameObject.CurrentState())
+		switch (Game.GetInstance().CurrentState())
 		{
 			case INTRO:
 				break;
@@ -76,9 +79,9 @@ public class Controller
 					ProcessInput(InputType.RIGHT);
 					break;
 			}
-		}*/
+		}
 		
-		// event driven
+		 event driven */
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 			ProcessInput(InputType.UP);
 
@@ -89,6 +92,6 @@ public class Controller
 			ProcessInput(InputType.LEFT);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			ProcessInput(InputType.RIGHT);		
+			ProcessInput(InputType.RIGHT);
 	}
 }
