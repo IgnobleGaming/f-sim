@@ -4,12 +4,16 @@ import interfaces.file.Logging;
 
 import org.lwjgl.input.Keyboard;
 
+import renderable.Renderable;
+
 public class Controller
 {
 	private enum InputType
 	{
 		UP, DOWN, LEFT, RIGHT, ESCAPE, MENU
 	};
+	
+	private Renderable Controllee;
 
 	public Controller()
 	{
@@ -40,16 +44,16 @@ public class Controller
 		switch (input)
 		{
 			case UP:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.UP);
+				Controllee.Move(specifier.Direction.Relative.UP);
 				break;
 			case DOWN:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.DOWN);
+				Controllee.Move(specifier.Direction.Relative.DOWN);
 				break;
 			case LEFT:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.LEFT);
+				Controllee.Move(specifier.Direction.Relative.LEFT);
 				break;
 			case RIGHT:
-				start.Main.GameObject.Objects().get(0).Move(specifier.Direction.Relative.RIGHT);
+				Controllee.Move(specifier.Direction.Relative.RIGHT);
 				break;
 		}
 
@@ -75,9 +79,14 @@ public class Controller
 					ProcessInput(InputType.RIGHT);
 					break;
 			}
-		}*/
+		}
 		
-		// event driven
+		 event driven */
+		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+			start.Main.GameObject.Objects().get(0).Running(false);
+		else
+			Controllee.Running(true);
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 			ProcessInput(InputType.UP);
 
@@ -88,6 +97,11 @@ public class Controller
 			ProcessInput(InputType.LEFT);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			ProcessInput(InputType.RIGHT);		
+			ProcessInput(InputType.RIGHT);
+	}
+	
+	public void Control(Renderable o)
+	{
+		Controllee = o;
 	}
 }

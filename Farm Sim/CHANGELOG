@@ -1,0 +1,9 @@
+CHANGELOG
+
+10-14-15 9.18 am - Collin
+1. Added running and running speed for controlled entity
+2. Added in control method for controller.  can now pass in a renderable object to be controlled by controller.
+   	Commands not pertaining to entity should be wrapped in a conditional to see if controllee is null to refrain 
+   	from null pointer exception, this should allow us to to have all the standard commands (escape bringing up menu, etc)
+   	usable throughout the game without having to bog down the controller with a million conditionals
+3. ADDED A FUCKING CHANGELOG :P
