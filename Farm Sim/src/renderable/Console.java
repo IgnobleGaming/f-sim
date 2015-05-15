@@ -2,19 +2,18 @@ package renderable;
 
 import interfaces.Objects;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import org.newdawn.slick.Color;
 
 public class Console extends HUD
 {
-	private LinkedList<GUIFont> Lines;
+	private ArrayBlockingQueue<GUIFont> Lines;
 	private static Console Instance;
 	
 	private Console()
 	{
-		Lines = new LinkedList<GUIFont>();
+		Lines = new ArrayBlockingQueue<GUIFont>(8);
 	}
 	
 	public static Console GetInstance()
@@ -30,19 +29,16 @@ public class Console extends HUD
 		if (Lines.size() >=8);
 		{
 			//Lines.remove();
-			Iterator<GUIFont> iter = Lines.iterator();
-			while(iter.hasNext())
-				iter.next().MoveUp();
+			for (GUIFont G : Lines)
+				G.MoveUp();
 		}
 		GUIFont Adding = new GUIFont("Segoe UI", Message, GUIFont.Size.SMALL, Color.black, 5, Lines.size() * 15);	
-		Adding.ZIndex(Lines.size() -1);
-		Lines.addFirst(Adding);
+		Lines.add(Adding);
 	}
 	
 	public void Draw()
 	{
-		Iterator<GUIFont> iter = Lines.iterator();
-		while(iter.hasNext())
-			iter.next().Draw();
+		for (GUIFont G : Lines)
+			G.Draw();
 	}
 }

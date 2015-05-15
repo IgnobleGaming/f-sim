@@ -23,6 +23,8 @@ public class Game
 	private long GameTime;
 	private State CurrentState;
 	public boolean IsRunning = true;
+	private object.Entity PlayerEnt;
+
 	
 	public int SelectedEnt = 0;
 	private static Game Instance;
@@ -80,9 +82,22 @@ public class Game
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
 		
+		interfaces.file.types.MaterialFile playersprite = new interfaces.file.types.MaterialFile("resources\\player.png", interfaces.file.types.MaterialFile.Type.PNG);
+		playersprite.Initialize();
+		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(720,400), new specifier.Vector(), playersprite, object.Entity.Flag.VISIBLE);
+		
+		Objects.GetInstance().Add(player);
+		
+		/*
 		renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
 		Objects.GetInstance().Add(testFont);
-		Objects.GetInstance().Add(HUD.GetInstance());
+		
+		renderable.GUIFont testFont2 = new renderable.GUIFont("Segoe UI", "This is test2", GUIFont.Size.HUGE, org.newdawn.slick.Color.red, 300, 300);
+		Objects.GetInstance().Add(testFont2);
+		renderable.GUIFont testFont3= new renderable.GUIFont("Segoe UI", "This is test3", GUIFont.Size.HUGE, org.newdawn.slick.Color.green, 588, 500);
+		Objects.GetInstance().Add(testFont3);
+		
+		Objects.GetInstance().Add(HUD.GetInstance());*/
 	}
 	
 

@@ -2,6 +2,7 @@ package object;
 
 import specifier.Vector;
 import specifier.Vector2D;
+import interfaces.Game;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
 
@@ -20,7 +21,7 @@ public class Entity extends Renderable
 	protected String Description;
 	protected Vector2D Position;
 	protected Vector Velocity;
-	protected MaterialFile Sprite;
+	protected MaterialFile[] Sprites;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, MaterialFile Sprite, Flag Flags)
@@ -29,7 +30,8 @@ public class Entity extends Renderable
 		this.Description = Desc;
 		this.Position = Position;
 		this.Velocity = Velocity;
-		this.Sprite = Sprite;
+		this.Sprites = new MaterialFile[10];
+		this.Sprites[0] = Sprite;
 		this.Flags = EnumSet.noneOf(Flag.class);
 		this.Flags.add(Flags);
 	}
@@ -48,7 +50,7 @@ public class Entity extends Renderable
 	public String Name()
 	{
 		return Name;
-	}
+	} 
 
 	public void Description(String NewDesc)
 	{
@@ -101,5 +103,10 @@ public class Entity extends Renderable
 	{
 		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
 			Flags.remove(Removing);
+	}
+	
+	public void Draw()
+	{
+		interfaces.Render.DrawImage(this.Sprites[0], this.Position);
 	}
 }

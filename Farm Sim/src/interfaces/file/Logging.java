@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.io.Console;
-
+import java.util.concurrent.ArrayBlockingQueue;
 public class Logging
 {
 	public enum Type
@@ -22,7 +22,8 @@ public class Logging
 	
 	private PrintWriter LogHandle;
 	private String LogPath;
-	private Level LogLevel;;
+	private Level LogLevel;
+	private ArrayBlockingQueue<String> LogQueue;
 	
 	private static Logging Log;
 
@@ -51,7 +52,8 @@ public class Logging
 			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
 			String ConMessage = String.format("[%s] - %s", MessageType.toString(), Message);
 			Message = String.format("%s [%s] - %s", dateFormatted, MessageType.toString(), Message);
-			Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
+			renderable.Console.GetInstance().WriteLine("test");
+			//Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
 			//LogHandle.println(String.format(Message, args));
 			//LogHandle.flush();
 		}

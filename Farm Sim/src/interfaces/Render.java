@@ -37,7 +37,7 @@ public class Render
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_LIGHTING);
 
-			GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			GL11.glClearDepth(1);
 
 			GL11.glEnable(GL11.GL_BLEND);
@@ -94,5 +94,18 @@ public class Render
 	public void Draw(float x, float y, float z, float w)
 	{
 		GL11.glVertex4f(x, y, z, w);
+	}
+	
+	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
+	{
+		Mat.Bind();
+		GL11.glTexCoord2f(0,0);
+        GL11.glVertex2f(100,100);
+        GL11.glTexCoord2f(1,0);
+        GL11.glVertex2f(100+Mat.Width(),100);
+        GL11.glTexCoord2f(1,1);
+        GL11.glVertex2f(100+Mat.Width(),100+Mat.Height());
+        GL11.glTexCoord2f(0,1);
+        GL11.glVertex2f(100,100+Mat.Height());
 	}
 }
