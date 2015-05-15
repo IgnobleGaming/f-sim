@@ -95,6 +95,7 @@ public class Game
 		player.AddSprites(playersprite);		
 
 		PlayerEnt = player;	
+		PlayerEnt.MovementSpeed(5);
 		GameObjects.Add(PlayerEnt);
 
 	}
@@ -159,5 +160,12 @@ public class Game
 	public object.Entity Controllable()
 	{
 		return PlayerEnt;
+	}
+	
+	public void UpdateWorld()
+	{
+		for (renderable.Renderable R : GameObjects.Objs())
+			if (R instanceof object.Entity)
+				((object.Entity) R).Update();
 	}
 }

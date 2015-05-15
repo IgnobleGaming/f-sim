@@ -23,6 +23,7 @@ public class Main
 		while (GameObject.IsRunning)
 		{
 			GameObject.UpdateGameTime(); // update our game time
+			GameObject.UpdateWorld();
 			if (GameObject.GameTime() - passed >= 1000)
 			{
 				GameObject.Log().Write(Logging.Type.INFO, "1 Second has Passed %d", passed);

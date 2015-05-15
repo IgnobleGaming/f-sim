@@ -3,6 +3,7 @@ package game;
 import interfaces.Game;
 import interfaces.Objects;
 import interfaces.file.Logging;
+import object.Entity.State;
 
 import org.lwjgl.input.Keyboard;
 
@@ -13,7 +14,7 @@ public class Controller
 {
 	private enum InputType
 	{
-		UP, DOWN, LEFT, RIGHT, ESCAPE, MENU, CONSOLE
+		UP, DOWN, LEFT, RIGHT, ESCAPE, MENU, CONSOLE, RELEASE
 	};
 
 	public Controller()
@@ -43,16 +44,19 @@ public class Controller
 		switch (input)
 		{
 			case UP:
-				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.UP);
+				Game.GetInstance().Controllable().SetState(State.MOVINGUP);
 				break;
 			case DOWN:
-				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.DOWN);
+				Game.GetInstance().Controllable().SetState(State.MOVINGDOWN);
 				break;
 			case LEFT:
-				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.LEFT);
+				Game.GetInstance().Controllable().SetState(State.MOVINGLEFT);
 				break;
 			case RIGHT:
-				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.RIGHT);
+				Game.GetInstance().Controllable().SetState(State.MOVINGRIGHT);
+				break;
+			case RELEASE:
+				Game.GetInstance().Controllable().SetState(State.STATIONARY);
 				break;
 			case CONSOLE:
 				Console.GetInstance().ToggleVisibility();
@@ -86,6 +90,9 @@ public class Controller
 							ProcessInput(InputType.CONSOLE);
 					break;
 			}
+			
+			if (!Keyboard.getEventKeyState())
+				ProcessInput(InputType.RELEASE);
 		}
 		
 		 //event driven

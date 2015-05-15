@@ -18,6 +18,11 @@ public class Entity extends Renderable
 	{
 		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED
 	}
+	
+	public enum State
+	{
+		STATIONARY, MOVINGLEFT, MOVINGRIGHT, MOVINGUP, MOVINGDOWN
+	}
 
 	protected int ID;
 	protected String Name;
@@ -25,6 +30,8 @@ public class Entity extends Renderable
 	protected Vector2D Position;
 	protected Vector Velocity;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
+	protected State CurrentState;
+	protected int MovementSpeed = 1;
 
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, Flag... Flags)
 	{
@@ -37,6 +44,7 @@ public class Entity extends Renderable
 		this.Flags = EnumSet.noneOf(Flag.class);
 		for (Flag F : Flags)
 			this.Flags.add(F);
+		CurrentState = State.STATIONARY;
 	}
 
 	/**
@@ -115,21 +123,57 @@ public class Entity extends Renderable
 	
 	public void Move(Direction.Relative Dir)
 	{
-		int Speed = 3;
 		switch (Dir)
 		{			
 			case UP:
-				Position.y -= Speed * 2;
+				Position.y -= MovementSpeed;
 				break;
 			case DOWN:
-				Position.y += Speed * 2;
+				Position.y += MovementSpeed;
 				break;
 			case LEFT:
-				Position.x -= Speed * 2;
+				Position.x -= MovementSpeed;
 				break;
 			case RIGHT:
-				Position.x += Speed * 2;
+				Position.x += MovementSpeed;
 				break;
 		}
+	}
+	
+	public void Update()
+	{
+		switch(CurrentState)
+		{
+			case STATIONARY:
+				break;
+			case MOVINGUP:
+				this.Move(Direction.Relative.UP);
+				break;
+			case MOVINGDOWN:
+				this.Move(Direction.Relative.DOWN);
+				break;
+			case MOVINGLEFT:
+				this.Move(Direction.Relative.LEFT);
+				break;
+			case MOVINGRIGHT:
+				this.Move(Direction.Relative.RIGHT);
+				break;
+		}
+	}
+	
+	public void SetState(State S)
+	{
+		if (!Flags.contains(Flag.LOCKED))
+			CurrentState = S;
+	}
+	
+	public int MovementSpeed()
+	{
+		return MovementSpeed;
+	}
+	
+	public void MovementSpeed(int factor)
+	{
+		MovementSpeed = factor;
 	}
 }
