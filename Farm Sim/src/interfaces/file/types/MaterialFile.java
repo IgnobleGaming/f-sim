@@ -5,6 +5,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 import interfaces.file.IFile;
+import interfaces.file.Logging;
 
 import java.io.IOException;
 
@@ -27,13 +28,13 @@ public class MaterialFile extends IFile
 		super(Location, false, false);
 		MaterialType = T;
 	}
-
-	public boolean Initialize()
+	
+	public boolean Open()
 	{
-
+		super.Open();
 		try
 		{
-			Material = TextureLoader.getTexture(MaterialType.toString(), ResourceLoader.getResourceAsStream("resources/player.png"));
+			Material = TextureLoader.getTexture(MaterialType.toString(), getInputStream());
 			Width = Material.getImageWidth();
 			Height = Material.getImageHeight();
 			ID = Material.getTextureID();
@@ -42,7 +43,7 @@ public class MaterialFile extends IFile
 
 		catch (IOException InitError)
 		{
-			// log the initialization error
+			Logging.getInstance().Write(Logging.Type.ERROR, "Unable read date for material file %s - %s", Hash, InitError.getMessage());
 			return false;
 		}
 
@@ -62,6 +63,17 @@ public class MaterialFile extends IFile
 	public void Bind()
 	{
 		Material.bind();
+	}
+	
+	public Texture Texture()
+	{
+		return Material;
+	}
+	
+	public void Scale(float Factor)
+	{
+		Width = Math.round(Width*Factor);
+		Height = Math.round(Height*Factor);
 	}
 
 }

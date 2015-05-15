@@ -52,10 +52,9 @@ public class Logging
 			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
 			String ConMessage = String.format("[%s] - %s", MessageType.toString(), Message);
 			Message = String.format("%s [%s] - %s", dateFormatted, MessageType.toString(), Message);
-			renderable.Console.GetInstance().WriteLine("test");
 			//Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
-			//LogHandle.println(String.format(Message, args));
-			//LogHandle.flush();
+			LogHandle.println(String.format(Message, args));
+			LogHandle.flush();
 		}
 	}
 	

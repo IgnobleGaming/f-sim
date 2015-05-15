@@ -20,8 +20,10 @@ public class Game
 	private Controller Input;
 	private renderable.Console Con;
 	private Calendar Date;
-	private long GameTime;
+	private long GameTime, LastFrame = 0;
+	private int Delta = 0;
 	private State CurrentState;
+	private Objects GameObjects;
 	public boolean IsRunning = true;
 	private object.Entity PlayerEnt;
 
@@ -50,7 +52,7 @@ public class Game
 		Con = renderable.Console.GetInstance();
 		
 		Output = new Render();	
-		//Objects = new ArrayList<Renderable>();
+		GameObjects = Objects.GetInstance();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
 
@@ -82,22 +84,27 @@ public class Game
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
 		
+		renderable.HUD.GetInstance().Init();
+		GameObjects.Add(renderable.HUD.GetInstance());
+		
 		interfaces.file.types.MaterialFile playersprite = new interfaces.file.types.MaterialFile("resources\\player.png", interfaces.file.types.MaterialFile.Type.PNG);
-		playersprite.Initialize();
-		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(720,400), new specifier.Vector(), playersprite, object.Entity.Flag.VISIBLE);
+		playersprite.Open();
+		playersprite.Scale((float).1);
+		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(0,0), new specifier.Vector(), object.Entity.Flag.VISIBLE);
+		player.AddSprites(playersprite);		
 		
-		Objects.GetInstance().Add(player);
+		//renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
+		//GameObjects.Add(testFont);
 		
-		/*
-		renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
-		Objects.GetInstance().Add(testFont);
+		//renderable.GUIFont testFont2 = new renderable.GUIFont("Segoe UI", "This is test2", GUIFont.Size.HUGE, org.newdawn.slick.Color.red, 300, 300);
+		//GameObjects.Add(testFont2);
 		
-		renderable.GUIFont testFont2 = new renderable.GUIFont("Segoe UI", "This is test2", GUIFont.Size.HUGE, org.newdawn.slick.Color.red, 300, 300);
-		Objects.GetInstance().Add(testFont2);
-		renderable.GUIFont testFont3= new renderable.GUIFont("Segoe UI", "This is test3", GUIFont.Size.HUGE, org.newdawn.slick.Color.green, 588, 500);
-		Objects.GetInstance().Add(testFont3);
-		
-		Objects.GetInstance().Add(HUD.GetInstance());*/
+		//renderable.GUIFont testFont3 = new renderable.GUIFont("Segoe UI", "This is test3", GUIFont.Size.HUGE, org.newdawn.slick.Color.green, 588, 500);
+		//GameObjects.Add(testFont3);
+
+		PlayerEnt = player;	
+		GameObjects.Add(PlayerEnt);
+
 	}
 	
 
@@ -120,10 +127,16 @@ public class Game
 		return GameTime;
 	}
 	
-	public void GameTime(long newTime)
+	public int Delta()
 	{
-		if (newTime > GameTime)
-			GameTime = newTime;
+		return Delta;
+	}
+	
+	public void UpdateGameTime()
+	{
+		long NewTime = System.nanoTime() / 1000000;
+		Delta = (int)(NewTime - GameTime);
+		GameTime = NewTime;
 	}
 	
 	public Logging Log()
@@ -149,5 +162,10 @@ public class Game
 	public Console Con()
 	{
 		return Con;
+	}
+	
+	public object.Entity Controllable()
+	{
+		return PlayerEnt;
 	}
 }

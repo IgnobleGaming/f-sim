@@ -15,17 +15,21 @@ public class Render
 {
 	private PriorityQueue<Renderable> RenderQueue;
 	private int maxfps = 60;
-	
+	private int TotalFrames = 1;
+	private int DeltaTime = 0;
+	private long LastFrame;
+	private int FPS;
+
 	public Render()
 	{
 		try
 		{
 			Logging.getInstance().Write(Logging.Type.INFO, "== GFX INIT ==");
 			RenderQueue = new PriorityQueue<Renderable>(new utilities.RenderPriorityCompare());
-			int width = (int)Variables.GetInstance().Get("vid_width").Current();
-			int height = (int)Variables.GetInstance().Get("vid_height").Current();
-			boolean vsync = (boolean)Variables.GetInstance().Get("vid_vsync").Current();			
-			int maxfps = (int)Variables.GetInstance().Get("vid_maxfps").Current();
+			int width = (int) Variables.GetInstance().Get("vid_width").Current();
+			int height = (int) Variables.GetInstance().Get("vid_height").Current();
+			boolean vsync = (boolean) Variables.GetInstance().Get("vid_vsync").Current();
+			int maxfps = (int) Variables.GetInstance().Get("vid_maxfps").Current();
 			Logging.getInstance().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
@@ -63,21 +67,19 @@ public class Render
 		{
 			UpdateRenderable();
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			
+
 			while (RenderQueue.size() > 0)
 				RenderQueue.remove().Draw();
-			
-			GL11.glEnd();
-			
+
 			Display.update();
 			Display.sync(maxfps);
 			return true;
 		}
-		
+
 		start.Main.GameObject.IsRunning = false;
 		return false;
 	}
-	
+
 	private void UpdateRenderable()
 	{
 		for (Renderable R : interfaces.Objects.GetInstance().Objs())
@@ -85,27 +87,60 @@ public class Render
 			RenderQueue.add(R);
 		}
 	}
-	
+
 	public void AddRenderElement(Renderable R)
 	{
 		RenderQueue.add(R);
 	}
-	
+
 	public void Draw(float x, float y, float z, float w)
 	{
 		GL11.glVertex4f(x, y, z, w);
 	}
-	
+
 	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
 	{
-		Mat.Bind();
-		GL11.glTexCoord2f(0,0);
-        GL11.glVertex2f(100,100);
-        GL11.glTexCoord2f(1,0);
-        GL11.glVertex2f(100+Mat.Width(),100);
-        GL11.glTexCoord2f(1,1);
-        GL11.glVertex2f(100+Mat.Width(),100+Mat.Height());
-        GL11.glTexCoord2f(0,1);
-        GL11.glVertex2f(100,100+Mat.Height());
+		Mat.Texture().bind();
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(Pos.x / 2, Pos.y / 2);
+
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f((Pos.x / 2) + Mat.Width(), Pos.y / 2);
+
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f((Pos.x / 2) + Mat.Width(), (Pos.y / 2) + Mat.Height());
+
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(Pos.x / 2, (Pos.y / 2) + Mat.Height());
+
+		GL11.glEnd();
+	}
+
+	public void updateFPS()
+	{
+		
+		Game I = Game.GetInstance();
+		
+		TotalFrames += 1;
+		long CurTime = I.GameTime();
+		
+		if (LastFrame == 0)
+			LastFrame = CurTime;
+		
+		DeltaTime += (CurTime - LastFrame);
+		LastFrame = CurTime;
+		
+		if (DeltaTime > 1000)
+		{				
+			FPS = Math.round(DeltaTime/TotalFrames);
+			TotalFrames = 1;
+			DeltaTime = 0;
+		}
+	}
+	
+	public int FPS()
+	{
+		return FPS;
 	}
 }

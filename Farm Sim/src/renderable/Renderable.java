@@ -1,16 +1,25 @@
 package renderable;
 
 import specifier.Direction;
+import interfaces.file.types.MaterialFile;
+
 import java.util.Comparator;
+import java.util.ArrayList;
+
 public abstract class Renderable
 {
 	protected int XPos;
 	protected int YPos;
 	private int ZIndex;
 	public boolean Visible;
+	protected ArrayList<MaterialFile> Sprites;
 	
 	public void Draw() {}
 	
+	protected Renderable()
+	{
+		Sprites = new ArrayList<MaterialFile>();
+	}
 	public void Position (int x, int y)
 	{
 		XPos = x;
@@ -42,6 +51,12 @@ public abstract class Renderable
 				XPos += Speed * 2;
 				break;
 		}
+	}
+	
+	public void AddSprites(MaterialFile... Sprites)
+	{
+		for (MaterialFile M : Sprites)
+			this.Sprites.add(M);
 	}
 	
 	public int ZIndex()

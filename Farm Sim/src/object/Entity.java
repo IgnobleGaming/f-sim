@@ -1,10 +1,13 @@
 package object;
 
+import specifier.Direction;
 import specifier.Vector;
 import specifier.Vector2D;
 import interfaces.Game;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
+
+
 
 import java.util.*;
 
@@ -21,19 +24,19 @@ public class Entity extends Renderable
 	protected String Description;
 	protected Vector2D Position;
 	protected Vector Velocity;
-	protected MaterialFile[] Sprites;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 
-	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, MaterialFile Sprite, Flag Flags)
+	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, Flag... Flags)
 	{
+		super();
+		
 		this.Name = Name;
 		this.Description = Desc;
 		this.Position = Position;
 		this.Velocity = Velocity;
-		this.Sprites = new MaterialFile[10];
-		this.Sprites[0] = Sprite;
 		this.Flags = EnumSet.noneOf(Flag.class);
-		this.Flags.add(Flags);
+		for (Flag F : Flags)
+			this.Flags.add(F);
 	}
 
 	/**
@@ -107,6 +110,26 @@ public class Entity extends Renderable
 	
 	public void Draw()
 	{
-		interfaces.Render.DrawImage(this.Sprites[0], this.Position);
+		interfaces.Render.DrawImage(Sprites.get(0), Position);
+	}
+	
+	public void Move(Direction.Relative Dir)
+	{
+		int Speed = 3;
+		switch (Dir)
+		{			
+			case UP:
+				Position.y -= Speed * 2;
+				break;
+			case DOWN:
+				Position.y += Speed * 2;
+				break;
+			case LEFT:
+				Position.x -= Speed * 2;
+				break;
+			case RIGHT:
+				Position.x += Speed * 2;
+				break;
+		}
 	}
 }

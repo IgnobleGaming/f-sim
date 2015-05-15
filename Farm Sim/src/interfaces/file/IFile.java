@@ -56,8 +56,8 @@ public abstract class IFile
 
 			if (Size > 0)
 			{
-				Data = new byte[(int)Size]; // bad because what if files size > int.maxvalue!!!
-				FS.readFully(Data, 0, (int) Size);
+				Data = new byte[Size];
+				FS.readFully(Data, 0, Size);
 			}
 
 			FS.close();
@@ -69,6 +69,7 @@ public abstract class IFile
 		catch (IOException E)
 		{
 			// logger here
+			Logging.getInstance().Write(Logging.Type.ERROR, "Unabled to open \"%s\" - %s", Hash, E.getMessage());
 			return false;
 		}
 	}

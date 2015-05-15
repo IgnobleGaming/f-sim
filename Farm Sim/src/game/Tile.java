@@ -9,7 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class Tile
+public class Tile extends renderable.Renderable
 {
 
 	public enum Flag

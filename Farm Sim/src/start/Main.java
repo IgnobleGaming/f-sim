@@ -22,7 +22,7 @@ public class Main
 		long passed = 0;
 		while (GameObject.IsRunning)
 		{
-			GameObject.GameTime(Calendar.getInstance().getTimeInMillis()); // update our game time
+			GameObject.UpdateGameTime(); // update our game time
 			if (GameObject.GameTime() - passed >= 1000)
 			{
 				GameObject.Log().Write(Logging.Type.INFO, "1 Second has Passed %d", passed);
@@ -38,7 +38,8 @@ public class Main
 				case GAME:
 					break;
 			}
-			GameObject.Output().Update();		
+			GameObject.Output().Update();	
+			GameObject.Output().updateFPS();
 		}
 	}
 	

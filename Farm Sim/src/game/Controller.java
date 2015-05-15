@@ -38,25 +38,24 @@ public class Controller
 	}
 	
 	private void ProcessInput(InputType input)
-	{
-		//Logging.getInstance().Write(Logging.Type.INFO, "%s key was pressed!", input.toString());
-		
+	{	
 		switch (input)
 		{
 			case UP:
-				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.UP);
+				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.UP);
 				break;
 			case DOWN:
-				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.DOWN);
+				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.DOWN);
 				break;
 			case LEFT:
-				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.LEFT);
+				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.LEFT);
 				break;
 			case RIGHT:
-				Objects.GetInstance().Get(0).Move(specifier.Direction.Relative.RIGHT);
+				Game.GetInstance().Controllable().Move(specifier.Direction.Relative.RIGHT);
 				break;
 		}
-
+		
+		Logging.getInstance().Write(Logging.Type.INFO, "BUTTON PRESSED, MOVING %s - New POS is (%f %f)", input, Game.GetInstance().Controllable().Position().x, Game.GetInstance().Controllable().Position().y);
 	}
 
 	private void ReadInput()

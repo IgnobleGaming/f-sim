@@ -1,9 +1,19 @@
 package renderable;
 
+import interfaces.Game;
+
+import org.newdawn.slick.Color;
+
 public class HUD extends Renderable
 {
-	private Console Con;
+	private GUIFont FPSCounter;
 	private static HUD Instance;
+	
+
+	public void Init()
+	{
+		FPSCounter = new GUIFont("Consolas", "", GUIFont.Size.MEDIUM, Color.white, 1200, 10);
+	}
 	
 	public static HUD GetInstance()
 	{
@@ -14,6 +24,11 @@ public class HUD extends Renderable
 	
 	public void Draw()
 	{
-		Console.GetInstance().Draw();
+		//Console.GetInstance().Draw();
+		if (FPSCounter != null)
+		{
+			FPSCounter.Text(Game.GetInstance().Output().FPS() + " FPS");
+			FPSCounter.Draw();
+		}
 	}
 }
