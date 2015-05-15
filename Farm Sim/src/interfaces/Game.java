@@ -33,7 +33,7 @@ public class Game
 	
 	public enum State
 	{
-		INTRO, MAIN_MENU, GAME, INVENTORY, SETTINGS
+		LOADING, MENU, INGAME
 	};
 
 	private Game()
@@ -44,7 +44,8 @@ public class Game
 	}
 	
 	private void Init()
-	{
+	{		
+		CurrentState = State.LOADING;
 		Log.Write(Logging.Type.INFO, "GAME Initialization ====== %d", GameTime);
 		
 		GameVariables = Variables.GetInstance();
@@ -55,9 +56,6 @@ public class Game
 		GameObjects = Objects.GetInstance();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
-
-		
-		CurrentState = State.INTRO;
 	}
 	
 	public static Game GetInstance()
@@ -97,7 +95,8 @@ public class Game
 		PlayerEnt = player;	
 		PlayerEnt.MovementSpeed(5);
 		GameObjects.Add(PlayerEnt);
-
+		
+		CurrentState = State.INGAME;
 	}
 	
 
@@ -167,5 +166,10 @@ public class Game
 		for (renderable.Renderable R : GameObjects.Objs())
 			if (R instanceof object.Entity)
 				((object.Entity) R).Update();
+	}
+	
+	public Game.State State()
+	{
+		return CurrentState;
 	}
 }

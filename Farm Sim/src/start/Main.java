@@ -1,53 +1,42 @@
 package start;
 
 import interfaces.*;
-import interfaces.file.Logging;
-
-import java.util.*;
 
 public class Main
 {
-	private State gameState;
 	public static Game GameObject;
 
-	public void init()
+	public void Init()
 	{
-		gameState = State.INTRO;
 		GameObject = Game.GetInstance();
-		GameObject.Testing();
 	}
 
-	public void run()
+	public void Run()
 	{		
-		long passed = 0;
 		while (GameObject.IsRunning)
 		{
 			GameObject.UpdateGameTime(); // update our game time
-			GameObject.UpdateWorld();
-			if (GameObject.GameTime() - passed >= 1000)
+			GameObject.Input().Update(); // register all inputs and process state changes
+			switch (GameObject.State())
 			{
-				GameObject.Log().Write(Logging.Type.INFO, "1 Second has Passed %d", passed);
-				passed = GameObject.GameTime();
-			}
-			GameObject.Input().Update();
-			switch (gameState)
-			{
-				case INTRO:
+				case LOADING:
+					GameObject.Testing();
 					break;
-				case MAIN_MENU:
+				case MENU:
 					break;
-				case GAME:
+				case INGAME:
+					GameObject.UpdateWorld(); // process all the changes that need to be made (locations/states etc)
 					break;
 			}
-			GameObject.Output().Update();	
-			GameObject.Output().updateFPS();
+			GameObject.Output().Update(); // render all renderables
+			GameObject.Output().updateFPS(); // how long did this frame take?
 		}
 	}
 	
 	public static void main(String[] argv)
 	{
 		Main main = new Main();
-		main.init();
-		main.run();
+		main.Init();
+		main.Run();
 	}
 }
