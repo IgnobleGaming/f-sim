@@ -1,6 +1,7 @@
 package renderable;
 
 import specifier.Direction;
+import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
 
 import java.util.Comparator;
@@ -19,13 +20,15 @@ public abstract class Renderable
 	protected Renderable()
 	{
 		Sprites = new ArrayList<MaterialFile>();
+		Visible = true;
+		ZIndex = 0;
+		Logging.getInstance().Write(Logging.Type.INFO, "New renderable entity created!");
 	}
+	
 	public void Position (int x, int y)
 	{
 		XPos = x;
 		YPos = y;
-		ZIndex = 0;
-		Visible = true;
 	}
 	
 	public specifier.Vector2D Position()

@@ -1,19 +1,31 @@
 package renderable;
 
 import interfaces.Objects;
+import interfaces.Render;
+import interfaces.file.Logging;
+import interfaces.file.types.MaterialFile.Type;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.LinkedList;
 
 import org.newdawn.slick.Color;
 
 public class Console extends HUD
 {
-	private ArrayBlockingQueue<GUIFont> Lines;
+	private LinkedList<GUIFont> Lines;
 	private static Console Instance;
+	private interfaces.file.types.MaterialFile Texture;
 	
 	private Console()
 	{
-		Lines = new ArrayBlockingQueue<GUIFont>(8);
+		Lines = new LinkedList<GUIFont>();
+		Texture = new interfaces.file.types.MaterialFile("resources/console.png", Type.PNG);
+		Texture.Open();
+		Texture.Resize(300, 200);
+		for (int i = 0; i < 20; i++)
+		{
+			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.darkGray, 5, i * 15);	
+			Lines.add(Adding);
+		}
 	}
 	
 	public static Console GetInstance()
@@ -26,19 +38,35 @@ public class Console extends HUD
 	
 	public void WriteLine(String Message)
 	{
-		if (Lines.size() >=8);
+		String LastLine = Lines.getLast().Text();
+		for (int i = Lines.size()-1; i > -1; i--)
 		{
-			//Lines.remove();
-			for (GUIFont G : Lines)
-				G.MoveUp();
+			String NewLastLine = Lines.get(i).Text();
+			Lines.get(i).Text(LastLine);
+			LastLine = NewLastLine;
 		}
-		GUIFont Adding = new GUIFont("Segoe UI", Message, GUIFont.Size.SMALL, Color.black, 5, Lines.size() * 15);	
-		Lines.add(Adding);
+		Lines.getLast().Text(Message);
 	}
 	
 	public void Draw()
 	{
+		Render.DrawImage(Texture, new specifier.Vector2D(Texture.Width() / 2, Texture.Height() / 2));
+		
 		for (GUIFont G : Lines)
 			G.Draw();
+	}
+	
+	public void ToggleVisibility()
+	{
+		if (Visible)
+		{
+			Visible = false;
+			Logging.getInstance().Write(Logging.Type.INFO, "Console is now hidden");
+		}
+		else
+		{
+			Visible = true;
+			Logging.getInstance().Write(Logging.Type.INFO, "Console is now visible");
+		}
 	}
 }

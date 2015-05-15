@@ -49,9 +49,9 @@ public class Game
 		
 		GameVariables = Variables.GetInstance();
 		InitializeVariables();
-		Con = renderable.Console.GetInstance();
 		
 		Output = new Render();	
+		Con = renderable.Console.GetInstance();
 		GameObjects = Objects.GetInstance();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
@@ -85,6 +85,7 @@ public class Game
 		}
 		
 		renderable.HUD.GetInstance().Init();
+		renderable.HUD.GetInstance().ZIndex(1000);
 		GameObjects.Add(renderable.HUD.GetInstance());
 		
 		interfaces.file.types.MaterialFile playersprite = new interfaces.file.types.MaterialFile("resources\\player.png", interfaces.file.types.MaterialFile.Type.PNG);
@@ -92,15 +93,6 @@ public class Game
 		playersprite.Scale((float).1);
 		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(0,0), new specifier.Vector(), object.Entity.Flag.VISIBLE);
 		player.AddSprites(playersprite);		
-		
-		//renderable.GUIFont testFont = new renderable.GUIFont("Segoe UI", "This is test", GUIFont.Size.HUGE, org.newdawn.slick.Color.blue, 250, 50);
-		//GameObjects.Add(testFont);
-		
-		//renderable.GUIFont testFont2 = new renderable.GUIFont("Segoe UI", "This is test2", GUIFont.Size.HUGE, org.newdawn.slick.Color.red, 300, 300);
-		//GameObjects.Add(testFont2);
-		
-		//renderable.GUIFont testFont3 = new renderable.GUIFont("Segoe UI", "This is test3", GUIFont.Size.HUGE, org.newdawn.slick.Color.green, 588, 500);
-		//GameObjects.Add(testFont3);
 
 		PlayerEnt = player;	
 		GameObjects.Add(PlayerEnt);
@@ -118,8 +110,8 @@ public class Game
 		
 		GameVariables.Set(new object.Variable("vid_width", "horizontal screen resolution", 1280, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 720, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", true, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 	}
 	
 	public long GameTime()

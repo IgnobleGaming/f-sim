@@ -75,5 +75,11 @@ public class MaterialFile extends IFile
 		Width = Math.round(Width*Factor);
 		Height = Math.round(Height*Factor);
 	}
+	
+	public void Resize(int Width, int Height)
+	{
+		this.Width = Width;
+		this.Height = Height;
+	}
 
 }

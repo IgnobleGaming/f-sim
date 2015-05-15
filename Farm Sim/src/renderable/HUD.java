@@ -24,7 +24,9 @@ public class HUD extends Renderable
 	
 	public void Draw()
 	{
-		//Console.GetInstance().Draw();
+		if (Console.GetInstance().Visible)
+			Console.GetInstance().Draw();
+		
 		if (FPSCounter != null)
 		{
 			FPSCounter.Text(Game.GetInstance().Output().FPS() + " FPS");

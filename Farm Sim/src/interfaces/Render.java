@@ -15,9 +15,9 @@ public class Render
 {
 	private PriorityQueue<Renderable> RenderQueue;
 	private int maxfps = 60;
-	private int TotalFrames = 1;
+	private long TotalFrames = 0;
 	private int DeltaTime = 0;
-	private long LastFrame;
+	private long LastFrame = 0;
 	private int FPS;
 
 	public Render()
@@ -29,7 +29,7 @@ public class Render
 			int width = (int) Variables.GetInstance().Get("vid_width").Current();
 			int height = (int) Variables.GetInstance().Get("vid_height").Current();
 			boolean vsync = (boolean) Variables.GetInstance().Get("vid_vsync").Current();
-			int maxfps = (int) Variables.GetInstance().Get("vid_maxfps").Current();
+			maxfps = (int) Variables.GetInstance().Get("vid_maxfps").Current();
 			Logging.getInstance().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
@@ -84,7 +84,8 @@ public class Render
 	{
 		for (Renderable R : interfaces.Objects.GetInstance().Objs())
 		{
-			RenderQueue.add(R);
+			if (R.Visible)
+				RenderQueue.add(R);
 		}
 	}
 
@@ -102,17 +103,18 @@ public class Render
 	{
 		Mat.Texture().bind();
 		GL11.glBegin(GL11.GL_QUADS);
+		// TOP LEFT
 		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2f(Pos.x / 2, Pos.y / 2);
-
+		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
+		// TOP RIGHT
 		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex2f((Pos.x / 2) + Mat.Width(), Pos.y / 2);
-
+		GL11.glVertex2f(Pos.x + Mat.Width(), Pos.y - (Mat.Height() / 2));
+		// BOTTOM RIGHT
 		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex2f((Pos.x / 2) + Mat.Width(), (Pos.y / 2) + Mat.Height());
-
+		GL11.glVertex2f(Pos.x + Mat.Width(), (Pos.y) + Mat.Height());
+		// BOTTOM LEFT
 		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex2f(Pos.x / 2, (Pos.y / 2) + Mat.Height());
+		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height());
 
 		GL11.glEnd();
 	}
@@ -122,21 +124,22 @@ public class Render
 		
 		Game I = Game.GetInstance();
 		
-		TotalFrames += 1;
-		long CurTime = I.GameTime();
-		
 		if (LastFrame == 0)
-			LastFrame = CurTime;
+			LastFrame = I.GameTime();
 		
-		DeltaTime += (CurTime - LastFrame);
-		LastFrame = CurTime;
+		TotalFrames += 1;
+		DeltaTime += I.GameTime() - LastFrame;
 		
-		if (DeltaTime > 1000)
-		{				
-			FPS = Math.round(DeltaTime/TotalFrames);
-			TotalFrames = 1;
+		if (TotalFrames > maxfps)
+		{
+			double RenderTime = (double)(DeltaTime/1000);
+			double AccurateFPS = (double)(TotalFrames/RenderTime);
+			FPS = (int)AccurateFPS - 1;
+			TotalFrames = 0;
 			DeltaTime = 0;
 		}
+		
+	    LastFrame = I.GameTime();
 	}
 	
 	public int FPS()

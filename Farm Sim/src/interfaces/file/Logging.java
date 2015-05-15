@@ -50,9 +50,9 @@ public class Logging
 		{
 			DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
-			String ConMessage = String.format("[%s] - %s", MessageType.toString(), Message);
+			String ConMessage = String.format(" [%s]     %s", MessageType.toString(), Message);
 			Message = String.format("%s [%s] - %s", dateFormatted, MessageType.toString(), Message);
-			//Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
+			Game.GetInstance().Con().WriteLine(String.format(ConMessage, args));
 			LogHandle.println(String.format(Message, args));
 			LogHandle.flush();
 		}

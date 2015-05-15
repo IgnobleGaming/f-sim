@@ -1,6 +1,5 @@
 package renderable;
 
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
@@ -47,5 +46,10 @@ public class GUIFont extends Renderable
 	public void Text(String NewText)
 	{
 		Text = NewText;
+	}
+	
+	public String Text()
+	{
+		return Text;
 	}
 }
