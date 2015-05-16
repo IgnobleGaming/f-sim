@@ -56,7 +56,6 @@ public class Console extends HUD
 	public void Draw()
 	{
 		Render.DrawImage(Texture, Position());
-		Logging.getInstance().Write(Logging.Type.INFO, "Console created @ %d %d", Position().x, Position().y);
 		
 		for (GUIFont G : Lines)
 			G.Draw();
