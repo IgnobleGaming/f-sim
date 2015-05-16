@@ -99,7 +99,7 @@ public class Game
 		
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		playersprite.Scale((float).1);
+		playersprite.Scale((float).05);
 		object.Entity player = new object.Entity("Player", "Main Character", new Vector2D(0,0), new specifier.Vector(), object.Entity.Flag.VISIBLE);
 		player.AddSprites(playersprite);		
 

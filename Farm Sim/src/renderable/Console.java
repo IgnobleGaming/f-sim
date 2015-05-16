@@ -2,6 +2,7 @@ package renderable;
 
 import interfaces.Objects;
 import interfaces.Render;
+import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile.Type;
 
@@ -20,10 +21,13 @@ public class Console extends HUD
 		Lines = new LinkedList<GUIFont>();
 		Texture = new interfaces.file.types.MaterialFile("resources/console.png", Type.PNG);
 		Texture.Open();
-		Texture.Resize(300, 200);
+		int width = (int)Variables.GetInstance().Get("vid_width").Current();
+		int height = (int)Variables.GetInstance().Get("vid_height").Current();
+		Texture.Scale((float).45);
+		Position(width/2, 0);
 		for (int i = 0; i < 20; i++)
 		{
-			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.darkGray, 5, i * 15);	
+			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, 5, i * 15);	
 			Lines.add(Adding);
 		}
 	}
@@ -46,11 +50,13 @@ public class Console extends HUD
 			LastLine = NewLastLine;
 		}
 		Lines.getLast().Text(Message);
+	
 	}
 	
 	public void Draw()
 	{
-		Render.DrawImage(Texture, new specifier.Vector2D(Texture.Width() / 2, Texture.Height() / 2));
+		Render.DrawImage(Texture, Position());
+		Logging.getInstance().Write(Logging.Type.INFO, "Console created @ %d %d", Position().x, Position().y);
 		
 		for (GUIFont G : Lines)
 			G.Draw();

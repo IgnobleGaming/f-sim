@@ -4,6 +4,7 @@ import game.Tile.Flag;
 import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
+import specifier.Vector2D;
 
 public class Map extends renderable.Renderable
 {
@@ -22,23 +23,19 @@ public class Map extends renderable.Renderable
 	{
 		for (int num = 0; num < MapTiles.length; num++)
 		{
-			if (num < 3 || num == MapTiles.length - 1)
-			{
-				MapTiles[num] = new Tile();
-				MapTiles[num].AddSprites((interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png")); // this will be randomized
-				specifier.Vector2D TilePos = GetTilePos(num);
-				MapTiles[num].Position(TilePos.x, TilePos.y);
-			}
-
+			MapTiles[num] = new Tile();
+			MapTiles[num].AddSprites((interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png")); // this will be randomized
+			Vector2D TilePos = GetTilePos(num);
+			MapTiles[num].Position(TilePos.x, TilePos.y);
 		}
 	}
 
-	public specifier.Vector2D GetTilePos(int num)
+	public Vector2D GetTilePos(int num)
 	{
-		int x = (int)((((num % HorizontalTileNum) * 32) + 16)*1.5); // offset for 
-		int y = (int)(((int) (Math.floor(num / VerticalTileNum) * 32))*1.5 + 16); // offset
+		int x = (int) ((((num % HorizontalTileNum) * 32 + 8)) * 1.5); // offset for
+		int y = (int) (((int) (Math.floor(num / VerticalTileNum) * 32)) * 1.5 + 16); // offset
 		Logging.getInstance().Write(Logging.Type.INFO, "Tile centered @ %d, %d", x, y);
-		return new specifier.Vector2D(x, y);
+		return new Vector2D(x, y);
 	}
 
 	public void Draw()
