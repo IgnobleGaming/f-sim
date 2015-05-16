@@ -53,9 +53,10 @@ public class Game
 		GameVariables = Variables.GetInstance();
 		InitializeVariables();
 		
+		GameObjects = Objects.GetInstance();
+		
 		Output = new Render();	
 		Con = renderable.Console.GetInstance();
-		GameObjects = Objects.GetInstance();
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
 	}

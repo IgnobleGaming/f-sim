@@ -16,11 +16,14 @@ public class Console extends HUD
 	private LinkedList<GUIFont> Lines;
 	private static Console Instance;
 	private interfaces.file.types.MaterialFile Texture;
+	private InputField In;
 	
 	private Console()
 	{
 		Lines = new LinkedList<GUIFont>();
-		Texture = new interfaces.file.types.MaterialFile("resources/console.png", Type.PNG);
+		In = new InputField(800);
+		In.Position(GetPosFromLocation(Renderable.Position.CENTERCENTER));
+		Texture = new interfaces.file.types.MaterialFile("resources\\console.png", Type.PNG);
 		Texture.Open();
 		AddSprites(Texture);
 		Resize(1000, Texture.Height());
@@ -30,6 +33,7 @@ public class Console extends HUD
 			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
 			Lines.add(Adding);
 		}
+		Visible = false;
 	}
 	
 	public static Console GetInstance()
@@ -56,6 +60,8 @@ public class Console extends HUD
 	public void Draw()
 	{
 		Render.DrawImage(Texture, Position());
+		
+		In.Draw();
 		
 		for (GUIFont G : Lines)
 			G.Draw();

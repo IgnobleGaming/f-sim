@@ -13,6 +13,8 @@ public abstract class Renderable
 	protected int XPos;
 	protected int YPos;
 	private int ZIndex;
+	private static int ScreenWidth; // less calls
+	private static int ScreenHeight; // ditto
 	public boolean Visible;
 	protected ArrayList<MaterialFile> Sprites;
 	
@@ -21,13 +23,20 @@ public abstract class Renderable
 		TOPLEFT, TOPCENTER, TOPRIGHT, CENTERLEFT, CENTERCENTER, CENTERRIGHT, BOTTOMLEFT, BOTTOMCENTER, BOTTOMRIGHT
 	}
 	
+	public enum PositionType 
+	{
+		RELATIVE, ABSOLUTE
+	}
+	
 	public void Draw() {}
 	
 	protected Renderable()
 	{
+		ScreenWidth = (int)Variables.GetInstance().Get("vid_width").Current();
+		ScreenWidth = (int)Variables.GetInstance().Get("vid_height").Current();
 		Sprites = new ArrayList<MaterialFile>();
 		Visible = true;
-		ZIndex = 0;
+		ZIndex = 0; // default zindex
 		Logging.getInstance().Write(Logging.Type.INFO, "New renderable object created! [ z=%d, visible=%b ]", ZIndex, Visible);
 	}
 	
@@ -101,15 +110,19 @@ public abstract class Renderable
 			ZIndex = I;
 	}
 	
-	public static Vector2D GetPosFromLocation(Position P)
+	public static Vector2D GetPosFromLocation(Position P, PositionType Pt, int width, int height, int padx, int pady, Renderable parent)
 	{
-		int width = (int)Variables.GetInstance().Get("vid_width").Current();
-		int height = (int)Variables.GetInstance().Get("vid_height").Current();
-		
 		switch (P)
 		{
 			case TOPCENTER:
-				return new Vector2D(width/2,0);
+				if (Pt == PositionType.ABSOLUTE)
+					return new Vector2D((ScreenWidth/2)+ padx, 0 + pady);
+				if (Pt == PositionType.RELATIVE)
+				{
+					int ParentTopBorder = ScreenHeight - parent.YPos / 2;
+					int ParentLeftBorder = ScreenWidth
+					return new Vector2D()
+				}
 			case CENTERCENTER:
 				return new Vector2D(width/2, height/2);
 			default:

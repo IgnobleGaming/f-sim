@@ -10,17 +10,21 @@ import org.lwjgl.input.Keyboard;
 import renderable.Console;
 import renderable.Renderable;
 
+import java.util.ArrayList;
+
 public class Controller
 {
 	private int NewestKey;
+	private ArrayList<Character> InputChars;
 
 	private enum InputType
 	{
-		UP, DOWN, LEFT, RIGHT, ESCAPE, CONSOLE, RELEASE
+		UP, DOWN, LEFT, RIGHT, ESCAPE, CONSOLE, RELEASE, ENTER, NONE
 	};
 
 	public Controller()
 	{
+		InputChars = new ArrayList<Character>();
 		Keyboard.enableRepeatEvents(true);
 	}
 
@@ -29,17 +33,23 @@ public class Controller
 		ReadInput();
 	}
 
-	private void ProcessInput(InputType input)
+	private void ProcessInput(InputType input, char... chars)
 	{
 		switch (Game.GetInstance().State())
 		{
 			case LOADING:
 				break;
 			case MENU: //in
+				for (char c : chars)
+					InputChars.add(c);
 				switch (input)
 				{
 					case CONSOLE:
 						Console.GetInstance().ToggleVisibility();
+						break;
+					case ENTER:
+						
+						InputChars.removeAll(InputChars);
 						break;
 				}
 				break;
@@ -103,6 +113,8 @@ public class Controller
 						if (Keyboard.getEventKeyState())
 							In = InputType.CONSOLE;
 						break;
+						default:
+							ProcessInput(InputType.NONE, Keyboard.getEventCharacter());
 				}
 				
 				ProcessInput(In);

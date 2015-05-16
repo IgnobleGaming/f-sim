@@ -51,7 +51,9 @@ public class Variable<T>
 
 	public void Current(T NewValue)
 	{
-
+		if (!Variable.class.isAssignableFrom(NewValue.getClass())) // if they're trying to pass in a type that is not the same type
+			return;
+		
 		if (Min != null && Max != null) // only the case when working with number types
 		{
 			float val = (float) NewValue; // shitty work around < \/
@@ -98,5 +100,10 @@ public class Variable<T>
 	public String Description()
 	{
 		return Description;
+	}
+	
+	public String StringInfo()
+	{
+		return this.Name + " current: " + this.Current;
 	}
 }
