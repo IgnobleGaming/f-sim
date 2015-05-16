@@ -1,5 +1,6 @@
 package renderable;
 
+import interfaces.Game;
 import interfaces.Objects;
 import interfaces.Render;
 import interfaces.Variables;
@@ -21,13 +22,12 @@ public class Console extends HUD
 		Lines = new LinkedList<GUIFont>();
 		Texture = new interfaces.file.types.MaterialFile("resources/console.png", Type.PNG);
 		Texture.Open();
-		int width = (int)Variables.GetInstance().Get("vid_width").Current();
-		int height = (int)Variables.GetInstance().Get("vid_height").Current();
-		Texture.Scale((float).45);
-		Position(width/2, 0);
-		for (int i = 0; i < 20; i++)
+		AddSprites(Texture);
+		Resize(1000, Texture.Height());
+		Position(GetPosFromLocation(Renderable.Position.CENTERCENTER));
+		for (int i = 0; i < 38; i++)
 		{
-			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, 5, i * 15);	
+			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
 			Lines.add(Adding);
 		}
 	}
@@ -67,11 +67,13 @@ public class Console extends HUD
 		{
 			Visible = false;
 			Logging.getInstance().Write(Logging.Type.INFO, "Console is now hidden");
+			Game.GetInstance().State(Game.State.INGAME);
 		}
 		else
 		{
 			Visible = true;
 			Logging.getInstance().Write(Logging.Type.INFO, "Console is now visible");
+			Game.GetInstance().State(Game.State.MENU);
 		}
 	}
 }

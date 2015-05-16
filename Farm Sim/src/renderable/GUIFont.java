@@ -28,7 +28,7 @@ public class GUIFont extends Renderable
 		this.Text = Text;
 		this.FontColor = FontColor;
 		awtFont = new Font(FontFamily, 0, FontSize.val);
-		Font = new TrueTypeFont(awtFont, true);
+		Font = new TrueTypeFont(awtFont, false);
 		XPos = x;
 		YPos = y;
 	}

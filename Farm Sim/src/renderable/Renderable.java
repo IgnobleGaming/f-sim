@@ -1,6 +1,7 @@
 package renderable;
 
-import specifier.Direction;
+import specifier.*;
+import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
 
@@ -14,6 +15,11 @@ public abstract class Renderable
 	private int ZIndex;
 	public boolean Visible;
 	protected ArrayList<MaterialFile> Sprites;
+	
+	public enum Position
+	{
+		TOPLEFT, TOPCENTER, TOPRIGHT, CENTERLEFT, CENTERCENTER, CENTERRIGHT, BOTTOMLEFT, BOTTOMCENTER, BOTTOMRIGHT
+	}
 	
 	public void Draw() {}
 	
@@ -31,9 +37,31 @@ public abstract class Renderable
 		YPos = y;
 	}
 	
+	public void Position(Vector2D V)
+	{
+		XPos = V.x;
+		YPos= V.y;
+	}
+	
 	public specifier.Vector2D Position()
 	{
 		return new specifier.Vector2D(XPos, YPos);
+	}
+	
+	public void Scale(double Factor)
+	{
+		if (Sprites.size() < 0)
+			Logging.getInstance().Write(Logging.Type.WARNING, "Attempting to scale object with no materials!");
+		for (MaterialFile M : Sprites)
+			M.Scale(Factor);
+	}
+	
+	public void Resize(int Width, int Height)
+	{
+		if (Sprites.size() < 0)
+			Logging.getInstance().Write(Logging.Type.WARNING, "Attempting to resize object with no materials!");
+		for (MaterialFile M : Sprites)
+			M.Resize(Width, Height);
 	}
 	
 	public void Move(Direction.Relative Dir)
@@ -56,10 +84,10 @@ public abstract class Renderable
 		}
 	}
 	
-	public void AddSprites(MaterialFile... Sprites)
+	public void AddSprites(MaterialFile... S)
 	{
-		for (MaterialFile M : Sprites)
-			this.Sprites.add(M);
+		for (MaterialFile M : S)
+			Sprites.add(M);
 	}
 	
 	public int ZIndex()
@@ -71,5 +99,21 @@ public abstract class Renderable
 	{
 		if (I > -1)
 			ZIndex = I;
+	}
+	
+	public static Vector2D GetPosFromLocation(Position P)
+	{
+		int width = (int)Variables.GetInstance().Get("vid_width").Current();
+		int height = (int)Variables.GetInstance().Get("vid_height").Current();
+		
+		switch (P)
+		{
+			case TOPCENTER:
+				return new Vector2D(width/2,0);
+			case CENTERCENTER:
+				return new Vector2D(width/2, height/2);
+			default:
+				return new Vector2D(0,0);
+		}
 	}
 }

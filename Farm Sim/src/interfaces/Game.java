@@ -2,10 +2,10 @@ package interfaces;
 
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
-import interfaces.file.types.TextFile;
 import interfaces.file.types.*;
 import specifier.*;
 import renderable.*;
+import renderable.Renderable.Position;
 
 import java.util.*;
 
@@ -88,6 +88,18 @@ public class Game
 		TileSprite.Open();
 		Files.Add(TileSprite);
 		
+		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\grass_dirt.png", MaterialFile.Type.PNG);
+		TileSprite2.Open();
+		Files.Add(TileSprite2);
+		
+		MaterialFile TileSprite3 = new MaterialFile("resources\\ingame\\tiles\\grass_stone.png", MaterialFile.Type.PNG);
+		TileSprite3.Open();
+		Files.Add(TileSprite3);
+		
+		MaterialFile TileSprite4 = new MaterialFile("resources\\ingame\\tiles\\grass_water.png", MaterialFile.Type.PNG);
+		TileSprite4.Open();
+		Files.Add(TileSprite4);
+		
 		game.Map GameMap = new game.Map();
 		GameMap.Load();
 		
@@ -99,8 +111,8 @@ public class Game
 		
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		playersprite.Scale((float).05);
-		object.Entity player = new object.Entity("Player", "Main Character", new Vector2D(0,0), new specifier.Vector(), object.Entity.Flag.VISIBLE);
+		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER), new specifier.Vector(), object.Entity.Flag.VISIBLE);
+		
 		player.AddSprites(playersprite);		
 
 		PlayerEnt = player;	
@@ -128,8 +140,6 @@ public class Game
 		
 		GameVariables.Set(new object.Variable("m_maxwidth", "maximum width (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
 		GameVariables.Set(new object.Variable("m_maxheight", "maximum height (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
-		
-		
 	}
 	
 	public long GameTime()
@@ -163,11 +173,7 @@ public class Game
 	{
 		return Input;
 	}
-	
-	public State CurrentState()
-	{
-		return CurrentState;
-	}
+
 	
 	public Console Con()
 	{
@@ -186,8 +192,13 @@ public class Game
 				((object.Entity) R).Update();
 	}
 	
-	public Game.State State()
+	public State State()
 	{
 		return CurrentState;
+	}
+	
+	public void State(State S)
+	{
+		CurrentState = S;
 	}
 }

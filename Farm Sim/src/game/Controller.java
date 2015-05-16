@@ -12,7 +12,7 @@ import renderable.Renderable;
 
 public class Controller
 {
-	private int LastKey;
+	private int NewestKey;
 
 	private enum InputType
 	{
@@ -21,7 +21,7 @@ public class Controller
 
 	public Controller()
 	{
-		Keyboard.enableRepeatEvents(false);
+		Keyboard.enableRepeatEvents(true);
 	}
 
 	public void Update()
@@ -31,11 +31,17 @@ public class Controller
 
 	private void ProcessInput(InputType input)
 	{
-		switch (Game.GetInstance().CurrentState())
+		switch (Game.GetInstance().State())
 		{
 			case LOADING:
 				break;
 			case MENU: //in
+				switch (input)
+				{
+					case CONSOLE:
+						Console.GetInstance().ToggleVisibility();
+						break;
+				}
 				break;
 			case INGAME: // we are in the game so moving controllable entity
 				switch (input)
@@ -69,15 +75,17 @@ public class Controller
 	private void ReadInput()
 	{
 		// this is polled
-
 		while (Keyboard.next())
 		{
-			if (Keyboard.getEventKeyState())
+			int EventKey = Keyboard.getEventKey();
+			if (Keyboard.getEventKeyState()) // key is pressed
 			{
-				LastKey = Keyboard.getEventKey();
+				if (NewestKey != EventKey) // a new input detected so force state to this one
+					NewestKey = EventKey;
+				
 				InputType In = InputType.RELEASE;
 				
-				switch (LastKey)
+				switch (EventKey)
 				{
 					case Keyboard.KEY_UP:
 						In = InputType.UP;
@@ -100,24 +108,14 @@ public class Controller
 				ProcessInput(In);
 			}
 			
-			else
+			else // key is released
 			{
-				if(Keyboard.getEventKey() == LastKey)
+				if(EventKey == NewestKey)
+				{
 					ProcessInput(InputType.RELEASE);
+					NewestKey = 0;
+				}
 			}
 		}
-
-		// event driven
-		/*
-		 * if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ProcessInput(InputType.UP);
-		 * 
-		 * if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ProcessInput(InputType.DOWN);
-		 * 
-		 * if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ProcessInput(InputType.LEFT);
-		 * 
-		 * if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ProcessInput(InputType.RIGHT);
-		 * 
-		 * if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE)) ProcessInput(InputType.CONSOLE);
-		 */
 	}
 }

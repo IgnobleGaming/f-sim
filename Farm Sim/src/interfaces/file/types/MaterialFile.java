@@ -69,10 +69,10 @@ public class MaterialFile extends IFile
 		return Material;
 	}
 	
-	public void Scale(float Factor)
+	public void Scale(double Factor)
 	{
-		this.Width = Math.round(Width*Factor);
-		this.Height = Math.round(Height*Factor);
+		this.Width = (int)Math.round(Width*Factor);
+		this.Height = (int)Math.round(Height*Factor);
 	}
 	
 	public void Resize(int Width, int Height)
