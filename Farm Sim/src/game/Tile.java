@@ -3,12 +3,6 @@ package game;
 import java.io.IOException;
 import java.util.EnumSet;
 
-import object.Entity.Flag;
-
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
-
 public class Tile extends renderable.Renderable
 {
 
@@ -19,29 +13,15 @@ public class Tile extends renderable.Renderable
 
 	private int Height;
 	private int Width;
-	private Texture Texture;
 
 	private EnumSet<Flag> Flags;
-
-	private Object Res;
-
+	
 	public Tile()
 	{
-		init();
-	}
-
-	public void init()
-	{
-		try
-		{
-			// Change resourceLoader to file manager
-			Texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("butts"));
-			// height = fm[].getData();
-			// width = fm[].getData();
-		} catch (IOException e)
-		{
-
-		}
+		Width = 32; // default tile width
+		Height = 32;	
+		Flags = EnumSet.noneOf(Flag.class);
+		Flags.add(Flag.DRAWABLE);
 	}
 
 	public int Height()
@@ -66,7 +46,6 @@ public class Tile extends renderable.Renderable
 	{
 		if (!Flags.contains(Flag.RESOURCE))
 		{
-			this.Res = Resource;
 			Flags.add(Flag.INTERACTABLE);
 			Flags.add(Flag.OCCUPIED);
 		}
@@ -80,9 +59,8 @@ public class Tile extends renderable.Renderable
 
 	public boolean CheckFlag(Flag check)
 	{
-		if (!Flags.contains(Flag.LOCKED) && Flags.contains(check))
+		if (Flags.contains(check))
 			return true;
-
 		return false;
 	}
 
@@ -90,5 +68,22 @@ public class Tile extends renderable.Renderable
 	{
 		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
 			Flags.remove(Removing);
+	}
+	
+	public void Lock()
+	{
+		if (!Flags.contains(Flag.LOCKED))
+			Flags.add(Flag.LOCKED);		
+	}
+	
+	public void Unlock()
+	{
+		if (Flags.contains(Flag.LOCKED))
+			Flags.remove(Flag.LOCKED);		
+	}
+	
+	public void Draw()
+	{
+		interfaces.Render.DrawImage(Sprites.get(0), Position());
 	}
 }

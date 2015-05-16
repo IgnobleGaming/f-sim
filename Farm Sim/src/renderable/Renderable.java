@@ -22,7 +22,7 @@ public abstract class Renderable
 		Sprites = new ArrayList<MaterialFile>();
 		Visible = true;
 		ZIndex = 0;
-		Logging.getInstance().Write(Logging.Type.INFO, "New renderable entity created!");
+		Logging.getInstance().Write(Logging.Type.INFO, "New renderable object created! [ z=%d, visible=%b ]", ZIndex, Visible);
 	}
 	
 	public void Position (int x, int y)
