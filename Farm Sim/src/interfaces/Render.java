@@ -19,8 +19,10 @@ public class Render
 	private int DeltaTime = 0;
 	private long LastFrame = 0;
 	private int FPS;
+	private int ScreenWidth, ScreenHeight;
+	private static Render Instance;
 
-	public Render()
+	private Render()
 	{
 		try
 		{
@@ -30,6 +32,8 @@ public class Render
 			int height = (int) Variables.GetInstance().Get("vid_height").Current();
 			boolean vsync = (boolean) Variables.GetInstance().Get("vid_vsync").Current();
 			maxfps = (int) Variables.GetInstance().Get("vid_maxfps").Current();
+			ScreenWidth = (int) Variables.GetInstance().Get("vid_width").Current();
+			ScreenHeight = (int) Variables.GetInstance().Get("vid_height").Current();
 			Logging.getInstance().Write(Logging.Type.INFO, "width is %d // height is %d // vsync is %b // maxfps is %d", width, height, vsync, maxfps);
 
 			Display.setDisplayMode(new DisplayMode(width, height));
@@ -59,6 +63,13 @@ public class Render
 			Logging.getInstance().Write(Logging.Type.ERROR, "Unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
 			System.exit(0);
 		}
+	}
+	
+	public static Render GetInstance()
+	{
+		if (Instance == null)
+			Instance = new Render();
+		return Instance;
 	}
 
 	public boolean Update()
@@ -140,6 +151,16 @@ public class Render
 		}
 		
 	    LastFrame = I.GameTime();
+	}
+	
+	public int Width()
+	{
+		return ScreenWidth;
+	}
+	
+	public int Height()
+	{
+		return ScreenHeight;
 	}
 	
 	public int FPS()

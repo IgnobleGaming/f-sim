@@ -7,8 +7,7 @@ import java.awt.Font;
 
 public class GUIFont extends Renderable
 {
-	private TrueTypeFont Font;
-	private Font awtFont;
+	private TrueTypeFont aFont;
 	private String Text;
 	private Color FontColor;
 	
@@ -25,10 +24,11 @@ public class GUIFont extends Renderable
 	
 	public GUIFont(String FontFamily, String Text, Size FontSize, Color FontColor, int x, int y)
 	{
+		super(Text.length() * 1, 20);
 		this.Text = Text;
 		this.FontColor = FontColor;
-		awtFont = new Font(FontFamily, 0, FontSize.val);
-		Font = new TrueTypeFont(awtFont, false);
+		aFont = new TrueTypeFont(new Font(FontFamily, 0, FontSize.val), false);
+		
 		XPos = x;
 		YPos = y;
 	}
@@ -40,7 +40,7 @@ public class GUIFont extends Renderable
 	
 	public void Draw()
 	{
-		Font.drawString(XPos, YPos, Text, FontColor);
+		aFont.drawString(XPos, YPos, Text, FontColor);
 	}
 	
 	public void Text(String NewText)

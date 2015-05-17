@@ -41,18 +41,22 @@ public class Controller
 				break;
 			case MENU: //in
 				for (char c : chars)
-					InputChars.add(c);
+				{
+					if(utilities.Text.isAlphaNumeric(c))
+						InputChars.add(c);
+				}
 				switch (input)
 				{
 					case CONSOLE:
 						Console.GetInstance().ToggleVisibility();
 						break;
 					case ENTER:
-						
+						Logging.getInstance().Write(Logging.Type.DEBUG, "test");
 						InputChars.removeAll(InputChars);
 						break;
 				}
-				break;
+				Console.GetInstance().Input().InputText.Text("> " + InputChars.toString());
+				break;			
 			case INGAME: // we are in the game so moving controllable entity
 				switch (input)
 				{
@@ -112,6 +116,9 @@ public class Controller
 					case Keyboard.KEY_GRAVE:
 						if (Keyboard.getEventKeyState())
 							In = InputType.CONSOLE;
+						break;
+					case Keyboard.KEY_RETURN:
+						In = InputType.ENTER;
 						break;
 						default:
 							ProcessInput(InputType.NONE, Keyboard.getEventCharacter());

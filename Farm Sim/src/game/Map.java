@@ -15,6 +15,7 @@ public class Map extends renderable.Renderable
 
 	public Map()
 	{
+		super(0,0);
 		HorizontalTileNum = (int) Variables.GetInstance().Get("m_maxwidth").Current();
 		VerticalTileNum = (int) Variables.GetInstance().Get("m_maxheight").Current();
 		MapTiles = new Tile[HorizontalTileNum * VerticalTileNum];
@@ -22,6 +23,7 @@ public class Map extends renderable.Renderable
 
 	public void Load()
 	{
+		this.Resize(HorizontalTileNum * 32, VerticalTileNum * 32);
 		for (int num = 0; num < MapTiles.length; num++)
 		{
 			MapTiles[num] = new Tile();
@@ -35,7 +37,6 @@ public class Map extends renderable.Renderable
 	{
 		int x = (int) (num % HorizontalTileNum) * 32 + 16; // offset for
 		int y = (int) (Math.floor(num / VerticalTileNum) * 32 + 16); // offset
-		Logging.getInstance().Write(Logging.Type.INFO, "Tile centered @ %d, %d", x, y);
 		return new Vector2D(x, y);
 	}
 
@@ -45,32 +46,32 @@ public class Map extends renderable.Renderable
 			if (T != null && T.CheckFlag(Flag.DRAWABLE))
 				T.Draw();
 	}
-	
+
 	public interfaces.file.types.MaterialFile GetRandomTile()
 	{
 		Random R = new Random();
 		interfaces.file.types.MaterialFile M;
-		M = (interfaces.file.types.MaterialFile)FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
-		switch(R.nextInt(10))
+		M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
+		switch (R.nextInt(10))
 		{
 			case 0:
 			case 1:
 			case 2:
 			case 3:
-				M = (interfaces.file.types.MaterialFile)FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
+				M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
 				break;
 			case 4:
-				M = (interfaces.file.types.MaterialFile)FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_dirt.png");
+				M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_dirt.png");
 				break;
 			case 7:
 			case 8:
-				M = (interfaces.file.types.MaterialFile)FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_stone.png");
+				M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_stone.png");
 				break;
 			case 9:
-				M = (interfaces.file.types.MaterialFile)FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_water.png");
+				M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_water.png");
 				break;
 		}
-		
+
 		return M;
 	}
 }

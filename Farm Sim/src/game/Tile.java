@@ -18,8 +18,7 @@ public class Tile extends renderable.Renderable
 	
 	public Tile()
 	{
-		Width = 32; // default tile width
-		Height = 32;	
+		super(32, 32); // default tile size
 		Flags = EnumSet.noneOf(Flag.class);
 		Flags.add(Flag.DRAWABLE);
 	}

@@ -33,9 +33,9 @@ public class Entity extends Renderable
 	protected State CurrentState;
 	protected int MovementSpeed = 1;
 
-	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, Flag... Flags)
+	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
-		super();
+		super(width,height);
 		
 		this.Name = Name;
 		this.Description = Desc;

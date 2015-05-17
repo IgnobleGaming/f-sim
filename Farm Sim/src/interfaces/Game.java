@@ -6,6 +6,7 @@ import interfaces.file.types.*;
 import specifier.*;
 import renderable.*;
 import renderable.Renderable.Position;
+import renderable.Renderable.PositionType;
 
 import java.util.*;
 
@@ -55,10 +56,10 @@ public class Game
 		
 		GameObjects = Objects.GetInstance();
 		
-		Output = new Render();	
-		Con = renderable.Console.GetInstance();
+		Output = Render.GetInstance();	
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
+		Con = renderable.Console.GetInstance();
 	}
 	
 	public static Game GetInstance()
@@ -112,7 +113,7 @@ public class Game
 		
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER), new specifier.Vector(), object.Entity.Flag.VISIBLE);
+		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 32, 32, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
 		
 		player.AddSprites(playersprite);		
 
