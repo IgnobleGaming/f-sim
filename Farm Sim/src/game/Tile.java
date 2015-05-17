@@ -11,26 +11,23 @@ public class Tile extends renderable.Renderable
 		BLOCKED, RESOURCE, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
 
-	private int Height;
-	private int Width;
-
 	private EnumSet<Flag> Flags;
 	
 	public Tile()
 	{
-		super(32, 32); // default tile size
+		super(32,32); // default tile size
 		Flags = EnumSet.noneOf(Flag.class);
 		Flags.add(Flag.DRAWABLE);
 	}
 
 	public int Height()
 	{
-		return Height;
+		return super.Height();
 	}
 
 	public int Width()
 	{
-		return Width;
+		return super.Width();
 	}
 
 	public boolean interact()

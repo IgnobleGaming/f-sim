@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import renderable.Console;
 
@@ -32,15 +33,15 @@ public class GameCommands
 		return Instance;
 	}
 	
-	public boolean Execute(String CMDName, String... Arguments)
+	public boolean Execute(String CMDName, ArrayList<String> Arguments)
 	{
 		// we need to test for the variable first
 		if (Variables.GetInstance().Get(CMDName) != null)
 		{
 			object.Variable R = Variables.GetInstance().Get(CMDName);
-			if (Arguments.length > 0) // they want to set the variable
+			if (Arguments.size() > 0) // they want to set the variable
 			{
-				R.Current(Arguments[0]);
+				R.Current(Arguments.get(0));
 				return true;
 			}
 			
@@ -54,7 +55,7 @@ public class GameCommands
 		if (Commands.get(CMDName) != null)
 			return ExecuteCMD(Commands.get(CMDName).Function());
 		
-		Console.GetInstance().WriteLine("Unknown Command");
+		Console.GetInstance().WriteLine("Unknown Command " + "\"" + CMDName + "\"");
 		return false;
 	}
 	

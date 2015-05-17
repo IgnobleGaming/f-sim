@@ -135,6 +135,7 @@ public abstract class Renderable
 	{
 		return Height;
 	}
+	
 	public static Vector2D GetPosFromLocation(Position P, PositionType Pt, int width, int height, int padx, int pady, Renderable parent)
 	{
 		switch (P)

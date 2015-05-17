@@ -26,7 +26,7 @@ public class Console extends HUD
 		Texture.Open();
 		AddSprites(Texture);
 		Position(GetPosFromLocation(Renderable.Position.TOPCENTER, Renderable.PositionType.ABSOLUTE, this.Width(), this.Height(), 0, 0, null));
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 38; i++)
 		{
 			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
 			Lines.add(Adding);
@@ -35,7 +35,7 @@ public class Console extends HUD
 		In = new InputField(600, 20);
 		In.Position(GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.Width(), In.Height(), 50, -66, this));
 		
-		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 0, -27, In);
+		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 5, -27, In);
 		In.InputText.Position(Pos);
 		In.InputText.ZIndex(123123123);
 	}
@@ -84,8 +84,6 @@ public class Console extends HUD
 			Visible = true;
 			Logging.getInstance().Write(Logging.Type.INFO, "Console is now visible");
 			Game.GetInstance().State(Game.State.MENU);
-			Logging.getInstance().Write(Logging.Type.DEBUG, "Console Center is ( %d %d )", XPos, YPos);
-			Logging.getInstance().Write(Logging.Type.DEBUG, "Console input is ( %d %d )", In.XPos, In.YPos);
 		}
 	}
 	

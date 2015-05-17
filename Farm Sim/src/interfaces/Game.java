@@ -142,6 +142,8 @@ public class Game
 		
 		GameVariables.Set(new object.Variable("m_maxwidth", "maximum width (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
 		GameVariables.Set(new object.Variable("m_maxheight", "maximum height (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
+		
+		GameCommands.GetInstance().Add(new object.Command("quit", "quit the game", GameCommands.CommandFunction.quit));
 	}
 	
 	public long GameTime()

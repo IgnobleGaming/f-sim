@@ -58,6 +58,8 @@ public class Render
 			GL11.glLoadIdentity();
 			GL11.glOrtho(0, width, height, 0, 1, -1);
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST_MIPMAP_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_NEAREST);
 		} catch (LWJGLException e)
 		{
 			Logging.getInstance().Write(Logging.Type.ERROR, "Unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
@@ -83,7 +85,7 @@ public class Render
 				RenderQueue.remove().Draw();
 
 			Display.update();
-			Display.sync(maxfps);
+			Display.sync((int)Variables.GetInstance().Get("vid_maxfps").Current());
 			return true;
 		}
 

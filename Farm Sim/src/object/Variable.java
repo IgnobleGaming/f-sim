@@ -1,7 +1,12 @@
 package object;
 
+import java.awt.TrayIcon.MessageType;
+
+import renderable.Console;
 import interfaces.Variables;
 import interfaces.file.Logging;
+import interfaces.file.Logging.Type;
+import java.lang.NumberFormatException;
 
 public class Variable<T>
 {
@@ -17,7 +22,7 @@ public class Variable<T>
 
 	protected T Current;
 	protected T Default;
-	protected T Latched;
+	protected T Latched = null;
 	protected T Min;
 	protected T Max;
 	
@@ -49,27 +54,66 @@ public class Variable<T>
 		return Current;
 	}
 
-	public void Current(T NewValue)
+	public void Current(Object NewValue)
 	{
-		if (!Variable.class.isAssignableFrom(NewValue.getClass())) // if they're trying to pass in a type that is not the same type
-			return;
-		
-		if (Min != null && Max != null) // only the case when working with number types
+		if (Current.getClass() == Integer.class)
 		{
-			float val = (float) NewValue; // shitty work around < \/
-			if (val > (float) Max || val < (float) Min)
-				return;
+			try{ NewValue = Integer.parseInt(NewValue.toString()); }
+			catch (NumberFormatException E) { return; }
 		}
-		if (CurrentFlag == Flag.Modifiable)
-			Current = NewValue;
-		else if (CurrentFlag == Flag.CheatProtected && (boolean)Variables.GetInstance().Get("g_cheats").Current)
-			Current = NewValue;
-		else if (CurrentFlag == Flag.Latched)
-			Latched = NewValue;
-		else if (CurrentFlag == Flag.Developer && (boolean)Variables.GetInstance().Get("g_developer").Current)
-			Current = NewValue;
+		
+		else if (Current.getClass() == float.class)
+		{
+			try{ NewValue = Float.parseFloat(NewValue.toString()); }
+			catch (NumberFormatException E) { return; }
+		}
+		
+		else if (Current.getClass() == boolean.class)
+		{
+			try{ NewValue = Boolean.parseBoolean(NewValue.toString()); }
+			catch (NumberFormatException E) { return; }
+		}
+		
+		else if (Current.getClass() == String.class)
+		{
+			NewValue = (String)NewValue;
+		}
+		
 		else
-			Logging.getInstance().Write(Logging.Type.WARNING, "Attempt to modify protected variable \"%\" failed", this.Name);
+		{
+			Logging.getInstance().Write(Type.WARNING, "\"%s\" is an invalid value for \"%s\"", NewValue.toString(), this.Name);
+		}
+		
+		if (Current.getClass() != String.class) // only the case when working with number types
+		{
+			if (Current.getClass() == Integer.class)
+			{
+				if ((int)NewValue > (int)Max || (int)NewValue  < (int)Min)
+				{
+					Logging.getInstance().Write(Type.WARNING, "\"%s\" is an out of range value for \"%s\"", NewValue.toString(), this.Name);
+					return;
+				}
+			}
+			
+			else if (Current.getClass() == float.class)
+			{
+				if ((float)NewValue > (float)Max || (float)NewValue  < (float)Min)
+				{
+					Logging.getInstance().Write(Type.WARNING, "\"%s\" is an out of range value for \"%s\"", NewValue.toString(), this.Name);
+					return;
+				}
+			}			
+		}
+		if (CurrentFlag == Flag.Modifiable || CurrentFlag == Flag.Configuration)
+			Current = (T)NewValue;
+		else if (CurrentFlag == Flag.CheatProtected && (boolean)Variables.GetInstance().Get("g_cheats").Current)
+			Current = (T)NewValue;
+		else if (CurrentFlag == Flag.Latched)
+			Latched = (T)NewValue;
+		else if (CurrentFlag == Flag.Developer && (boolean)Variables.GetInstance().Get("g_developer").Current)
+			Current = (T)NewValue;
+		else
+			Logging.getInstance().Write(Logging.Type.WARNING, "\"%s\" is not modifiable", this.Name);
 	}
 
 	public T Default()
@@ -104,6 +148,7 @@ public class Variable<T>
 	
 	public String StringInfo()
 	{
-		return this.Name + " current: " + this.Current;
+		String Info = String.format("%s [current=\"%s\"]  [default=\"%s\"]", this.Name, this.Current.toString(), this.Default.toString());
+		return Info;
 	}
 }
