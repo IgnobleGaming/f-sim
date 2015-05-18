@@ -8,4 +8,12 @@ public class Text
 			return true;
 		return false;
 	}
+	
+	public static class BitmapGlyph
+	{
+		 public int id;
+		 public int x, y, width, height;
+		 public int xoffset, yoffset, xadvance;
+		 public float u, v, u2, v2;
+	}
 }

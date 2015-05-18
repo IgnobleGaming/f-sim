@@ -5,8 +5,10 @@ import interfaces.file.Logging;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.LWJGLException;
 
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import renderable.Renderable;
@@ -66,7 +68,7 @@ public class Render
 			System.exit(0);
 		}
 	}
-	
+
 	public static Render GetInstance()
 	{
 		if (Instance == null)
@@ -85,7 +87,7 @@ public class Render
 				RenderQueue.remove().Draw();
 
 			Display.update();
-			Display.sync((int)Variables.GetInstance().Get("vid_maxfps").Current());
+			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());
 			return true;
 		}
 
@@ -131,63 +133,93 @@ public class Render
 
 		GL11.glEnd();
 	}
-	
-	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, int VerticalOffset, int HorizontalOffset, int Width, int Height)
+
+	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, float VerticalOffset, float HorizontalOffset, int Width, int Height)
 	{
-		
-		double LB = 1-(0.1*Height);
-		
 		Mat.Texture().bind();
 		GL11.glBegin(GL11.GL_QUADS);
 		// TOP LEFT
-		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
+		GL11.glTexCoord2f(0 + HorizontalOffset, 0 + VerticalOffset);
+		GL11.glVertex2f(Pos.x - (Width / 2), Pos.y - (Height / 2));
 		// TOP RIGHT
-		GL11.glTexCoord2f((float)LB, 0);
-		GL11.glVertex2f(Pos.x + Mat.Width() / 2, Pos.y - (Mat.Height() / 2));
+		GL11.glTexCoord2f(1 - HorizontalOffset, 0 + VerticalOffset);
+		GL11.glVertex2f(Pos.x + Width / 2, Pos.y - (Height / 2));
 		// BOTTOM RIGHT
-		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex2f(Pos.x + Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
+		GL11.glTexCoord2f(1 - HorizontalOffset, 1 - VerticalOffset);
+		GL11.glVertex2f(Pos.x + Width / 2, (Pos.y) + Height / 2);
 		// BOTTOM LEFT
-		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
+		GL11.glTexCoord2f(0 + HorizontalOffset, 1 - VerticalOffset);
+		GL11.glVertex2f(Pos.x - Width / 2, (Pos.y) + Height / 2);
 
-		GL11.glEnd();	
+		GL11.glEnd();
+	}
+
+	public static void DrawString(interfaces.file.types.MaterialFile FontMat, String string, int x, int y, float size, ArrayList<utilities.Text.BitmapGlyph> g2)
+	{
+		FontMat.Bind();
+		GL11.glBegin(GL11.GL_QUADS);
+
+		for (int i = 0; i < string.length(); i++)
+		{
+			char ascii = string.charAt(i);
+			utilities.Text.BitmapGlyph g = g2.get(i);
+			float ww = g.width * size;
+			float hh = g.height * size;
+
+			float xx = x + g.xoffset * size;
+			float yy = y + g.yoffset * size;
+
+			GL11.glTexCoord2f(g.u, g.v);
+			GL11.glVertex2f(xx, yy);
+
+			GL11.glTexCoord2f(g.u, g.v2);
+			GL11.glVertex2f(xx, yy + hh);
+
+			GL11.glTexCoord2f(g.u2, g.v2);
+			GL11.glVertex2f(xx + ww, yy + hh);
+
+			GL11.glTexCoord2f(g.u2, g.v);
+			GL11.glVertex2f(xx + ww, yy);
+
+			x += (g.width + g.xadvance) * size;
+		}
+
+		GL11.glEnd();
 	}
 
 	public void updateFPS()
 	{
-		
+
 		Game I = Game.GetInstance();
-		
+
 		if (LastFrame == 0)
 			LastFrame = I.GameTime();
-		
+
 		TotalFrames += 1;
 		DeltaTime += I.GameTime() - LastFrame;
-		
+
 		if (TotalFrames > maxfps)
 		{
-			double RenderTime = (double)(DeltaTime/1000);
-			double AccurateFPS = (double)(TotalFrames/RenderTime);
-			FPS = (int)AccurateFPS - 1;
+			double RenderTime = (double) (DeltaTime / 1000);
+			double AccurateFPS = (double) (TotalFrames / RenderTime);
+			FPS = (int) AccurateFPS - 1;
 			TotalFrames = 0;
 			DeltaTime = 0;
 		}
-		
-	    LastFrame = I.GameTime();
+
+		LastFrame = I.GameTime();
 	}
-	
+
 	public int Width()
 	{
 		return ScreenWidth;
 	}
-	
+
 	public int Height()
 	{
 		return ScreenHeight;
 	}
-	
+
 	public int FPS()
 	{
 		return FPS;

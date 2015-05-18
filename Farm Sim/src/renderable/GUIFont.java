@@ -6,6 +6,7 @@ import org.newdawn.slick.TrueTypeFont;
 import interfaces.Render;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
+import java.util.ArrayList;
 
 import java.awt.Font;
 
@@ -18,7 +19,8 @@ public class GUIFont extends Renderable
 	private int CharWidth = 34;
 	private int NumWidth = 15;
 	private int NumHeight = 7;
-
+	final ArrayList<utilities.Text.BitmapGlyph> glyphs = new ArrayList<utilities.Text.BitmapGlyph>();
+	
 	public enum Size
 	{
 		TINY(4), SMALL(12), MEDIUM(24), LARGE(36), HUGE(48);
@@ -44,6 +46,21 @@ public class GUIFont extends Renderable
 			case Consolas:
 				LoadFontTexture("resources\\hud\\fonts\\consolas_huge.png");
 		}
+		for (int i = 33; i < 128; i++)
+		{
+			utilities.Text.BitmapGlyph t = new utilities.Text.BitmapGlyph();
+			t.width = 512;
+			t.height = 512;
+			t.x = 60;
+			t.y = 34;
+			glyphs.add(t);
+		}
+		for (utilities.Text.BitmapGlyph glyph : glyphs) {
+		    glyph.u = glyph.x / (float) 512.0;
+		    glyph.v = glyph.y / (float) 512.0;
+		    glyph.u2 = (glyph.x + glyph.width) / (float) 512.0;
+		    glyph.v2 = (glyph.y + glyph.height) / (float) 512.0;
+		}
 		this.Text = Text;
 		this.FontColor = FontColor;
 		XPos = x;
@@ -57,11 +74,16 @@ public class GUIFont extends Renderable
 
 	public void Draw()
 	{
-		for (int i = 0; i < this.Text.length(); i++)
+		/*for (int i = 0; i < this.Text.length(); i++)
 		{
-			specifier.Vector2D Pos = GetFontPos(this.Text.charAt(i));
-			Render.DrawPartialImage(Sprites.get(0), this.Position(), Pos.x, Pos.y, CharWidth, CharHeight);
-		}
+			specifier.Vector2D SpriteSheetPos = GetFontPos(this.Text.charAt(i)); // relative position on the font sprite
+			
+			float PixelsDown = (1f*SpriteSheetPos.y / 512);
+			float PixelsLeft = (1f*SpriteSheetPos.x / 512);
+			//Render.DrawPartialImage(Sprites.get(0), new specifier.Vector2D(Position().x + CharWidth*(i+1), Position().y), PixelsDown, PixelsLeft, CharWidth, CharHeight);
+
+		}*/
+		Render.DrawString(Sprites.get(0), this.Text, this.Position().x, this.Position().y, 2f, glyphs);
 	}
 
 	public void Text(String NewText)

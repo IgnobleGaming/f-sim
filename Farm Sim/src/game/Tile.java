@@ -80,6 +80,6 @@ public class Tile extends renderable.Renderable
 	
 	public void Draw()
 	{
-		interfaces.Render.DrawImage(Sprites.get(0), Position());
+		interfaces.Render.DrawPartialImage(Sprites.get(0), Position(), 0, 0, this.Height(), this.Width());
 	}
 }
