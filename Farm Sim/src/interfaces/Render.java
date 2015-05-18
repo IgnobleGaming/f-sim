@@ -131,6 +131,29 @@ public class Render
 
 		GL11.glEnd();
 	}
+	
+	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, int VerticalOffset, int HorizontalOffset, int Width, int Height)
+	{
+		
+		double LB = 1-(0.1*Height);
+		
+		Mat.Texture().bind();
+		GL11.glBegin(GL11.GL_QUADS);
+		// TOP LEFT
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
+		// TOP RIGHT
+		GL11.glTexCoord2f((float)LB, 0);
+		GL11.glVertex2f(Pos.x + Mat.Width() / 2, Pos.y - (Mat.Height() / 2));
+		// BOTTOM RIGHT
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(Pos.x + Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
+		// BOTTOM LEFT
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
+
+		GL11.glEnd();	
+	}
 
 	public void updateFPS()
 	{

@@ -20,7 +20,7 @@ public class InputField extends Renderable
 		FileManager.getInstance().Add(bg);
 		AddSprites(bg);
 		ZIndex(10001);	
-		InputText = new GUIFont("Consolas", ">", GUIFont.Size.SMALL, Color.white, 0,0);	
+		InputText = new GUIFont(GUIFont.FontFamily.Consolas, ">", GUIFont.Size.SMALL, Color.white, 0,0);	
 		InputText.ZIndex(10001);
 	}
 	

@@ -17,7 +17,7 @@ public class HUD extends Renderable
 	
 	public void Init()
 	{
-		FPSCounter = new GUIFont("Consolas", "", GUIFont.Size.MEDIUM, Color.white, 1200, 10);
+		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, 1200, 10);
 	}
 	
 	public static HUD GetInstance()

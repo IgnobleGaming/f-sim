@@ -28,7 +28,7 @@ public class Console extends HUD
 		Position(GetPosFromLocation(Renderable.Position.TOPCENTER, Renderable.PositionType.ABSOLUTE, this.Width(), this.Height(), 0, 0, null));
 		for (int i = 0; i < 38; i++)
 		{
-			GUIFont Adding = new GUIFont("Consolas", "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
+			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
 			Lines.add(Adding);
 		}
 		Visible = false;
