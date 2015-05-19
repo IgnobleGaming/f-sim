@@ -36,7 +36,8 @@ public class Console extends HUD
 		In = new InputField(600, 20);
 		In.Position(GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.Width(), In.Height(), 50, -66, this));
 		
-		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 0, -20, In);
+		//specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 0, -20, In);
+		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, 6, In.InputText.Sheet().LineSpacing, 0, 0, In);
 		In.InputText.Position(Pos);
 		In.InputText.ZIndex(123123123);
 	}

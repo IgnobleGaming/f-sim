@@ -151,18 +151,28 @@ public abstract class Renderable
 				}
 			case CENTERCENTER:
 				if (Pt == PositionType.ABSOLUTE)
-					return new Vector2D(Render.GetInstance().Width()/2, Render.GetInstance().Height()/2);
+					return new Vector2D(Render.GetInstance().Width()/2 + padx, Render.GetInstance().Height()/2 + pady);
 				if (Pt == PositionType.RELATIVE)
-					return new Vector2D(parent.XPos + padx, parent.YPos + pady);
+					return new Vector2D(parent.XPos + padx - width, parent.YPos + pady - height);
 			case BOTTOMLEFT:
 				if (Pt == PositionType.ABSOLUTE)
-					return new Vector2D(0 + padx, Render.GetInstance().Height() + pady);
+					return new Vector2D(0 + padx - width /2 , Render.GetInstance().Height() + pady - width / 2);
 				if (Pt == PositionType.RELATIVE)
 				{
-					int ParentBottomX = parent.XPos - (parent.Width/2);
+					int ParentBottomX = parent.XPos - (parent.Width / 2);
 					int ParentBottomY = parent.YPos + (parent.Height / 2);
 					
-					return new Vector2D(ParentBottomX + (width / 2) + padx, ParentBottomY + (height /2) + pady);
+					return new Vector2D(ParentBottomX + (width / 2) + padx, ParentBottomY - (height / 2) + pady);
+				}
+			case BOTTOMRIGHT:
+				if (Pt == PositionType.ABSOLUTE)
+					return new Vector2D(Render.GetInstance().Width() + padx, Render.GetInstance().Height() + pady);
+				if (Pt == PositionType.RELATIVE)
+				{
+					int ParentBottomX = parent.XPos + (parent.Width / 2);
+					int ParentBottomY = parent.YPos - (parent.Height / 2);
+					
+					return new Vector2D(ParentBottomX - (width / 2) + padx, ParentBottomY + (height / 2) + pady);
 				}
 			default:
 				return new Vector2D(0,0);

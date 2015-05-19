@@ -154,34 +154,34 @@ public class Render
 		GL11.glEnd();
 	}
 
-	public static void DrawString(String Text, int x, int y, float size, utilities.FontSheet Sheet)
+	public static void DrawString(String Text, int x, int y, utilities.FontSheet Sheet)
 	{
-		//Text = Text.toUpperCase();
 		Sheet.BitMap.Bind();
 		GL11.glBegin(GL11.GL_QUADS);
 		for (int c = 0; c < Text.length(); c++)
 		{
 			int i = Text.charAt(c) - 32;
 			
-			float ww = Sheet.x1(i) * size;
-			float hh = Sheet.y1(i) * size;
+			/*float ww = Sheet.x1f(i) * size;
+			float hh = Sheet.y1f(i) * size;
 			
-			float xx = x + Sheet.x0(i) * size;
-			float yy = y + Sheet.y0(i) * size;
+			float xx = x + Sheet.x0f(i) * size;
+			float yy = y + Sheet.y0f(i) * size;*/
 			// s0 = g.u, t0 = g.v
-			GL11.glTexCoord2f(Sheet.s0(i), Sheet.t0(i)); 
-			GL11.glVertex2f(xx, yy);
 			
-			GL11.glTexCoord2f(Sheet.s0(i), Sheet.t1(i)); 
-			GL11.glVertex2f(xx, yy + hh);
+			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t0f(i)); 
+			GL11.glVertex2f(x + Sheet.x0f(i), y + Sheet.y0f(i));
+			
+			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t1f(i)); 
+			GL11.glVertex2f(x + Sheet.x0f(i), y + Sheet.y1f(i));
 
-			GL11.glTexCoord2f(Sheet.s1(i), Sheet.t1(i)); 
-			GL11.glVertex2f(xx + ww, yy + hh);
+			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t1f(i)); 
+			GL11.glVertex2f(x + Sheet.x1f(i), y + Sheet.y1f(i));
 
-			GL11.glTexCoord2f(Sheet.s1(i), Sheet.t0(i)); 
-			GL11.glVertex2f(xx + ww, yy);
+			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t0f(i)); 
+			GL11.glVertex2f(x + Sheet.x1f(i), y + Sheet.y0f(i));
 	     
-	        x += Sheet.advance(i) * size;
+	        x += Sheet.Advancef(i);
 		}
 
 		GL11.glEnd();
