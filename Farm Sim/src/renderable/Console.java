@@ -28,14 +28,15 @@ public class Console extends HUD
 		Position(GetPosFromLocation(Renderable.Position.TOPCENTER, Renderable.PositionType.ABSOLUTE, this.Width(), this.Height(), 0, 0, null));
 		for (int i = 0; i < 38; i++)
 		{
-			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, this.XPos - (Texture.Width() /2) + 57, i * 15);	
+			specifier.Vector2D FontPos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, this.Width(), 33,0, 0, this);
+			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, FontPos.x, FontPos.y);	
 			Lines.add(Adding);
 		}
 		Visible = false;
 		In = new InputField(600, 20);
 		In.Position(GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.Width(), In.Height(), 50, -66, this));
 		
-		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 5, -27, In);
+		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 0, -20, In);
 		In.InputText.Position(Pos);
 		In.InputText.ZIndex(123123123);
 	}

@@ -21,7 +21,7 @@ public class InputField extends Renderable
 		AddSprites(bg);
 		ZIndex(10001);	
 		InputText = new GUIFont(GUIFont.FontFamily.Consolas, ">", GUIFont.Size.SMALL, Color.white, 0,0);	
-		InputText.ZIndex(10001);
+		InputText.ZIndex(10002);
 	}
 	
 	public void Draw()

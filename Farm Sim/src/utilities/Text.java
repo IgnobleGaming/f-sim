@@ -16,4 +16,6 @@ public class Text
 		 public int xoffset, yoffset, xadvance;
 		 public float u, v, u2, v2;
 	}
+	
+
 }
