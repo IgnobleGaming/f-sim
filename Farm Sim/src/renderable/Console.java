@@ -24,7 +24,7 @@ public class Console extends HUD
 		Lines = new LinkedList<GUIFont>();
 		Texture = new interfaces.file.types.MaterialFile("resources\\console.png", Type.PNG);
 		Texture.Open();
-		AddSprites(Texture);
+		SetSprite(Texture);
 		Position(GetPosFromLocation(Renderable.Position.TOPCENTER, Renderable.PositionType.ABSOLUTE, this.Width(), this.Height(), 0, 0, null));
 		for (int i = 0; i < 36; i++)
 		{

@@ -17,7 +17,7 @@ public abstract class Renderable
 	private int Width;
 	private int Height;
 	public boolean Visible;
-	protected ArrayList<MaterialFile> Sprites;
+	protected MaterialFile CurrentSprite;
 
 	public enum Position
 	{
@@ -35,7 +35,6 @@ public abstract class Renderable
 
 	protected Renderable(int width, int height)
 	{
-		Sprites = new ArrayList<MaterialFile>();
 		Visible = true;
 		ZIndex = 0; // default zindex
 		Width = width;
@@ -66,10 +65,6 @@ public abstract class Renderable
 		{
 			Width = (int) (Width * Factor);
 			Height = (int) (Height * Factor);
-			if (Sprites.size() < 0)
-				Logging.getInstance().Write(Logging.Type.WARNING, "Attempting to scale object with no materials!");
-			for (MaterialFile M : Sprites)
-				M.Scale(Factor);
 		}
 	}
 
@@ -79,10 +74,6 @@ public abstract class Renderable
 		{
 			this.Width = Width;
 			this.Height = Height;
-			if (Sprites.size() < 0)
-				Logging.getInstance().Write(Logging.Type.WARNING, "Attempting to resize object with no materials!");
-			for (MaterialFile M : Sprites)
-				M.Resize(Width, Height);
 		}
 	}
 
@@ -91,13 +82,10 @@ public abstract class Renderable
 		
 	}
 
-	public void AddSprites(MaterialFile... S)
+	public void SetSprite(MaterialFile S) // for object with no animation
 	{
-		for (MaterialFile M : S)
-		{
-			M.Resize(this.Width, this.Height); // so the texture scales to the size of the object
-			Sprites.add(M);
-		}
+		S.Resize(this.Width, this.Height); // so the texture scales to the size of the object
+		CurrentSprite = S;
 	}
 
 	public int ZIndex()

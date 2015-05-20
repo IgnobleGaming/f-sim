@@ -10,12 +10,7 @@ import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
-
-
-
-
-
-
+import java.util.ArrayList;
 
 import java.util.*;
 
@@ -29,8 +24,14 @@ public class Entity extends Renderable
 	
 	public enum State
 	{
-		STATIONARY, MOVINGLEFT, MOVINGRIGHT, MOVINGUP, MOVINGDOWN
-	}
+		STATIONARY(0), MOVINGLEFT(1), MOVINGRIGHT(2), MOVINGUP(3), MOVINGDOWN(4);
+		private int val;
+
+		private State(int val)
+		{
+			this.val = val;
+		}
+	};
 
 	protected int ID;
 	protected String Name;
@@ -40,6 +41,7 @@ public class Entity extends Renderable
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
 	protected int MovementSpeed = 1;
+	protected ArrayList<specifier.Animation> Animation;
 
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
@@ -53,6 +55,7 @@ public class Entity extends Renderable
 		for (Flag F : Flags)
 			this.Flags.add(F);
 		CurrentState = State.STATIONARY;
+		Animation = new ArrayList<specifier.Animation>();
 	}
 
 	/**
@@ -126,7 +129,9 @@ public class Entity extends Renderable
 	
 	public void Draw()
 	{
-		interfaces.Render.DrawImage(Sprites.get(0), Position);
+		if (CurrentSprite == null)
+			CurrentSprite = null;
+		interfaces.Render.DrawImage(CurrentSprite, Position);
 	}
 	
 	@Override public void Move(Direction.Relative Dir)
@@ -178,6 +183,15 @@ public class Entity extends Renderable
 				this.Move(Direction.Relative.RIGHT);
 				break;
 		}
+		
+		if (Animation.size() > CurrentState.val)
+		{
+			MaterialFile NewSprite = Animation.get(CurrentState.val).RequestNextFrame();
+			if (NewSprite != null)
+				CurrentSprite = NewSprite;
+		}
+		else
+			Logging.getInstance().Write(Type.WARNING, "entity \"%s\" has has no animation for current state \"%s\"", this.Name, this.CurrentState.toString());
 	}
 	
 	public void SetState(State S)
@@ -194,5 +208,12 @@ public class Entity extends Renderable
 	public void MovementSpeed(int factor)
 	{
 		MovementSpeed = factor;
+	}
+	
+	public void AddAnimation(State AnimState, int length, MaterialFile... Textures) // length the animation time
+	{
+		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
+		if (NewAnim.Valid)
+			Animation.add(AnimState.val, NewAnim);
 	}
 }

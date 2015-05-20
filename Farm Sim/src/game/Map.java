@@ -35,7 +35,7 @@ public class Map extends renderable.Renderable
 		for (int num = 0; num < MapTiles.length; num++)
 		{
 			MapTiles[num] = new Tile();
-			MapTiles[num].AddSprites(GetRandomTile()); // this will be randomized
+			MapTiles[num].SetSprite(GetRandomTile()); // this will be randomized
 			if (TileSize == 0 )
 				TileSize = MapTiles[0].Width();
 			//Vector2D TilePos = GetTilePos(num);

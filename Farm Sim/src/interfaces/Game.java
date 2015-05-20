@@ -122,12 +122,23 @@ public class Game
 		
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 32, 32, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
+		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
 		
-		player.AddSprites(playersprite);		
+		player.SetSprite(playersprite);		
+		
+		MaterialFile playeranim_0 = new MaterialFile("resources\\player_stationary_0.png", MaterialFile.Type.PNG);
+		playeranim_0.Open();
+		
+		MaterialFile playeranim_1 = new MaterialFile("resources\\player_stationary_1.png", MaterialFile.Type.PNG);
+		playeranim_1.Open();
+		
+		MaterialFile playeranim_2 = new MaterialFile("resources\\player_stationary_2.png", MaterialFile.Type.PNG);
+		playeranim_2.Open();
+		
+		player.AddAnimation(object.Entity.State.STATIONARY, 550, playeranim_0, playeranim_1, playeranim_2);
 
-		PlayerEnt = player;	
-		PlayerEnt.MovementSpeed(5);
+		PlayerEnt = player;
+		PlayerEnt.MovementSpeed(1);
 		GameObjects.Add(PlayerEnt);
 		
 		CurrentState = State.INGAME;

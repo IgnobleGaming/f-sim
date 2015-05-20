@@ -81,18 +81,18 @@ public class Tile extends renderable.Renderable
 	private void UpdateTexture()
 	{
 		
-		Sprites.clear();
+		//Sprites.clear();
 		
 		switch (TileType)
 		{
 			case GRASS:
-				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass.png"));
+				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass.png");
 				break;
 			case DIRT:
-				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png"));
+				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png");
 				break;
 			case WATER:
-				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png"));
+				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png");
 				break;
 		}
 	}
@@ -130,7 +130,7 @@ public class Tile extends renderable.Renderable
 	
 	public void Draw()
 	{
-		interfaces.Render.DrawPartialImage(Sprites.get(0), Position(), 0, 0, this.Height(), this.Width());
+		interfaces.Render.DrawPartialImage(CurrentSprite, Position(), 0, 0, this.Height(), this.Width());
 	}
 	
 	public int ID()
