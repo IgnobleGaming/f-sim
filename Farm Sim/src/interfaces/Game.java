@@ -11,6 +11,7 @@ import renderable.Renderable.PositionType;
 import java.util.*;
 
 import game.Controller;
+import game.Mapbuilder;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 
@@ -29,6 +30,7 @@ public class Game
 	private Objects GameObjects;
 	public boolean IsRunning = true;
 	private object.Entity PlayerEnt;
+	private Mapbuilder MapBuilder;
 
 	
 	public int SelectedEnt = 0;
@@ -59,6 +61,8 @@ public class Game
 		Output = Render.GetInstance();	
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
+		
+		MapBuilder = new Mapbuilder(Mapbuilder.Size.SMALL);
 		
 		MaterialFile TextMat = new MaterialFile("resources\\hud\\fonts\\consolas_huge.png", MaterialFile.Type.PNG);
 		TextMat.Open();
@@ -92,11 +96,11 @@ public class Game
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
 		
-		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass_flower.png", MaterialFile.Type.PNG);
+		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass.png", MaterialFile.Type.PNG);
 		TileSprite.Open();
 		Files.Add(TileSprite);
 		
-		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\grass_dirt.png", MaterialFile.Type.PNG);
+		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\dirt.png", MaterialFile.Type.PNG);
 		TileSprite2.Open();
 		Files.Add(TileSprite2);
 		
@@ -104,12 +108,11 @@ public class Game
 		TileSprite3.Open();
 		Files.Add(TileSprite3);
 		
-		MaterialFile TileSprite4 = new MaterialFile("resources\\ingame\\tiles\\grass_water.png", MaterialFile.Type.PNG);
+		MaterialFile TileSprite4 = new MaterialFile("resources\\ingame\\tiles\\water.png", MaterialFile.Type.PNG);
 		TileSprite4.Open();
 		Files.Add(TileSprite4);
 		
-		game.Map GameMap = new game.Map();
-		GameMap.Load();
+		game.Map GameMap = MapBuilder.Build();
 		
 		GameObjects.Add(GameMap);
 		

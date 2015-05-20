@@ -1,5 +1,8 @@
 package game;
 
+import interfaces.file.FileManager;
+import interfaces.file.types.MaterialFile;
+
 import java.io.IOException;
 import java.util.EnumSet;
 
@@ -11,13 +14,28 @@ public class Tile extends renderable.Renderable
 		BLOCKED, RESOURCE, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
 
+	public enum Type
+	{
+		GRASS, WATER, DIRT
+	}
+	
 	private EnumSet<Flag> Flags;
+	private Type TileType;
+	private int hash;
 	
 	public Tile()
 	{
 		super(32,32); // default tile size
 		Flags = EnumSet.noneOf(Flag.class);
 		Flags.add(Flag.DRAWABLE);
+	}
+	
+	public Tile(Type T)
+	{
+		super(32,32); // default tile size
+		Flags = EnumSet.noneOf(Flag.class);
+		Flags.add(Flag.DRAWABLE);
+		ChangeType(T);
 	}
 
 	public int Height()
@@ -44,6 +62,40 @@ public class Tile extends renderable.Renderable
 		{
 			Flags.add(Flag.INTERACTABLE);
 			Flags.add(Flag.OCCUPIED);
+		}
+	}
+	
+	public void ChangeType(Type T)
+	{
+		TileType = T;
+		
+		if(TileType == Type.WATER)
+			AddFlag(Flag.LOCKED);
+		else
+		{
+			if(Flags.contains(Flag.LOCKED))
+				RemoveFlag(Flag.LOCKED);
+		}
+		
+		UpdateTexture();
+	}
+	
+	private void UpdateTexture()
+	{
+		
+		Sprites.clear();
+		
+		switch (TileType)
+		{
+			case GRASS:
+				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass.png"));
+				break;
+			case DIRT:
+				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png"));
+				break;
+			case WATER:
+				Sprites.add((MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png"));
+				break;
 		}
 	}
 
