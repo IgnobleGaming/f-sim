@@ -51,16 +51,6 @@ public class Map extends renderable.Renderable
 		return new Vector2D(x, y);
 	}
 	
-	public int GetCoordIndex(int x, int y)
-	{
-		return (HorizontalTileNum * y / TileSize) + x * TileSize;
-	}
-	
-	public int GetCoordIndex(Vector2D Pos)
-	{
-		return (HorizontalTileNum * Pos.y / TileSize) + Pos.x * TileSize;
-	}
-	
 	public int GetTileIndex(Vector2D V)
 	{
 		return (HorizontalTileNum * V.y) + V.x;
@@ -69,6 +59,13 @@ public class Map extends renderable.Renderable
 	public int GetTileIndex(int x, int y)
 	{
 		return (HorizontalTileNum * y) + x;
+	}
+	
+	public int GetCoordIndex(int x, int y)
+	{
+		int TileX = x - (x % TileSize);
+		int TileY = y - (y % TileSize);
+		return GetTileIndex(TileX/TileSize, TileY/TileSize);
 	}
 	
 	public Tile GetTileFromIndex(int x, int y)

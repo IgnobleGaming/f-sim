@@ -144,11 +144,14 @@ public class Entity extends Renderable
 				Position.y += MovementSpeed;
 				break;
 			case LEFT:
+				Vector2D test = game.Map.GetInstance().GetCoordPos(5);
+				int testindex = game.Map.GetInstance().GetCoordIndex(test.x, test.y);
+				
 				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize, Position.y);
 				Tile CurTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().x > -1)
 					Position.x -= MovementSpeed;
-				Logging.getInstance().Write(Type.INFO, "Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]", Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
+				Logging.getInstance().Write(Type.INFO, "[[5 %d]]Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]",testindex, Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
 				break;
 			case RIGHT:
 				Position.x += MovementSpeed;
