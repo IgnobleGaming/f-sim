@@ -129,7 +129,10 @@ public class Mapbuilder
 
 	private void River()
 	{
-
+		int Random = Rand.nextInt(5) + 3;
+		int startingX = (Dimension * Map.TileSize)/ Random;
+		
+		for (int i = startingX; i < )
 	}
 
 	private void Mountain()
