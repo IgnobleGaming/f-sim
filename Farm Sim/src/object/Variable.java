@@ -148,7 +148,11 @@ public class Variable<T>
 	
 	public String StringInfo()
 	{
-		String Info = String.format("%s [current=\"%s\"]  [default=\"%s\"]", this.Name, this.Current.toString(), this.Default.toString());
+		String Info;
+		if (Min != null && Max != null)
+			Info = String.format("%s [current=\"%s\"] [default=\"%s\"] | [min=\"%s\"] [max=\"%s\"]", this.Name, this.Current.toString(), this.Default.toString(), this.Min.toString(), this.Max.toString());
+		else
+			Info = String.format("%s [current=\"%s\"]  [default=\"%s\"]", this.Name, this.Current.toString(), this.Default.toString());
 		return Info;
 	}
 }

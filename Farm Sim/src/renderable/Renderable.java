@@ -140,6 +140,15 @@ public abstract class Renderable
 	{
 		switch (P)
 		{
+			case TOPLEFT:
+				if (Pt == PositionType.ABSOLUTE)
+					return new Vector2D(0 + padx, 0 + pady);
+				if (Pt == PositionType.RELATIVE)
+				{
+					int ParentTopY = parent.YPos - (parent.Height / 2);
+					int ParentTopX = parent.XPos - (parent.Width / 2);
+					return new Vector2D(ParentTopX + padx, ParentTopY + pady);
+				}
 			case TOPCENTER:
 				if (Pt == PositionType.ABSOLUTE)
 					return new Vector2D((Render.GetInstance().Width()/2) + padx, width/2 + pady);
@@ -154,6 +163,16 @@ public abstract class Renderable
 					return new Vector2D(Render.GetInstance().Width()/2 + padx, Render.GetInstance().Height()/2 + pady);
 				if (Pt == PositionType.RELATIVE)
 					return new Vector2D(parent.XPos + padx - width, parent.YPos + pady - height);
+			case TOPRIGHT:
+				if (Pt == PositionType.ABSOLUTE)
+					return new Vector2D(Render.GetInstance().Width() + padx, 0 + pady);
+				if (Pt == PositionType.RELATIVE)
+				{
+					int ParentBottomX = parent.XPos + (parent.Width / 2);
+					int ParentBottomY = parent.YPos + (parent.Height / 2);
+					
+					return new Vector2D(ParentBottomX - (width / 2) + padx, ParentBottomY - (height / 2) + pady);
+				}
 			case BOTTOMLEFT:
 				if (Pt == PositionType.ABSOLUTE)
 					return new Vector2D(0 + padx - width /2 , Render.GetInstance().Height() + pady - width / 2);
@@ -170,9 +189,9 @@ public abstract class Renderable
 				if (Pt == PositionType.RELATIVE)
 				{
 					int ParentBottomX = parent.XPos + (parent.Width / 2);
-					int ParentBottomY = parent.YPos - (parent.Height / 2);
+					int ParentBottomY = parent.YPos + (parent.Height / 2);
 					
-					return new Vector2D(ParentBottomX - (width / 2) + padx, ParentBottomY + (height / 2) + pady);
+					return new Vector2D(ParentBottomX - (width / 2) + padx, ParentBottomY - (height / 2) + pady);
 				}
 			default:
 				return new Vector2D(0,0);

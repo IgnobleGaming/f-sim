@@ -26,10 +26,12 @@ public class Console extends HUD
 		Texture.Open();
 		AddSprites(Texture);
 		Position(GetPosFromLocation(Renderable.Position.TOPCENTER, Renderable.PositionType.ABSOLUTE, this.Width(), this.Height(), 0, 0, null));
-		for (int i = 0; i < 38; i++)
+		for (int i = 0; i < 36; i++)
 		{
-			specifier.Vector2D FontPos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, this.Width(), 33,0, 0, this);
-			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, FontPos.x, FontPos.y);	
+			
+			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, 0,0);	
+			specifier.Vector2D FontPos = GetPosFromLocation(Renderable.Position.TOPLEFT, Renderable.PositionType.RELATIVE, Adding.Width(), Adding.Height(), 50, i*(Adding.Height() + 8), this);
+			Adding.Position(FontPos);
 			Lines.add(Adding);
 		}
 		Visible = false;
@@ -37,7 +39,7 @@ public class Console extends HUD
 		In.Position(GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.Width(), In.Height(), 50, -66, this));
 		
 		//specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Height(), 0, -20, In);
-		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, 6, In.InputText.Sheet().LineSpacing, 0, 0, In);
+		specifier.Vector2D Pos = GetPosFromLocation(Renderable.Position.BOTTOMLEFT, Renderable.PositionType.RELATIVE, In.InputText.Width(), In.InputText.Width(), 0, -12, In);
 		In.InputText.Position(Pos);
 		In.InputText.ZIndex(123123123);
 	}

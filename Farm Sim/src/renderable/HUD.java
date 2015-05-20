@@ -17,7 +17,7 @@ public class HUD extends Renderable
 	
 	public void Init()
 	{
-		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, 1200, 10);
+		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, 0,0);
 	}
 	
 	public static HUD GetInstance()
@@ -35,6 +35,8 @@ public class HUD extends Renderable
 		if (FPSCounter != null)
 		{
 			FPSCounter.Text(Game.GetInstance().Output().FPS() + " FPS");
+			specifier.Vector2D Pos = GetPosFromLocation(Position.TOPRIGHT, PositionType.ABSOLUTE, FPSCounter.Width(), FPSCounter.Height(), -100, 10, null);
+			FPSCounter.Position(Pos);
 			FPSCounter.Draw();
 		}
 	}

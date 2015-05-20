@@ -31,6 +31,8 @@ public class GUIFont extends Renderable
 		super(0, 0);
 
 		this.Text = Text;
+		this.XPos = x;
+		this.YPos = y;
 
 		Sheet = new utilities.FontSheet();
 		Size = LoadFontInfo(FontSize);
@@ -132,5 +134,15 @@ public class GUIFont extends Renderable
 	public utilities.FontSheet Sheet()
 	{
 		return Sheet;
+	}
+	
+	public int Width()
+	{
+		return Sheet.Advance(0) * Text.length();
+	}
+	
+	public int Height()
+	{
+		return Sheet.LineSpacing;
 	}
 }
