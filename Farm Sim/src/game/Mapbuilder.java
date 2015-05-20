@@ -132,7 +132,7 @@ public class Mapbuilder
 		int Random = Rand.nextInt(5) + 3;
 		int startingX = (Dimension * Map.TileSize)/ Random;
 		
-		for (int i = startingX; i < )
+		//for (int i = startingX; i < )
 	}
 
 	private void Mountain()
@@ -153,11 +153,11 @@ public class Mapbuilder
 		}
 	}
 
-	public interfaces.file.types.MaterialFile GetRandomTile()
+	public static interfaces.file.types.MaterialFile GetRandomTile()
 	{
 		Random R = new Random();
 		interfaces.file.types.MaterialFile M;
-		M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
+		/*M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png");
 		switch (R.nextInt(10))
 		{
 			case 0:
@@ -176,8 +176,8 @@ public class Mapbuilder
 			case 9:
 				M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_water.png");
 				break;
-		}
-
+		}*/
+		M  = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png");
 		return M;
 	}
 }

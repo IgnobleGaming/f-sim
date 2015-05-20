@@ -1,6 +1,7 @@
 package game;
 
 import interfaces.file.FileManager;
+import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
 
 import java.io.IOException;
@@ -27,16 +28,15 @@ public class Tile extends renderable.Renderable
 	public Tile()
 	{
 		super(32,32); // default tile size
-		Flags = EnumSet.noneOf(Flag.class);
-		Flags.add(Flag.DRAWABLE);
+		Flags = EnumSet.of(Flag.DRAWABLE);
 	}
 	
 	public Tile(Type T)
 	{
 		super(32,32); // default tile size
-		Flags = EnumSet.noneOf(Flag.class);
-		Flags.add(Flag.DRAWABLE);
+		Flags = EnumSet.of(Flag.DRAWABLE);
 		ChangeType(T);
+		System.out.println(Flags.size());
 	}
 
 	public int Height()
@@ -99,8 +99,11 @@ public class Tile extends renderable.Renderable
 
 	public void AddFlag(Flag NewFlag)
 	{
-		if (!Flags.contains(Flag.LOCKED))
+		if (!Flags.contains(Flag.LOCKED) && !Flags.contains(NewFlag))
+		{
 			Flags.add(NewFlag);
+			Logging.getInstance().Write(Logging.Type.INFO, "added flag \"%s\" for tile at ( %d, %d )", NewFlag.toString(), this.Position().x, this.Position().y);
+		}
 	}
 
 	public boolean CheckFlag(Flag check)
@@ -112,8 +115,11 @@ public class Tile extends renderable.Renderable
 
 	public void RemoveFlag(Flag Removing)
 	{
-		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
+		if (!Flags.contains(Flag.LOCKED))
+		{
 			Flags.remove(Removing);
+			Logging.getInstance().Write(Logging.Type.INFO, "removed flag \"%s\" for tile at ( %d, %d )", Removing.toString(), this.Position().x, this.Position().y);
+		}
 	}
 	
 	public void Lock()

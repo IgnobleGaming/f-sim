@@ -10,9 +10,10 @@ import interfaces.file.types.MaterialFile;
 public class Animation
 {
 	private MaterialFile[] Frames;
+	private int[] FrameTimes;
 	private int CurrentFrameIndex = 0;
 	private int AnimationTime = 0;
-	private int FrameDuration;
+	private int CurFrameDuration;
 	private int LastFrameChange = 0;
 	public boolean Valid = false;
 	
@@ -22,15 +23,21 @@ public class Animation
 		{
 			if (Anim[i] == null)
 			{
-				Logging.getInstance().Write(Type.WARNING, "animation file has null frames!");
+				Logging.getInstance().Write(Type.WARNING, "animation array has null frames!");
 				return;
 			}
 		}
 		
 		Frames = Anim;
 		AnimationTime = length;
-		FrameDuration = AnimationTime / Frames.length;	
+		CurFrameDuration = AnimationTime / Frames.length;	
 		Valid = true;
+	}
+	
+	public Animation(int length, int[] times, MaterialFile... anim)
+	{
+		this(length, anim);
+		FrameTimes = times;
 	}
 	
 	public MaterialFile GetCurrentFrame() // may be obselete
@@ -42,7 +49,10 @@ public class Animation
 	{
 		LastFrameChange += Game.GetInstance().Delta(); // how much time has changed between last request
 		
-		if (LastFrameChange >= FrameDuration) // safe for us to increment
+		if (FrameTimes != null) // check to see if we have a custom frame interval time
+			CurFrameDuration = FrameTimes[CurrentFrameIndex];
+			
+		if (LastFrameChange >= CurFrameDuration) // safe for us to increment
 		{
 			LastFrameChange = 0; // reset our counter
 			CurrentFrameIndex++;

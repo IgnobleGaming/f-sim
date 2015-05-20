@@ -24,6 +24,7 @@ public class Logging
 	private String LogPath;
 	private Level LogLevel;
 	private ArrayBlockingQueue<String> LogQueue;
+	private String LastMessage = "";
 	
 	private static Logging Log;
 
@@ -46,8 +47,9 @@ public class Logging
 	
 	public void Write (Type MessageType, String Message, Object... args)
 	{
-		if (LogHandle != null && start.Main.GameObject != null) // if it hasn't been initialized!
+		if (LogHandle != null && start.Main.GameObject != null && Message != LastMessage) // if it hasn't been initialized!
 		{
+			LastMessage = Message;
 			DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 			String dateFormatted = formatter.format(start.Main.GameObject.GameTime());
 			String ConMessage = String.format("%s", Message);

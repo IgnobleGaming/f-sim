@@ -42,6 +42,7 @@ public class Entity extends Renderable
 	protected State CurrentState;
 	protected int MovementSpeed = 1;
 	protected ArrayList<specifier.Animation> Animation;
+	protected game.Tile LastTile;
 
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
@@ -56,6 +57,7 @@ public class Entity extends Renderable
 			this.Flags.add(F);
 		CurrentState = State.STATIONARY;
 		Animation = new ArrayList<specifier.Animation>();
+		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 	}
 
 	/**
@@ -137,31 +139,42 @@ public class Entity extends Renderable
 	@Override public void Move(Direction.Relative Dir)
 	{
 		int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
+		
+		if (LastTile != game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16))
+		{
+			LastTile.RemoveFlag(game.Tile.Flag.BLOCKED);
+			LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16);
+			LastTile.AddFlag(game.Tile.Flag.BLOCKED);
+		}
+		
 		game.Tile CollisionTile;
 		switch (Dir)
 		{			
 			case UP:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - TileSize/2);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - 16 - TileSize/2);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
 					Position.y -= MovementSpeed;
 				break;
 			case DOWN:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + TileSize/2);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16 + TileSize/2);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
 					Position.y += MovementSpeed;
 				break;
 			case LEFT:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize/2, Position.y);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) )
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize/2, Position.y + 16);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) || LastTile == CollisionTile )
 					Position.x -= MovementSpeed;
-				//Logging.getInstance().Write(Type.INFO, "[[5 %d]]Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]",testindex, Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
 				break;
 			case RIGHT:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x + TileSize/2, Position.y);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x + TileSize/2, Position.y + 16);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
 					Position.x += MovementSpeed;
 				break;
+			default:
+					CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y -16);
 		}
+		
+		LastTile.SetSprite(game.Mapbuilder.GetRandomTile());
 	}
 	
 	public void Update()

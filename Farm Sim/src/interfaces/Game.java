@@ -12,6 +12,7 @@ import java.util.*;
 
 import game.Controller;
 import game.Mapbuilder;
+import game.Tile.Flag;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 
@@ -119,10 +120,17 @@ public class Game
 		HUD.GetInstance().Init();
 		HUD.GetInstance().ZIndex(1000);
 		GameObjects.Add(renderable.HUD.GetInstance());
+	
+		MaterialFile cpusprite = new MaterialFile("resources\\cpu.png", MaterialFile.Type.PNG);
+		cpusprite.Open();
+		object.Entity cpu = new object.Entity("AltPlayer", "CPU Player", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 100, 100, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
+		cpu.SetSprite(cpusprite);
+		
+		cpu.Move(specifier.Direction.Relative.UP);
 		
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
+		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
 		
 		player.SetSprite(playersprite);		
 		
@@ -136,11 +144,14 @@ public class Game
 		playeranim_2.Open();
 		
 		player.AddAnimation(object.Entity.State.STATIONARY, 550, playeranim_0, playeranim_1, playeranim_2);
+		
+		game.Map.GetInstance().GetTileFromIndex(100, 100).SetSprite(TileSprite3);
+		game.Map.GetInstance().GetTileFromIndex(100, 100).AddFlag(Flag.BLOCKED);
 
 		PlayerEnt = player;
 		PlayerEnt.MovementSpeed(1);
 		GameObjects.Add(PlayerEnt);
-		
+		GameObjects.Add(cpu);
 		CurrentState = State.INGAME;
 	}
 	
