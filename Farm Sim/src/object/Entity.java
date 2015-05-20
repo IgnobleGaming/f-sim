@@ -136,25 +136,25 @@ public class Entity extends Renderable
 		switch (Dir)
 		{			
 			case UP:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - TileSize);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - TileSize/2);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
 					Position.y -= MovementSpeed;
 				break;
 			case DOWN:
-				Position.y += MovementSpeed;
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + TileSize/2);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
+					Position.y += MovementSpeed;
 				break;
 			case LEFT:
-				Vector2D test = game.Map.GetInstance().GetCoordPos(5);
-				int testindex = game.Map.GetInstance().GetCoordIndex(test.x, test.y);
-				
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize, Position.y);
-				Tile CurTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().x > -1)
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize/2, Position.y);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) )
 					Position.x -= MovementSpeed;
-				Logging.getInstance().Write(Type.INFO, "[[5 %d]]Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]",testindex, Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
+				//Logging.getInstance().Write(Type.INFO, "[[5 %d]]Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]",testindex, Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
 				break;
 			case RIGHT:
-				Position.x += MovementSpeed;
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x + TileSize/2, Position.y);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0)
+					Position.x += MovementSpeed;
 				break;
 		}
 	}
