@@ -73,7 +73,7 @@ public class Map extends renderable.Renderable
 	
 	public Tile GetTileFromIndex(int x, int y)
 	{
-		int index = GetTileIndex(x, y);
+		int index = GetCoordIndex(x, y);
 		if (index > -1 && index < MapTiles.length)
 			return MapTiles[index];
 		else 

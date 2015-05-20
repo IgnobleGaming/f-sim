@@ -136,7 +136,7 @@ public class Entity extends Renderable
 		switch (Dir)
 		{			
 			case UP:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(this.XPos, this.YPos - TileSize);
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - TileSize);
 				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
 					Position.y -= MovementSpeed;
 				break;
@@ -144,11 +144,11 @@ public class Entity extends Renderable
 				Position.y += MovementSpeed;
 				break;
 			case LEFT:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(this.XPos - TileSize, this.YPos);
-				Tile CurTile = game.Map.GetInstance().GetTileFromIndex(this.XPos, this.YPos);
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize, Position.y);
+				Tile CurTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
 					Position.x -= MovementSpeed;
-				Logging.getInstance().Write(Type.INFO, "Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]", CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
+				Logging.getInstance().Write(Type.INFO, "Player at ( %d %d ) Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]", Position.x, Position.y, CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
 				break;
 			case RIGHT:
 				Position.x += MovementSpeed;
