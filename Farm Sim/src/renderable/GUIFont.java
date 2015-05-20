@@ -9,6 +9,7 @@ public class GUIFont extends Renderable
 	private String Text;
 	private utilities.FontSheet Sheet;
 	private Float Size;
+	public org.newdawn.slick.Color Colour;
 
 	public enum Size
 	{
@@ -33,6 +34,7 @@ public class GUIFont extends Renderable
 		this.Text = Text;
 		this.XPos = x;
 		this.YPos = y;
+		Colour = FontColor;
 
 		Sheet = new utilities.FontSheet();
 		Size = LoadFontInfo(FontSize);
@@ -45,7 +47,7 @@ public class GUIFont extends Renderable
 
 	public void Draw()
 	{
-		Render.DrawString(this.Text, this.Position().x, this.Position().y,  Sheet);
+		Render.DrawString(this.Text, this.Position().x, this.Position().y, Colour, Sheet);
 	}
 
 	public void Text(String NewText)

@@ -1,5 +1,7 @@
 package interfaces;
 
+import interfaces.file.Logging.Type;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -47,7 +49,7 @@ public class GameCommands
 			
 			else
 			{
-				Console.GetInstance().WriteLine(R.StringInfo());
+				Console.GetInstance().WriteLine(Type.INFO, R.StringInfo());
 				return true;
 			}
 		}
@@ -55,7 +57,7 @@ public class GameCommands
 		if (Commands.get(CMDName) != null)
 			return ExecuteCMD(Commands.get(CMDName).Function());
 		
-		Console.GetInstance().WriteLine("Unknown Command " + "\"" + CMDName + "\"");
+		Console.GetInstance().WriteLine(Type.WARNING, "Unknown Command " + "\"" + CMDName + "\"");
 		return false;
 	}
 	

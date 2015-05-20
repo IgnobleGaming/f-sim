@@ -154,14 +154,15 @@ public class Render
 		GL11.glEnd();
 	}
 
-	public static void DrawString(String Text, int x, int y, utilities.FontSheet Sheet)
+	public static void DrawString(String Text, int x, int y, org.newdawn.slick.Color Colour, utilities.FontSheet Sheet)
 	{
-		Sheet.BitMap.Bind();
+		Sheet.BitMap.Bind();		
+		GL11.glColor4f(Colour.r, Colour.g, Colour.b, Colour.a);
 		GL11.glBegin(GL11.GL_QUADS);
 		for (int c = 0; c < Text.length(); c++)
 		{
 			int i = Text.charAt(c) - 32;
-			
+		
 			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t0f(i)); 
 			GL11.glVertex2f(x + Sheet.x0f(i), y + Sheet.y0f(i));
 			
@@ -176,8 +177,10 @@ public class Render
 	     
 	        x += Sheet.Advancef(i);
 		}
+		GL11.glColor4f(1,1,1,1);
+		GL11.glEnd();		
 
-		GL11.glEnd();
+
 	}
 
 	public void updateFPS()
