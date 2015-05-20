@@ -88,22 +88,7 @@ public abstract class Renderable
 
 	public void Move(Direction.Relative Dir)
 	{
-		int Speed = 1;
-		switch (Dir)
-		{
-			case UP:
-				YPos -= Speed * 2;
-				break;
-			case DOWN:
-				YPos += Speed * 2;
-				break;
-			case LEFT:
-				XPos -= Speed * 2;
-				break;
-			case RIGHT:
-				XPos += Speed * 2;
-				break;
-		}
+		
 	}
 
 	public void AddSprites(MaterialFile... S)

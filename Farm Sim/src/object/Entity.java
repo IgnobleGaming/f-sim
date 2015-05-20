@@ -3,9 +3,17 @@ package object;
 import specifier.Direction;
 import specifier.Vector;
 import specifier.Vector2D;
+import game.Tile;
 import interfaces.Game;
+import interfaces.Variables;
+import interfaces.file.Logging;
+import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
+
+
+
+
 
 
 
@@ -121,18 +129,26 @@ public class Entity extends Renderable
 		interfaces.Render.DrawImage(Sprites.get(0), Position);
 	}
 	
-	public void Move(Direction.Relative Dir)
+	@Override public void Move(Direction.Relative Dir)
 	{
+		int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
+		game.Tile CollisionTile;
 		switch (Dir)
 		{			
 			case UP:
-				Position.y -= MovementSpeed;
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(this.XPos, this.YPos - TileSize);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
+					Position.y -= MovementSpeed;
 				break;
 			case DOWN:
 				Position.y += MovementSpeed;
 				break;
 			case LEFT:
-				Position.x -= MovementSpeed;
+				CollisionTile = game.Map.GetInstance().GetTileFromIndex(this.XPos - TileSize, this.YPos);
+				Tile CurTile = game.Map.GetInstance().GetTileFromIndex(this.XPos, this.YPos);
+				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED))
+					Position.x -= MovementSpeed;
+				Logging.getInstance().Write(Type.INFO, "Current Tile ( %d %d ) Moving to TILE ( %d %d ) [%b]", CurTile.Position().x, CurTile.Position().y,CollisionTile.Position().x,CollisionTile.Position().y, CollisionTile.CheckFlag(Tile.Flag.BLOCKED));
 				break;
 			case RIGHT:
 				Position.x += MovementSpeed;

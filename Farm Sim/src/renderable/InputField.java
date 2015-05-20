@@ -24,6 +24,7 @@ public class InputField extends Renderable
 		InputText.ZIndex(10002);
 	}
 	
+	
 	public void Draw()
 	{
 		InputText.Draw();

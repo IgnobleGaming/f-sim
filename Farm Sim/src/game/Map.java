@@ -3,7 +3,6 @@ package game;
 import game.Tile.Flag;
 import interfaces.Variables;
 import interfaces.file.FileManager;
-import interfaces.file.Logging;
 import specifier.Vector2D;
 import java.util.Random;
 
@@ -13,22 +12,22 @@ public class Map extends renderable.Renderable
 	private int VerticalTileNum;
 	protected int TileSize = 0;
 	protected Tile[] MapTiles;
+	private static Map Instance;
 
-	public Map()
+	private Map()
 	{
 		super(0,0);
-		HorizontalTileNum = (int) Variables.GetInstance().Get("m_maxwidth").Current();
-		VerticalTileNum = (int) Variables.GetInstance().Get("m_maxheight").Current();
+		HorizontalTileNum = (int) Variables.GetInstance().Get("m_width").Current();
+		VerticalTileNum = (int) Variables.GetInstance().Get("m_height").Current();
+		TileSize = (int) Variables.GetInstance().Get("m_tilesize").Current();
 		MapTiles = new Tile[HorizontalTileNum * VerticalTileNum];
 	}
-	
-	public Map(int d)
+			
+	public static Map GetInstance()
 	{
-		super(0,0);
-		HorizontalTileNum = d;
-		VerticalTileNum = d;
-		MapTiles = new Tile[d*d];
-		TileSize = 32;
+		if (Instance == null)
+			Instance = new Map();
+		return Instance;	
 	}
 
 	public void Load()
@@ -52,6 +51,16 @@ public class Map extends renderable.Renderable
 		return new Vector2D(x, y);
 	}
 	
+	public int GetCoordIndex(int x, int y)
+	{
+		return (HorizontalTileNum * y / TileSize) + x * TileSize;
+	}
+	
+	public int GetCoordIndex(Vector2D Pos)
+	{
+		return (HorizontalTileNum * Pos.y / TileSize) + Pos.x * TileSize;
+	}
+	
 	public int GetTileIndex(Vector2D V)
 	{
 		return (HorizontalTileNum * V.y) + V.x;
@@ -60,6 +69,15 @@ public class Map extends renderable.Renderable
 	public int GetTileIndex(int x, int y)
 	{
 		return (HorizontalTileNum * y) + x;
+	}
+	
+	public Tile GetTileFromIndex(int x, int y)
+	{
+		int index = GetTileIndex(x, y);
+		if (index > -1 && index < MapTiles.length)
+			return MapTiles[index];
+		else 
+			return new Tile();
 	}
 
 	public void Draw()

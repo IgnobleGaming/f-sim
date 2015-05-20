@@ -70,12 +70,9 @@ public class Tile extends renderable.Renderable
 		TileType = T;
 		
 		if(TileType == Type.WATER)
-			AddFlag(Flag.LOCKED);
+			AddFlag(Flag.BLOCKED);
 		else
-		{
-			if(Flags.contains(Flag.LOCKED))
-				RemoveFlag(Flag.LOCKED);
-		}
+			RemoveFlag(Flag.BLOCKED);
 		
 		UpdateTexture();
 	}

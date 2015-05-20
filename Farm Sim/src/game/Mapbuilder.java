@@ -50,10 +50,10 @@ public class Mapbuilder
 	public Mapbuilder(Size S)
 	{
 		Rand = new Random(System.currentTimeMillis());
-		Dimension = 60;
+		Dimension = (int)Variables.GetInstance().Get("m_width").Current();
 		Max_Mass = Dimension / 16;
-
-		Map = new Map(Dimension);
+		
+		Map = game.Map.GetInstance();
 	}
 
 	public Map Build()
@@ -61,7 +61,7 @@ public class Mapbuilder
 		Rand = new Random(System.currentTimeMillis());
 		Max_Mass = Dimension / 16;
 
-		Map = new Map(Dimension);
+		Map = game.Map.GetInstance();
 
 		Land();
 		Sea();

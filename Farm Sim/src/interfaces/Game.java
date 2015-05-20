@@ -150,8 +150,9 @@ public class Game
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 		
-		GameVariables.Set(new object.Variable("m_maxwidth", "maximum width (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
-		GameVariables.Set(new object.Variable("m_maxheight", "maximum height (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
+		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));
+		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 40, 1, 1000, object.Variable.Flag.Latched));	
+		GameVariables.Set(new object.Variable("m_tilesize", "the size ( in pixels ) of each tile", 32, 16, 128, object.Variable.Flag.Latched));
 		
 		GameCommands.GetInstance().Add(new object.Command("quit", "quit the game", GameCommands.CommandFunction.quit));
 	}
