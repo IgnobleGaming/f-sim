@@ -145,6 +145,19 @@ public class Game
 		
 		player.AddAnimation(object.Entity.State.STATIONARY, 550, playeranim_0, playeranim_1, playeranim_2);
 		
+		MaterialFile playerwalkside_0 = new MaterialFile("resources\\player_walkside_0.png", MaterialFile.Type.PNG);
+		playerwalkside_0.Open();
+		
+		MaterialFile playerwalkside_1 = new MaterialFile("resources\\player_walkside_1.png", MaterialFile.Type.PNG);
+		playerwalkside_1.Open();
+		
+		MaterialFile playerwalkside_2 = new MaterialFile("resources\\player_walkside_2.png", MaterialFile.Type.PNG);
+		playerwalkside_2.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0, playerwalkside_1, playerwalkside_2, playerwalkside_1);
+		
+		
+		
 		game.Map.GetInstance().GetTileFromIndex(100, 100).SetSprite(TileSprite3);
 		game.Map.GetInstance().GetTileFromIndex(100, 100).AddFlag(Flag.BLOCKED);
 

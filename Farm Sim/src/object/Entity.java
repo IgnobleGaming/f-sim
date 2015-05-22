@@ -56,7 +56,11 @@ public class Entity extends Renderable
 		for (Flag F : Flags)
 			this.Flags.add(F);
 		CurrentState = State.STATIONARY;
-		Animation = new ArrayList<specifier.Animation>();
+		Animation = new ArrayList<specifier.Animation>(5);
+		for (Flag F : Flags)
+		{
+			Animation.add(null); // this is so we can access them by index later
+		}
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 	}
 
@@ -197,7 +201,7 @@ public class Entity extends Renderable
 				break;
 		}
 		
-		if (Animation.size() > CurrentState.val)
+		if (Animation.size() > CurrentState.val && Animation.get(CurrentState.val) != null)
 		{
 			MaterialFile NewSprite = Animation.get(CurrentState.val).RequestNextFrame();
 			if (NewSprite != null)
@@ -227,6 +231,6 @@ public class Entity extends Renderable
 	{
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
 		if (NewAnim.Valid)
-			Animation.add(AnimState.val, NewAnim);
+			Animation.add(AnimState.val,NewAnim);
 	}
 }
