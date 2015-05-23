@@ -8,6 +8,12 @@ import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import java.lang.NumberFormatException;
 
+/**
+ * Variable class used by ingame variables
+ * @author Michael
+ *
+ * @param <T> ( templated object type either number based or string )
+ */
 public class Variable<T>
 {
 
@@ -54,6 +60,10 @@ public class Variable<T>
 		return Current;
 	}
 
+	/**
+	 * Update variable's current value if modifiable
+	 * @param NewValue ( variable's desired new value )
+	 */
 	public void Current(Object NewValue)
 	{
 		if (Current.getClass() == Integer.class)
@@ -146,6 +156,10 @@ public class Variable<T>
 		return Description;
 	}
 	
+	/**
+	 * Get the information of a variable ( used by commands )
+	 * @return formatted variable information
+	 */
 	public String StringInfo()
 	{
 		String Info;

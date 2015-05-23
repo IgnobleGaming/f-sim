@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 import renderable.Console;
 
+/**
+ * Manages valid game commands and user command attempts 
+ * @author Michael
+ *
+ */
 public class GameCommands
 {
 	private HashMap<String, object.Command> Commands;
@@ -35,6 +40,12 @@ public class GameCommands
 		return Instance;
 	}
 	
+	/**
+	 * Attempt to execute user entered command or variable
+	 * @param CMDName ( command name or variable provided by user )
+	 * @param Arguments ( optional arguments provided by command or variable )
+	 * @return true if command execution succeeded, false otherwise
+	 */
 	public boolean Execute(String CMDName, ArrayList<String> Arguments)
 	{
 		// we need to test for the variable first
@@ -61,6 +72,11 @@ public class GameCommands
 		return false;
 	}
 	
+	/**
+	 * Executes a command function
+	 * @param F ( function to execute )
+	 * @return true if succeeded false if unhandled 
+	 */
 	private boolean ExecuteCMD(CommandFunction F)
 	{
 		switch (F)

@@ -15,7 +15,11 @@ import game.Mapbuilder;
 import game.Tile.Flag;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-
+/**
+ * Main container for all game functions
+ * @author Michael
+ *
+ */
 public class Game
 {
 	private Logging Log;
@@ -42,6 +46,9 @@ public class Game
 		LOADING, MENU, INGAME
 	};
 
+	/**
+	 * Initialize the crucial variables and log
+	 */
 	private Game()
 	{
 		Date = Calendar.getInstance();
@@ -49,6 +56,9 @@ public class Game
 		Log = Logging.getInstance("sim_console.log", Logging.Level.DEBUG);	
 	}
 	
+	/**
+	 * Start up the game instance and initialize all the singleton componets for the first time
+	 */
 	private void Init()
 	{		
 		CurrentState = State.LOADING;
@@ -83,7 +93,9 @@ public class Game
 		return Instance;
 	}
 	
-	
+	/**
+	 * Testing method to try out new features
+	 */
 	public void Testing()
 	{	
 		TextFile test = new TextFile("textfile.txt", false, false);
@@ -162,13 +174,16 @@ public class Game
 		game.Map.GetInstance().GetTileFromIndex(100, 100).AddFlag(Flag.BLOCKED);
 
 		PlayerEnt = player;
-		PlayerEnt.MovementSpeed(1);
+		PlayerEnt.MovementSpeed(2);
 		GameObjects.Add(PlayerEnt);
 		GameObjects.Add(cpu);
 		CurrentState = State.INGAME;
 	}
 	
 
+	/**
+	 * Load up all the in-game variables -- may need to be moved
+	 */
 	private void InitializeVariables()
 	{
 		GameVariables.Set(new object.Variable("c_maxinputqueue", "how many inputs can be queue before rejecting", 10, 1, 100, object.Variable.Flag.Modifiable));
@@ -235,6 +250,9 @@ public class Game
 		return PlayerEnt;
 	}
 	
+	/**
+	 * Iterates through the renderable objects in the word and updates their attributes
+	 */
 	public void UpdateWorld()
 	{
 		for (renderable.Renderable R : GameObjects.Objs())

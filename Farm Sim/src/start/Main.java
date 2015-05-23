@@ -2,6 +2,11 @@ package start;
 
 import interfaces.*;
 
+/**
+ * Basic game loop and setup
+ * @author Michael & Cocoa
+ *
+ */
 public class Main
 {
 	public static Game GameObject;
@@ -11,6 +16,9 @@ public class Main
 		GameObject = Game.GetInstance();
 	}
 
+	/**
+	 * Manages all game updates and crap
+	 */
 	public void Run()
 	{		
 		while (GameObject.IsRunning)

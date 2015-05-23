@@ -37,6 +37,11 @@ public class Controller
 		ReadInput();
 	}
 
+	/**
+	 * Interpret the read input depending on current game state
+	 * @param input ( type of input )
+	 * @param chars ( optional characters if in console or menu state )
+	 */
 	private void ProcessInput(InputType input, char... chars)
 	{
 		switch (Game.GetInstance().State())
@@ -115,6 +120,9 @@ public class Controller
 		// Logging.getInstance().Write(Logging.Type.INFO, "BUTTON PRESSED, MOVING %s - New POS is (%f %f)", input, Game.GetInstance().Controllable().Position().x, Game.GetInstance().Controllable().Position().y);
 	}
 
+	/**
+	 * Polled reading of each input event
+	 */
 	private void ReadInput()
 	{
 		// this is polled
@@ -159,8 +167,7 @@ public class Controller
 				ProcessInput(In);
 			}
 
-			else
-			// key is released
+			else			// key is being released
 			{
 				if (EventKey == NewestKey)
 				{
