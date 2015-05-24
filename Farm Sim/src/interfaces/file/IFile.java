@@ -8,6 +8,11 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+/**
+ * Abstract class of file types
+ * @author Michael
+ *
+ */
 public abstract class IFile
 {
 	protected String Path = "";
@@ -23,7 +28,13 @@ public abstract class IFile
 	{
 
 	}
-
+	
+	/**
+	 * Create the file object ( does not read data )
+	 * @param Location ( relative path of file )
+	 * @param Create ( should the file be created )
+	 * @param WriteAccess ( should the file have right access )
+	 */
 	public IFile(String Location, boolean Create, boolean WriteAccess)
 	{
 		Path = System.getProperty("user.dir") + "\\" + Location;
@@ -32,6 +43,10 @@ public abstract class IFile
 		Hash = Location;
 	}
 
+	/**
+	 * Read a file's data into memory
+	 * @return true if succeeded, false otherwise
+	 */
 	public boolean Open()
 	{
 		File Buff = new File(Path);
@@ -69,11 +84,14 @@ public abstract class IFile
 		catch (IOException E)
 		{
 			// logger here
-			Logging.getInstance().Write(Logging.Type.ERROR, "Unabled to open \"%s\" - %s", Hash, E.getMessage());
+			Logging.getInstance().Write(Logging.Type.ERROR, "Unable to open \"%s\" - %s", Hash, E.getMessage());
 			return false;
 		}
 	}
 
+	/**
+	 * Clear the file's data from memory but does not clear its properties
+	 */
 	public void Close()
 	{
 		Data = null;
@@ -81,6 +99,9 @@ public abstract class IFile
 		IsOpen = false;
 	}
 
+	/**
+	 * Clear the file's data from memory and reset all its properties
+	 */
 	public void Delete()
 	{
 		InUse = false;
@@ -90,6 +111,11 @@ public abstract class IFile
 		Data = null;
 	}
 
+	/**
+	 * Replace file's data with specified data
+	 * @param NewData ( byte array of new data )
+	 * @return true if data was updated, false otherwise
+	 */
 	public boolean Modify(byte[] NewData)
 	{
 		Data = null;
@@ -124,6 +150,10 @@ public abstract class IFile
 		return Hash;
 	}
 
+	/**
+	 * Get the byte array stream to file's data ( used by material files )
+	 * @return ByteArray stream of file's data
+	 */
 	public InputStream getInputStream()
 	{
 		InputStream IS = new ByteArrayInputStream(Data);

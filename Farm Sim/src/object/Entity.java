@@ -16,7 +16,11 @@ import java.util.*;
 
 public class Entity extends Renderable
 {
-
+	/**
+	 * Entity class extends Renderable 
+	 * @author Michael
+	 *
+	 */
 	public enum Flag
 	{
 		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED
@@ -40,10 +44,20 @@ public class Entity extends Renderable
 	protected Vector Velocity;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
-	protected int MovementSpeed = 1;
+	protected double MovementSpeed = 1;
 	protected ArrayList<specifier.Animation> Animation;
 	protected game.Tile LastTile;
 
+	/**
+	 * Creates a new entity
+	 * @param Name ( display name of entity )
+	 * @param Desc ( display description of entity )
+	 * @param Position ( initial position )
+	 * @param Velocity ( initial velocity )
+	 * @param width ( width in pixels of ent )
+	 * @param height ( height in pixels of ent )
+	 * @param Flags ( initial array of flags )
+	 */
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
 		super(width,height);
@@ -65,9 +79,9 @@ public class Entity extends Renderable
 	}
 
 	/**
-	 * Name
+	 * Updates the current entity's name
 	 * 
-	 * @param NewName
+	 * @param NewName ( string containing new name )
 	 */
 	public void Name(String NewName)
 	{
@@ -133,6 +147,9 @@ public class Entity extends Renderable
 			Flags.remove(Removing);
 	}
 	
+	/**
+	 * Render the entity's current sprite ( overrides renderable draw )
+	 */
 	public void Draw()
 	{
 		if (CurrentSprite == null)
@@ -140,6 +157,11 @@ public class Entity extends Renderable
 		interfaces.Render.DrawImage(CurrentSprite, Position);
 	}
 	
+	/**
+	 * Move the current entity in a specific direction
+	 * 
+	 * @param Dir ( direction )
+	 */
 	@Override public void Move(Direction.Relative Dir)
 	{
 		int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
@@ -181,6 +203,9 @@ public class Entity extends Renderable
 		LastTile.SetSprite(game.Mapbuilder.GetRandomTile());
 	}
 	
+	/**
+	 * Process the current entity's state ( does not change state )
+	 */
 	public void Update()
 	{
 		switch(CurrentState)
@@ -211,22 +236,41 @@ public class Entity extends Renderable
 			Logging.getInstance().Write(Type.WARNING, "entity \"%s\" has has no animation for current state \"%s\"", this.Name, this.CurrentState.toString());
 	}
 	
+	/**
+	 * Change the current entity's state
+	 * @param S ( state to set to )
+	 */
 	public void SetState(State S)
 	{
 		if (!Flags.contains(Flag.LOCKED))
 			CurrentState = S;
 	}
 	
-	public int MovementSpeed()
+	public double MovementSpeed()
 	{
 		return MovementSpeed;
 	}
 	
-	public void MovementSpeed(int factor)
+	/**
+	 * Scale the entity's movement speed ( less precise factors work better )
+	 * @param factor ( speed to scale by )
+	 */
+	public void MovementSpeed(double factor)
 	{
 		MovementSpeed = factor;
+		for (specifier.Animation A : Animation)
+		{
+			if (A != null)
+				A.UpdateSpeedScale(factor);
+		}
 	}
 	
+	/**
+	 * Add a new animation to current entity
+	 * @param AnimState ( the state that the animation is played in )
+	 * @param length ( how long the animation should last for )
+	 * @param Textures ( array of material files consisting of each frame *no nulls* )
+	 */
 	public void AddAnimation(State AnimState, int length, MaterialFile... Textures) // length the animation time
 	{
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);

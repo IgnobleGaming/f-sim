@@ -1,5 +1,10 @@
 package object;
 
+/**
+ * Command object
+ * @author Michael
+ *
+ */
 public class Command
 {
 	private String Name;

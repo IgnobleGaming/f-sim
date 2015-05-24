@@ -8,6 +8,12 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.io.Console;
 import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * Logging class to track all output
+ * @author Michael
+ *
+ */
 public class Logging
 {
 	public enum Type
@@ -28,6 +34,12 @@ public class Logging
 	
 	private static Logging Log;
 
+	/**
+	 * Create the logging object
+	 * Fails if filepath is unusable
+	 * @param LogPath ( relative path to new log file )
+	 * @param LogLevel ( amount of amount specified )
+	 */
 	private Logging(String LogPath, Level LogLevel)
 	{	
 		this.LogPath = LogPath;
@@ -44,8 +56,13 @@ public class Logging
 		}		
 	}
 	
-	
-	public void Write (Type MessageType, String Message, Object... args)
+	/**
+	 * Write a specified line to log file ( and console )
+	 * @param MessageType ( specifies the type of log message )
+	 * @param Message ( message string )
+	 * @param args ( array of objects used to format message string )
+	 */
+	public void Write(Type MessageType, String Message, Object... args)
 	{
 		if (LogHandle != null && start.Main.GameObject != null && Message != LastMessage) // if it hasn't been initialized!
 		{

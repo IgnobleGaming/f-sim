@@ -80,5 +80,7 @@ public class MaterialFile extends IFile
 		this.Width = Width;
 		this.Height = Height;
 	}
+	
+
 
 }

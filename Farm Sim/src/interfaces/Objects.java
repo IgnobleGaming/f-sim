@@ -3,7 +3,11 @@ package interfaces;
 import java.util.ArrayList;
 
 import renderable.Renderable;
-
+/**
+ * Container for renderable game objects ( used by game )
+ * @author Michael
+ *
+ */
 public class Objects
 {
 	private ArrayList<Renderable> Objs;

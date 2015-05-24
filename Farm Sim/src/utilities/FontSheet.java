@@ -1,5 +1,10 @@
 package utilities;
 
+/**
+ * Font sheet class used to render text from a material file
+ * @author Michael
+ *
+ */
 public class FontSheet
 {
 	public float Scale;
@@ -64,7 +69,6 @@ public class FontSheet
 	{
 		return (A + 8) >> 4;
 	}
-	
 	
 	// float version
 	

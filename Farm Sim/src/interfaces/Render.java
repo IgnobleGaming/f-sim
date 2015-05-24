@@ -13,6 +13,11 @@ import java.util.PriorityQueue;
 
 import renderable.Renderable;
 
+/**
+ * Handles all OpenGl calls and image draws
+ * @author Michael
+ *
+ */
 public class Render
 {
 	private PriorityQueue<Renderable> RenderQueue;
@@ -64,7 +69,7 @@ public class Render
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_NEAREST);
 		} catch (LWJGLException e)
 		{
-			Logging.getInstance().Write(Logging.Type.ERROR, "Unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
+			Logging.getInstance().Write(Logging.Type.ERROR, "unable to initialized the OpenGL Context! -> %s", e.getLocalizedMessage());
 			System.exit(0);
 		}
 	}
@@ -76,11 +81,16 @@ public class Render
 		return Instance;
 	}
 
+	/**
+	 * Updates the render queue, clears the OpenGL buffer, and renders all the items in Render Queue
+	 * @return ( true if the method completes, false if display needs to be closed )
+	 */
 	public boolean Update()
 	{
 		if (!Display.isCloseRequested())
 		{
 			UpdateRenderable();
+			
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
 			while (RenderQueue.size() > 0)
@@ -109,15 +119,16 @@ public class Render
 		RenderQueue.add(R);
 	}
 
-	public void Draw(float x, float y, float z, float w)
-	{
-		GL11.glVertex4f(x, y, z, w);
-	}
-
+	/**
+	 * 
+	 * @param Mat ( Material file that contains the textures to be drawn )
+	 * @param Pos ( 2 dimensional position to draw the textures at )
+	 */
 	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
 	{
 		Mat.Texture().bind();
 		GL11.glBegin(GL11.GL_QUADS);
+
 		// TOP LEFT
 		GL11.glTexCoord2f(0, 0);
 		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
@@ -130,7 +141,6 @@ public class Render
 		// BOTTOM LEFT
 		GL11.glTexCoord2f(0, 1);
 		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
-
 		GL11.glEnd();
 	}
 
@@ -154,6 +164,14 @@ public class Render
 		GL11.glEnd();
 	}
 
+	/**
+	 * 
+	 * @param Text ( string of characters to be drawn )
+	 * @param x ( horizontal position -- absolute )
+	 * @param y ( vertical position -- absolute )
+	 * @param Colour ( color of text )
+	 * @param Sheet ( the font sheet which includes the material and coordinates of the characters )
+	 */
 	public static void DrawString(String Text, int x, int y, org.newdawn.slick.Color Colour, utilities.FontSheet Sheet)
 	{
 		Sheet.BitMap.Bind();		
@@ -183,6 +201,9 @@ public class Render
 
 	}
 
+	/**
+	 *  Updates the current frame counter ( called every frame )
+	 */
 	public void updateFPS()
 	{
 
