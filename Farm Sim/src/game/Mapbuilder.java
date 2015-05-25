@@ -86,6 +86,7 @@ public class Mapbuilder
 				Map.TileSize = Map.MapTiles[0].Width();
 			Vector2D TilePos = Map.GetCoordPos(i);
 			Map.MapTiles[i].Position(TilePos.x, TilePos.y);
+			Map.MapTiles[i].TileID = i;
 		}
 		Map.Resize(Dimension * Map.TileSize, Dimension * Map.TileSize);
 	}
