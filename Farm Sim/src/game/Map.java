@@ -46,6 +46,11 @@ public class Map extends renderable.Renderable
 		}
 		this.Resize(HorizontalTileNum * TileSize, VerticalTileNum * TileSize);
 	}
+	
+	public int TileSize()
+	{
+		return TileSize;
+	}
 
 	/**
 	 * Get the exact position of a tile based on index
@@ -117,6 +122,40 @@ public class Map extends renderable.Renderable
 		for (Tile T : MapTiles)
 			if (T != null && T.CheckFlag(Flag.DRAWABLE))
 				T.Draw();
+	}
+	
+	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)
+	{	
+		int tileInt = 0;
+		switch (Dir)
+		{
+			case RIGHT:
+				tileInt = CurTile + 1;
+				if (CurTile % HorizontalTileNum == HorizontalTileNum -1)
+					return MapTiles[CurTile];
+				else 
+					return MapTiles[tileInt]; 
+			case LEFT:
+				tileInt = CurTile - 1;
+				if (CurTile % HorizontalTileNum == 0)
+					return MapTiles[CurTile];
+				else 
+					return MapTiles[tileInt];
+			case UP:
+				tileInt = CurTile - HorizontalTileNum;
+				if (tileInt < 0)
+					return MapTiles[CurTile];
+				else
+					return MapTiles[tileInt];			
+			case DOWN:
+				tileInt = CurTile + HorizontalTileNum;
+				if (tileInt < MapTiles.length)
+					return MapTiles[tileInt];
+				else
+					return MapTiles[CurTile];
+			default:
+				return MapTiles[CurTile];
+		}
 	}
 	
 	/**

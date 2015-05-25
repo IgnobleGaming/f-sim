@@ -3,6 +3,7 @@ package interfaces;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.types.*;
+import interfaces.file.types.MaterialFile.Orientation;
 import specifier.*;
 import renderable.*;
 import renderable.Renderable.Position;
@@ -166,7 +167,7 @@ public class Game
 		MaterialFile playerwalkside_2 = new MaterialFile("resources\\player_walkside_2.png", MaterialFile.Type.PNG);
 		playerwalkside_2.Open();
 		
-		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0, playerwalkside_1, playerwalkside_2, playerwalkside_1);
+		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN), playerwalkside_2.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN));
 		
 		
 		
@@ -174,7 +175,7 @@ public class Game
 		game.Map.GetInstance().GetTileFromIndex(100, 100).AddFlag(Flag.BLOCKED);
 
 		PlayerEnt = player;
-		PlayerEnt.MovementSpeed(2);
+		PlayerEnt.MovementSpeed(1);
 		GameObjects.Add(PlayerEnt);
 		GameObjects.Add(cpu);
 		CurrentState = State.INGAME;

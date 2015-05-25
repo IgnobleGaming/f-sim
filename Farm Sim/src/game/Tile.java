@@ -23,7 +23,8 @@ public class Tile extends renderable.Renderable
 	private EnumSet<Flag> Flags;
 	private Type TileType;
 	private int hash;
-	private int TileID = 0;
+	public int TileID = 0;
+	
 	
 	public Tile()
 	{

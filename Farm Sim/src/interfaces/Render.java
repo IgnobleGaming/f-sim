@@ -1,6 +1,7 @@
 package interfaces;
 
 import interfaces.file.Logging;
+import interfaces.file.types.MaterialFile.Orientation;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -127,8 +128,29 @@ public class Render
 	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
 	{
 		Mat.Texture().bind();
-		GL11.glBegin(GL11.GL_QUADS);
+		
+		
 
+		GL11.glBegin(GL11.GL_QUADS);
+		
+		switch (Mat.Facing())
+		{
+			case NORMAL:
+				break;
+			case UP:
+				GL11.glRotatef(270, 0.0f, 0.0f, 1.0f);
+				break;
+			case LEFT:
+				GL11.glRotatef(180, 0.0f, 0.0f, 1.0f);
+				break;
+			case RIGHT: 
+				GL11.glRotatef(0, 0.0f, 0.0f, 1.0f);
+				break;
+			case DOWN:
+				GL11.glRotatef(90, 0.0f, 0.0f, 1.0f);
+				break;
+		}
+		
 		// TOP LEFT
 		GL11.glTexCoord2f(0, 0);
 		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
@@ -141,7 +163,11 @@ public class Render
 		// BOTTOM LEFT
 		GL11.glTexCoord2f(0, 1);
 		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
+
 		GL11.glEnd();
+		
+		Mat.SetOrientation(Orientation.NORMAL);
+
 	}
 
 	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, float VerticalOffset, float HorizontalOffset, int Width, int Height)

@@ -5,12 +5,12 @@ import specifier.Vector;
 import specifier.Vector2D;
 import game.Tile;
 import interfaces.Game;
+import interfaces.Render;
 import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
-import java.util.ArrayList;
 
 import java.util.*;
 
@@ -44,9 +44,13 @@ public class Entity extends Renderable
 	protected Vector Velocity;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
-	protected double MovementSpeed = 1;
+	protected int MovementSpeed = 500;
 	protected ArrayList<specifier.Animation> Animation;
 	protected game.Tile LastTile;
+	protected int CurrentTile;
+	protected int CurrentStep = 0;
+	protected int TotalMoveTime = 0;
+	protected long LastMoveTime = 0;
 
 	/**
 	 * Creates a new entity
@@ -61,10 +65,9 @@ public class Entity extends Renderable
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
 		super(width,height);
-		
+		this.Position = new Vector2D(0,0);
 		this.Name = Name;
 		this.Description = Desc;
-		this.Position = Position;
 		this.Velocity = Velocity;
 		this.Flags = EnumSet.noneOf(Flag.class);
 		for (Flag F : Flags)
@@ -76,6 +79,9 @@ public class Entity extends Renderable
 			Animation.add(null); // this is so we can access them by index later
 		}
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
+		this.Position.x = game.Map.GetInstance().GetCoordPos(CurrentTile).x;
+		this.Position.y = game.Map.GetInstance().GetCoordPos(CurrentTile).y;
 	}
 
 	/**
@@ -164,19 +170,45 @@ public class Entity extends Renderable
 	 */
 	@Override public void Move(Direction.Relative Dir)
 	{
-		int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
+		/*int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
 		
 		if (LastTile != game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16))
 		{
 			LastTile.RemoveFlag(game.Tile.Flag.BLOCKED);
 			LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16);
 			LastTile.AddFlag(game.Tile.Flag.BLOCKED);
-		}
+		}*/
 		
-		game.Tile CollisionTile;
+
+		double StepSize = 16;
+		
+		if (Render.GetInstance().FPS() > 0)
+			StepSize = ( MovementSpeed / Render.GetInstance().FPS()) * 2;
+		
+		game.Tile CollisionTile = null; 
+		int XPlus = 0;
+		int YPlus = 0;
+		
 		switch (Dir)
 		{			
 			case UP:
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
+				break;
+			case DOWN: 
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
+				break;
+			case LEFT:
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
+				break;
+			case RIGHT:
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
+				break;
+				
+			/*case UP:
 				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - 16 - TileSize/2);
 				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
 					Position.y -= MovementSpeed;
@@ -197,10 +229,29 @@ public class Entity extends Renderable
 					Position.x += MovementSpeed;
 				break;
 			default:
-					CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y -16);
+					CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y -16);*/
 		}
 		
-		LastTile.SetSprite(game.Mapbuilder.GetRandomTile());
+		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
+
+		
+		LastMoveTime = Game.GetInstance().Delta();
+		
+		if (LastMoveTime >= StepSize);
+			TotalMoveTime += StepSize;
+
+		if (CollisionTile.TileID != CurrentTile)
+		{
+			Position.x += XPlus;
+			Position.y += YPlus;
+		}
+		
+		if (TotalMoveTime >= MovementSpeed )
+		{
+			this.CurrentTile = CollisionTile.TileID;
+			TotalMoveTime = 0;
+		}
+		//LastTile.SetSprite(game.Mapbuilder.GetRandomTile());
 	}
 	
 	/**
@@ -257,7 +308,7 @@ public class Entity extends Renderable
 	 */
 	public void MovementSpeed(double factor)
 	{
-		MovementSpeed = factor;
+		MovementSpeed = 500;
 		for (specifier.Animation A : Animation)
 		{
 			if (A != null)
