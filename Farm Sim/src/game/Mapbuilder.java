@@ -97,8 +97,15 @@ public class Mapbuilder
 		int SizeActual = Dimension * Dimension;
 		int LineSize;
 		sea = Rand.nextInt(4);
-		sea = 3;
+		sea = 0;
 		int count = 0;
+		
+		int sea_sizes[] = new int [(int) Math.sqrt(this.Dimension)];
+		
+		for(int i = 0; i < sea_sizes.length; i++)
+		{
+			sea_sizes[i] = Rand.nextInt((Max_Mass / 2) + Max_Mass / 2);
+		}
 
 		switch (sea)
 		{
@@ -210,7 +217,7 @@ public class Mapbuilder
 
 				CreateSquare(w, h, TileX, TileY, Tile.Type.WATER, Mass.SEA, r);
 
-				if (sea < 3)
+				if (sea < 2)
 					i += Rand.nextInt(5) + w + 1;
 				else
 					i += Rand.nextInt(5) + h + 1;
@@ -277,7 +284,7 @@ public class Mapbuilder
 						{
 							if (W == 3)
 								W -= 1;
-							W -= 1;
+							W -= 2;
 
 							if (sea == 0)
 							{
@@ -285,17 +292,19 @@ public class Mapbuilder
 								StartY += 1;
 							} else
 							{
-								StartX -= 1;
+								StartX += 1;
 								StartY -= 1;
 							}
 						} else
 						{
+							if (H == 3)
+								H -= 1;
 							H -= 2;
 
 							if (sea == 2)
 							{
 								StartX -= 1;
-								StartY -= 1;
+								StartY += 1;
 							} else
 							{
 								StartX += 1;
