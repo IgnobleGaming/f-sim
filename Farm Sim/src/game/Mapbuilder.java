@@ -175,41 +175,45 @@ public class Mapbuilder
 	{
 		int h = 0;
 		int w = 0;
+		int r = 0;
 
 		for (int i = 0; i < Shore.length; i++)
 		{
-			if (Rand.nextInt(5) % 2 == 0)
+			if (Rand.nextInt(7) % 2 == 0)
 			{
 				switch (sea)
 				{
 					case 0: // NORTH
 						h = 2;
-						w = Rand.nextInt(4) + 1;
+						w = Rand.nextInt(20) + 1;
+						r = Rand.nextInt(w + 1 / h) + 1;
 						break;
 					case 1: // SOUTH
 						h = 2;
-						w = Rand.nextInt(4) + 1;
+						w = Rand.nextInt(20) + 1;
+						r = Rand.nextInt(w + 1 / h) + 1;
 						break;
 					case 2: // EAST
-						h = Rand.nextInt(4) + 1;
+						h = Rand.nextInt(20) + 1;
 						w = 2;
+						r = Rand.nextInt(h + 1 / w) + 1;
 						break;
 					case 3: // WEST
-						h = Rand.nextInt(4) + 1;
+						h = Rand.nextInt(20) + 1;
 						w = 2;
+						r = Rand.nextInt(h + 1 / w) + 1;
 						break;
 				}
 
 				int TileX = Map.GetCoordPos(Shore[i]).x / Map.TileSize;
 				int TileY = Map.GetCoordPos(Shore[i]).y / Map.TileSize;
 
-				System.out.println("height - " + h + " width - " + w);
-				CreateSquare(w, h, TileX, TileY, Tile.Type.WATER, Mass.SEA);
+				CreateSquare(w, h, TileX, TileY, Tile.Type.WATER, Mass.SEA, r);
 
 				if (sea < 3)
-					i += w + 1;
+					i += Rand.nextInt(5) + w + 1;
 				else
-					i += h + 1;
+					i += Rand.nextInt(5) + h + 1;
 			}
 		}
 	}
@@ -248,7 +252,7 @@ public class Mapbuilder
 
 	}
 
-	private void CreateSquare(int W, int H, int StartX, int StartY, Tile.Type T, Mass Mass)
+	private void CreateSquare(int W, int H, int StartX, int StartY, Tile.Type T, Mass Mass, int recursive)
 	{
 		if (H <= 0 || W <= 0)
 			return;
@@ -260,54 +264,53 @@ public class Mapbuilder
 				{
 					if (Map.GetTileIndex(x, y) < Map.MapTiles.length)
 					{
-						System.out.println(" - Map changed at " + x + ", " + y);
 						Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(T);
 					}
 				}
 			}
-
-			switch (Mass)
+			if (recursive > 0)
 			{
-				case SEA:
-					if (sea < 2)
-					{
-						if (W == 3)
+				switch (Mass)
+				{
+					case SEA:
+						if (sea < 2)
+						{
+							if (W == 3)
+								W -= 1;
 							W -= 1;
-						W -= 1;
 
-						if (sea == 0)
-						{
-							StartX += 1;
-							StartY += 1;
+							if (sea == 0)
+							{
+								StartX += 1;
+								StartY += 1;
+							} else
+							{
+								StartX -= 1;
+								StartY -= 1;
+							}
 						} else
 						{
-							StartX -= 1;
-							StartY -= 1;
-						}
-					} else
-					{
-						H -= 2;
+							H -= 2;
 
-						if (sea == 2)
-						{
-							StartX -= 1;
-							StartY -= 1;
-						} else
-						{
-							StartX += 1;
-							StartY += 1;
+							if (sea == 2)
+							{
+								StartX -= 1;
+								StartY -= 1;
+							} else
+							{
+								StartX += 1;
+								StartY += 1;
+							}
 						}
-					}
-					break;
-				case MOUNTAIN:
-					break;
-				case LAKE:
-					break;
+						break;
+					case MOUNTAIN:
+						break;
+					case LAKE:
+						break;
+				}
+				CreateSquare(W, H, StartX, StartY, T, Mass, recursive - 1);
 			}
 		}
-
-		if (Rand.nextBoolean())
-			CreateSquare(W, H, StartX, StartY, T, Mass);
 	}
 
 	public static interfaces.file.types.MaterialFile GetRandomTile()
