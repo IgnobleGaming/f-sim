@@ -168,11 +168,6 @@ public class Game
 		playerwalkside_2.Open();
 		
 		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN), playerwalkside_2.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN));
-		
-		
-		
-		game.Map.GetInstance().GetTileFromIndex(100, 100).SetSprite(TileSprite3);
-		game.Map.GetInstance().GetTileFromIndex(100, 100).AddFlag(Flag.BLOCKED);
 
 		PlayerEnt = player;
 		PlayerEnt.MovementSpeed(1);
@@ -201,8 +196,8 @@ public class Game
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 		
-		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 30, 1, 1000, object.Variable.Flag.Latched));
-		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 30, 1, 1000, object.Variable.Flag.Latched));	
+		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 60, 1, 1000, object.Variable.Flag.Latched));
+		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 60, 1, 1000, object.Variable.Flag.Latched));	
 		GameVariables.Set(new object.Variable("m_tilesize", "the size ( in pixels ) of each tile", 32, 16, 128, object.Variable.Flag.Latched));
 		
 		GameCommands.GetInstance().Add(new object.Command("quit", "quit the game", GameCommands.CommandFunction.quit));
@@ -269,5 +264,10 @@ public class Game
 	public void State(State S)
 	{
 		CurrentState = S;
+	}
+	
+	public object.Entity Player()
+	{
+		return PlayerEnt;
 	}
 }

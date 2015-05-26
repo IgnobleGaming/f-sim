@@ -1,10 +1,16 @@
 package game;
 
 import game.Tile.Flag;
+import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.FileManager;
+import interfaces.file.Logging;
+import interfaces.file.Logging.Type;
 import specifier.Vector2D;
+
 import java.util.Random;
+
+import org.newdawn.slick.Color;
 
 public class Map extends renderable.Renderable
 {
@@ -61,6 +67,13 @@ public class Map extends renderable.Renderable
 	{
 		int x = (int) (num % HorizontalTileNum) * TileSize + TileSize / 2; // offset for
 		int y = (int) (Math.floor(num / VerticalTileNum) * TileSize + TileSize/ 2); // offset
+		return new Vector2D(x, y);
+	}
+	
+	public Vector2D GetMinimapCoord(int num)
+	{
+		int x = (int) (num % HorizontalTileNum) * 2; // offset for
+		int y = (int) (Math.floor(num / VerticalTileNum)) * 2; // offset
 		return new Vector2D(x, y);
 	}
 	
@@ -122,6 +135,9 @@ public class Map extends renderable.Renderable
 		for (Tile T : MapTiles)
 			if (T != null && T.CheckFlag(Flag.DRAWABLE))
 				T.Draw();
+		
+		
+		interfaces.Render.DrawMap(GetMinimap());
 	}
 	
 	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)
@@ -131,31 +147,57 @@ public class Map extends renderable.Renderable
 		{
 			case RIGHT:
 				tileInt = CurTile + 1;
-				if (CurTile % HorizontalTileNum == HorizontalTileNum -1)
+				if (CurTile % HorizontalTileNum == HorizontalTileNum -1 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
 					return MapTiles[CurTile];
 				else 
 					return MapTiles[tileInt]; 
 			case LEFT:
 				tileInt = CurTile - 1;
-				if (CurTile % HorizontalTileNum == 0)
+				if (CurTile % HorizontalTileNum == 0 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
 					return MapTiles[CurTile];
 				else 
 					return MapTiles[tileInt];
 			case UP:
 				tileInt = CurTile - HorizontalTileNum;
-				if (tileInt < 0)
+				if (tileInt < 0 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
 					return MapTiles[CurTile];
 				else
 					return MapTiles[tileInt];			
 			case DOWN:
 				tileInt = CurTile + HorizontalTileNum;
-				if (tileInt < MapTiles.length)
+				if (tileInt < MapTiles.length && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
 					return MapTiles[tileInt];
 				else
 					return MapTiles[CurTile];
 			default:
 				return MapTiles[CurTile];
 		}
+	}
+	
+	public specifier.MinimapItem[] GetMinimap()
+	{
+		specifier.MinimapItem[] Minimap = new specifier.MinimapItem[game.Map.GetInstance().MapTiles.length];
+		for (game.Tile T : game.Map.GetInstance().MapTiles)
+		{
+			switch (T.Type())
+			{
+				case GRASS:
+					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.green, GetMinimapCoord(T.TileID));
+					break;
+				case WATER:
+					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.blue, GetMinimapCoord(T.TileID));
+					break;
+				case DIRT:
+					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, new Color(115, 69, 3, 1), GetMinimapCoord(T.TileID));
+					break;
+				default:
+					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.black, GetMinimapCoord(T.TileID));
+			}
+			
+			if (T.TileID == Game.GetInstance().Player().TileID())
+				Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.red, GetMinimapCoord(T.TileID));
+		}
+		return Minimap;		
 	}
 	
 	/**

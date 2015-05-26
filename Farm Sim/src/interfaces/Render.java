@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import renderable.Renderable;
+import renderable.Renderable.Position;
+import renderable.Renderable.PositionType;
 
 /**
  * Handles all OpenGl calls and image draws
@@ -223,8 +225,29 @@ public class Render
 		}
 		GL11.glColor4f(1,1,1,1);
 		GL11.glEnd();		
-
-
+	}
+	
+	public static void DrawMap(specifier.MinimapItem[] Map)
+	{
+		specifier.Vector2D tempPos = renderable.Renderable.GetPosFromLocation(Position.TOPLEFT, PositionType.ABSOLUTE, Map.length, Map.length, 0,0, null);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		
+		GL11.glBegin(GL11.GL_QUADS);
+		for (specifier.MinimapItem M : Map)
+		{		
+		    GL11.glColor3f(M.Color.r, M.Color.g, M.Color.b);
+		    int x = tempPos.x + M.Position.x;
+		    int y = tempPos.y + M.Position.y;
+		    		
+		    GL11.glVertex2i(x, y);
+		    GL11.glVertex2i(x + 2, y);
+		    GL11.glVertex2i(x + 2, y + 2);
+		    GL11.glVertex2i(x, y + 2);
+		    
+		    GL11.glColor3f(1, 1, 1);
+		}	
+		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	/**

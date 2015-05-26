@@ -45,6 +45,7 @@ public class Entity extends Renderable
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
 	protected int MovementSpeed = 500;
+	protected double MovementSpeedScale = 2;
 	protected ArrayList<specifier.Animation> Animation;
 	protected game.Tile LastTile;
 	protected int CurrentTile;
@@ -180,10 +181,7 @@ public class Entity extends Renderable
 		}*/
 		
 
-		double StepSize = 16;
-		
-		if (Render.GetInstance().FPS() > 0)
-			StepSize = ( MovementSpeed / Render.GetInstance().FPS()) * 2;
+		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 		
 		game.Tile CollisionTile = null; 
 		int XPlus = 0;
@@ -192,50 +190,26 @@ public class Entity extends Renderable
 		switch (Dir)
 		{			
 			case UP:
-				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
+					YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
-			case DOWN: 
-				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+			case DOWN: 		
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
+					YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
 			case LEFT:
-				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
+					XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
 			case RIGHT:
-				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
+					XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
-				
-			/*case UP:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y - 16 - TileSize/2);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
-					Position.y -= MovementSpeed;
-				break;
-			case DOWN:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16 + TileSize/2);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
-					Position.y += MovementSpeed;
-				break;
-			case LEFT:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x - TileSize/2, Position.y + 16);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) || LastTile == CollisionTile )
-					Position.x -= MovementSpeed;
-				break;
-			case RIGHT:
-				CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x + TileSize/2, Position.y + 16);
-				if (!CollisionTile.CheckFlag(Tile.Flag.BLOCKED) && CollisionTile.Position().y > 0 || LastTile == CollisionTile)
-					Position.x += MovementSpeed;
-				break;
-			default:
-					CollisionTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y -16);*/
 		}
 		
-		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
-
+		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);	
 		
-		LastMoveTime = Game.GetInstance().Delta();
+		LastMoveTime += Game.GetInstance().Delta();
 		
 		if (LastMoveTime >= StepSize);
 			TotalMoveTime += StepSize;
@@ -248,10 +222,10 @@ public class Entity extends Renderable
 		
 		if (TotalMoveTime >= MovementSpeed )
 		{
-			this.CurrentTile = CollisionTile.TileID;
+			CurrentTile = CollisionTile.TileID;
 			TotalMoveTime = 0;
+			LastMoveTime = 0;
 		}
-		//LastTile.SetSprite(game.Mapbuilder.GetRandomTile());
 	}
 	
 	/**
@@ -327,5 +301,10 @@ public class Entity extends Renderable
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
 		if (NewAnim.Valid)
 			Animation.add(AnimState.val,NewAnim);
+	}
+	
+	public int TileID()
+	{
+		return CurrentTile;
 	}
 }
