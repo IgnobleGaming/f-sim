@@ -1,5 +1,6 @@
 package game;
 
+import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.FileManager;
 
@@ -27,8 +28,52 @@ public class Mapbuilder
 			this.value = val;
 		}
 	}
+	
+	private class Mass
+	{
+		protected int Orientation;
+		protected int Border[];
+		
+		protected int EndX [];
+		protected int EndY [];
+		
+		protected void Init(int Orient)
+		{
+			Orientation = Orient;
+			EndX = new int [(int) (Math.round(Math.log10((double) Dimension) / Math.log10(2)) / 2) + 1];
+			EndY = new int [(int) (Math.round(Math.log10((double) Dimension) / Math.log10(2)) / 2) + 1];
+			
+			Border = new int [Dimension];
+			
+			for(int i = 1; i < EndX.length; i++)
+			{
+				EndX[i] = ((Dimension / (EndX.length - 1)) * i);
+				EndY[i] =  Rand.nextInt((Max_Mass / 2)) + Max_Mass / 2;
+			}
+			
+			switch (Orientation)
+			{
+				case 0: // NORTH
+					EndX[0] = 0;
+					EndY[0] = 0;
+					break;
+				case 1: // SOUTH
+					EndX[0] = 0;
+					EndY[0] = Dimension - EndY[1];
+					break;
+				case 2: // EAST
+					EndX[0] = Dimension - EndX[1];
+					EndY[0] = 0;
+					break;
+				case 3: // WEST
+					EndX[0] = 0;
+					EndY[0] = 0;
+					break;
+			}
+		}
+	}
 
-	public enum Mass
+	public enum MassType
 	{
 		SEA, MOUNTAIN, LAKE
 	}
@@ -48,6 +93,7 @@ public class Mapbuilder
 		Rand = new Random(System.currentTimeMillis());
 		int Random = Rand.nextInt(3);
 		// change depending on random
+		
 		Dimension = Size.value;
 	}
 
@@ -62,6 +108,11 @@ public class Mapbuilder
 		Map = game.Map.GetInstance();
 	}
 
+	public void init()
+	{
+		
+	}
+	
 	public Map Build()
 	{
 		Max_Mass = Dimension / 16;
@@ -100,12 +151,9 @@ public class Mapbuilder
 		sea = 0;
 		int count = 0;
 		
-		int sea_sizes[] = new int [(int) Math.sqrt(this.Dimension)];
+		int sea_sizes[] = new int [(int) (Math.round(Math.log10((double) Dimension) / Math.log10(2)) / 2)];
 		
-		for(int i = 0; i < sea_sizes.length; i++)
-		{
-			sea_sizes[i] = Rand.nextInt((Max_Mass / 2) + Max_Mass / 2);
-		}
+
 
 		switch (sea)
 		{
@@ -215,7 +263,7 @@ public class Mapbuilder
 				int TileX = Map.GetCoordPos(Shore[i]).x / Map.TileSize;
 				int TileY = Map.GetCoordPos(Shore[i]).y / Map.TileSize;
 
-				CreateSquare(w, h, TileX, TileY, Tile.Type.WATER, Mass.SEA, r);
+				CreateSquare(w, h, TileX, TileY, Tile.Type.WATER, MassType.SEA, r);
 
 				if (sea < 2)
 					i += Rand.nextInt(5) + w + 1;
@@ -241,25 +289,9 @@ public class Mapbuilder
 		System.out.println(Max_Mass + " " + Dimension);
 	}
 
-	private void River()
-	{
-		int Random = Rand.nextInt(5) + 3;
-		int startingX = (Dimension * Map.TileSize) / Random;
 
-		// for (int i = startingX; i < )
-	}
 
-	private void Mountain()
-	{
-
-	}
-
-	private void Town()
-	{
-
-	}
-
-	private void CreateSquare(int W, int H, int StartX, int StartY, Tile.Type T, Mass Mass, int recursive)
+	private void CreateSquare(int W, int H, int StartX, int StartY, Tile.Type T, MassType Mass, int recursive)
 	{
 		if (H <= 0 || W <= 0)
 			return;
@@ -321,10 +353,15 @@ public class Mapbuilder
 			}
 		}
 	}
+	
+	public void Stair(Mass Mass)
+	{
+		
+		
+	}
 
 	public static interfaces.file.types.MaterialFile GetRandomTile()
 	{
-		Random R = new Random();
 		interfaces.file.types.MaterialFile M;
 		/*
 		 * M = (interfaces.file.types.MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass_flower.png"); switch (R.nextInt(10)) { case 0: case 1: case 2: case 3: M = (interfaces.file.types.MaterialFile)
