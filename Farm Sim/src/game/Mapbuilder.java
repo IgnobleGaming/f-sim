@@ -86,7 +86,7 @@ public class Mapbuilder
 					EndY[0] = 0;
 					break;
 				case WEST:
-					EndX[0] = 0;
+					EndX[0] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
 					EndY[0] = 0;
 					break;
 			}
@@ -108,20 +108,19 @@ public class Mapbuilder
 					while (Math.abs(EndY[i - 1] - EndY[i]) < 4 || Math.abs(EndY[i - 1] - EndY[i]) > 15)
 						EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
 
-					System.out.println("EndX & EndY @ " + i + " is " + EndX[i] + " " + EndY[i]);
-
 				}
 			}
 			// If East or West
 			else
 			{
+				System.out.println("Test");
 				for (int i = 1; i < EndX.length; i++)
 				{
-					EndY[i] = ((Dimension / (EndX.length)) * i);
+					EndY[i] = ((Dimension / (EndX.length - 1)) * i);
 					EndX[i] = Rand.nextInt((Max_Mass / 2)) + Max_Mass / 2;
 					
-					while (Math.abs(EndY[i - 1] - EndY[i]) < 4 || Math.abs(EndY[i - 1] - EndY[i]) > 15)
-						EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
+					while (Math.abs(EndX[i - 1] - EndX[i]) < 4 || Math.abs(EndX[i - 1] - EndX[i]) > 15)
+						EndX[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
 				}
 			}
 
@@ -213,7 +212,7 @@ public class Mapbuilder
 	{
 
 		Orientation O = GenerateOrient();
-		O = Orientation.SOUTH;
+		O = Orientation.WEST;
 		LockOrient(O);
 
 		if (O != Orientation.DEFAULT)
@@ -244,8 +243,22 @@ public class Mapbuilder
 						}
 						break;
 					case EAST:
+						for (int y = Ocean.EndY[i - 1]; y < Ocean.EndY[i]; y++)
+						{
+							for (int x = Dimension - Ocean.EndX[i - 1]; x < Dimension; x++)
+							{
+								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Ocean.TType);
+							}
+						}
 						break;
 					case WEST:
+						for (int y  = Ocean.EndY[i - 1]; y < Ocean.EndY[i]; y++)
+						{
+							for(int x = 0; x < Ocean.EndX[i]; x++)
+							{
+								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Ocean.TType);
+							}
+						}
 						break;
 					case DEFAULT:
 					case CENTER:
