@@ -17,7 +17,7 @@ public class Tile extends renderable.Renderable
 
 	public enum Type
 	{
-		GRASS, WATER, DIRT
+		GRASS, WATER, DIRT, SAND, MOUNTAIN
 	}
 	
 	private EnumSet<Flag> Flags;
@@ -37,7 +37,6 @@ public class Tile extends renderable.Renderable
 		super(32,32); // default tile size
 		Flags = EnumSet.of(Flag.DRAWABLE);
 		ChangeType(T);
-		System.out.println(Flags.size());
 	}
 
 	public int Height()
@@ -94,6 +93,12 @@ public class Tile extends renderable.Renderable
 				break;
 			case WATER:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png");
+				break;
+			case SAND:
+				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand.png");
+				break;
+			case MOUNTAIN:
+				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\mountain.png");
 				break;
 		}
 	}

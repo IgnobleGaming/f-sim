@@ -110,6 +110,10 @@ public class Game
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
 		
+		/*************************************************************************************************
+		 *****************************************Tile Image Resources************************************
+		 ************************************************************************************************/
+		
 		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass.png", MaterialFile.Type.PNG);
 		TileSprite.Open();
 		Files.Add(TileSprite);
@@ -126,9 +130,18 @@ public class Game
 		TileSprite4.Open();
 		Files.Add(TileSprite4);
 		
-		game.Map GameMap = MapBuilder.Build();
+		MaterialFile SandTile = new MaterialFile("resources\\ingame\\tiles\\sand.png", MaterialFile.Type.PNG);
+		SandTile.Open();
+		Files.Add(SandTile);
 		
+		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
+		MountainTile.Open();
+		Files.Add(MountainTile);
+		
+		game.Map GameMap = MapBuilder.Build();
 		GameObjects.Add(GameMap);
+		
+		/***************************************************************************************************/
 		
 		HUD.GetInstance().Init();
 		HUD.GetInstance().ZIndex(1000);
@@ -141,6 +154,10 @@ public class Game
 		
 		cpu.Move(specifier.Direction.Relative.UP);
 		
+		
+		/****************************************************************************************************
+		 ****************************************Player Image Resources**************************************
+		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
 		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
@@ -169,6 +186,8 @@ public class Game
 		
 		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN), playerwalkside_2.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN));
 
+		/******************************************************************************************************/
+		
 		PlayerEnt = player;
 		PlayerEnt.MovementSpeed(1);
 		GameObjects.Add(PlayerEnt);
@@ -191,13 +210,13 @@ public class Game
 		GameVariables.Set(new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));
 		GameVariables.Set(new object.Variable("fs_logfile", "name of the log file", "console.log", object.Variable.Flag.Latched));
 		
-		GameVariables.Set(new object.Variable("vid_width", "horizontal screen resolution", 1280, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 720, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_width", "horizontal screen resolution", 1600, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 1100, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 		
-		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 60, 1, 1000, object.Variable.Flag.Latched));
-		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 60, 1, 1000, object.Variable.Flag.Latched));	
+		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 512, 1, 1000, object.Variable.Flag.Latched));
+		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 512, 1, 1000, object.Variable.Flag.Latched));	
 		GameVariables.Set(new object.Variable("m_tilesize", "the size ( in pixels ) of each tile", 32, 16, 128, object.Variable.Flag.Latched));
 		
 		GameCommands.GetInstance().Add(new object.Command("quit", "quit the game", GameCommands.CommandFunction.quit));
