@@ -1,5 +1,6 @@
 package game;
 
+import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
@@ -60,7 +61,7 @@ public class Mapbuilder
 		 * @param Orient
 		 *            - Map orientation (i.e. North South East West)
 		 */
-		protected void Init(Orientation Orient, Tile.Type T)
+		protected void Init(Orientation Orient, Tile.Type T, boolean solid)
 		{
 			Rand = new Random(System.currentTimeMillis());
 
@@ -80,8 +81,7 @@ public class Mapbuilder
 				start = 1;
 
 				GenerateOrigin();
-			} 
-			else if (TType == Tile.Type.SAND)
+			} else if (TType == Tile.Type.SAND)
 			{
 				EndX = new int[(Dimension) + 1];
 				EndY = new int[(Dimension) + 1];
@@ -92,8 +92,7 @@ public class Mapbuilder
 				Max_Mass = (int) (Math.round(Math.log10((double) Dimension) / Math.log10(2)) * 2);
 
 				start = 0;
-			} 
-			else if (TType == Tile.Type.MOUNTAIN)
+			} else if (TType == Tile.Type.MOUNTAIN)
 			{
 				EndX = new int[(Dimension) + 1];
 				EndY = new int[(Dimension) + 1];
@@ -104,53 +103,55 @@ public class Mapbuilder
 				Max_Mass = (int) (Math.round(Math.log10((double) Dimension) / Math.log10(2)) * 5);
 
 				start = 1;
-				
+
 				GenerateOrigin();
 			}
 
 			Border = new int[Dimension];
 
-			// If North or South
-			if (MassOrientation == Orientation.NORTH || MassOrientation == Orientation.SOUTH)
+			if (solid)
 			{
-
-				System.out.println("EndX length - " + EndX.length + ", EndY length - " + EndY.length);
-
-				for (int i = start; i < EndX.length; i++)
+				// If North or South
+				if (MassOrientation == Orientation.NORTH || MassOrientation == Orientation.SOUTH)
 				{
 
-					// Even sized blocks on X-axis for now
-					EndX[i] = ((Dimension / (EndX.length - 1)) * i);
-					// We generate a random height from half of the maximum mass to the max mass
-					EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
+					System.out.println("EndX length - " + EndX.length + ", EndY length - " + EndY.length);
 
-					if ((i > 0 && MassOrientation == Orientation.SOUTH) || (i > 1 && MassOrientation == Orientation.NORTH))
+					for (int i = start; i < EndX.length; i++)
 					{
-						while (Math.abs(EndY[i - 1] - EndY[i]) < RandMin || Math.abs(EndY[i - 1] - EndY[i]) > RandMax)
+
+						// Even sized blocks on X-axis for now
+						EndX[i] = ((Dimension / (EndX.length - 1)) * i);
+						// We generate a random height from half of the maximum mass to the max mass
+						EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
+
+						if ((i > 0 && MassOrientation == Orientation.SOUTH) || (i > 1 && MassOrientation == Orientation.NORTH))
 						{
-							EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
-							System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
+							while (Math.abs(EndY[i - 1] - EndY[i]) < RandMin || Math.abs(EndY[i - 1] - EndY[i]) > RandMax)
+							{
+								EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
+								System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
+							}
+						}
+
+					}
+				}
+				// If East or West
+				else
+				{
+					for (int i = start; i < EndX.length; i++)
+					{
+						EndY[i] = ((Dimension / (EndX.length - 1)) * i);
+						EndX[i] = Rand.nextInt((Max_Mass / 2)) + Max_Mass / 2;
+
+						if (i > 0 || (i == 1 && TType == Tile.Type.SAND))
+						{
+							while (Math.abs(EndX[i - 1] - EndX[i]) < RandMin || Math.abs(EndX[i - 1] - EndX[i]) > RandMax)
+								EndX[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
 						}
 					}
-
 				}
 			}
-			// If East or West
-			else
-			{
-				for (int i = start; i < EndX.length; i++)
-				{
-					EndY[i] = ((Dimension / (EndX.length - 1)) * i);
-					EndX[i] = Rand.nextInt((Max_Mass / 2)) + Max_Mass / 2;
-
-					if (i > 0 || (i == 1 && TType == Tile.Type.SAND))
-					{
-						while (Math.abs(EndX[i - 1] - EndX[i]) < RandMin || Math.abs(EndX[i - 1] - EndX[i]) > RandMax)
-							EndX[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
-					}
-				}
-			}
-
 		}
 
 		private void GenerateOrigin()
@@ -198,6 +199,7 @@ public class Mapbuilder
 	private Mass Ocean;
 	private Mass Sand;
 	private Mass Mountain;
+	private Mass River;
 
 	public Mapbuilder()
 	{
@@ -216,6 +218,7 @@ public class Mapbuilder
 		this.Ocean = new Mass();
 		this.Sand = new Mass();
 		this.Mountain = new Mass();
+		this.River = new Mass();
 
 		Map = game.Map.GetInstance();
 	}
@@ -238,6 +241,7 @@ public class Mapbuilder
 		Land();
 		Sea();
 		Mountain();
+		River();
 
 		return Map;
 	}
@@ -263,15 +267,16 @@ public class Mapbuilder
 
 	private void Sea()
 	{
+		int count = 0;
 
 		Orientation O = GenerateOrient();
-		O = Orientation.WEST;
+		O = Orientation.SOUTH;
 		LockOrient(O);
 
 		if (O != Orientation.DEFAULT)
 		{
-			Ocean.Init(O, Tile.Type.WATER);
-			Sand.Init(O, Tile.Type.SAND);
+			Ocean.Init(O, Tile.Type.WATER, true);
+			Sand.Init(O, Tile.Type.SAND, true);
 
 			for (int i = 1; i < Ocean.EndX.length; i++)
 			{
@@ -287,11 +292,17 @@ public class Mapbuilder
 
 								if (y == Ocean.EndY[i] - 1)
 								{
-									System.out.println("Y = " + y);
+									// System.out.println("Y = " + y);
 
 									for (int yy = Ocean.EndY[i]; yy < Sand.EndY[i] + Ocean.EndY[i]; yy++)
 									{
 										Map.MapTiles[Map.GetTileIndex(x, yy)].ChangeType(Sand.TType);
+
+										if (yy == (Sand.EndY[i] + Ocean.EndY[i]) - 1)
+										{
+											Sand.Border[count] = Map.GetTileIndex(x, yy);
+											count++;
+										}
 									}
 								}
 							}
@@ -304,6 +315,11 @@ public class Mapbuilder
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Sand.TType);
 
+								if (y == Dimension - (Ocean.EndY[i - 1] + Sand.EndY[i - 1]))
+								{
+									Sand.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 
@@ -312,7 +328,6 @@ public class Mapbuilder
 							for (int x = Ocean.EndX[i - 1]; x < Ocean.EndX[i]; x++)
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Ocean.TType);
-
 							}
 						}
 						break;
@@ -322,6 +337,12 @@ public class Mapbuilder
 							for (int x = Dimension - (Ocean.EndX[i - 1] + Sand.EndX[i - 1]); x < Dimension - Ocean.EndX[i - 1]; x++)
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Sand.TType);
+
+								if (x == Dimension - (Sand.EndX[i - 1] + Ocean.EndX[i - 1]))
+								{
+									Sand.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 
@@ -342,11 +363,17 @@ public class Mapbuilder
 
 								if (x == Ocean.EndX[i] - 1)
 								{
-									System.out.println("Y = " + y);
+									// System.out.println("Y = " + y);
 
 									for (int xx = Ocean.EndX[i]; xx < Sand.EndX[i] + Ocean.EndX[i]; xx++)
 									{
 										Map.MapTiles[Map.GetTileIndex(xx, y)].ChangeType(Sand.TType);
+
+										if (xx == (Sand.EndX[i] + Ocean.EndX[i]) - 1)
+										{
+											Sand.Border[count] = Map.GetTileIndex(xx, y);
+											count++;
+										}
 									}
 								}
 							}
@@ -363,34 +390,32 @@ public class Mapbuilder
 
 	private void Mountain()
 	{
+		int count = 0;
+
 		Orientation O = Orientation.DEFAULT;
 
 		if (Orientations.contains(Orientation.NORTH))
 		{
 			O = Orientation.SOUTH;
 			LockOrient(O);
-		}
-		else if (Orientations.contains(Orientation.SOUTH))
+		} else if (Orientations.contains(Orientation.SOUTH))
 		{
 			O = Orientation.NORTH;
 			LockOrient(O);
-		}
-		else if (Orientations.contains(Orientation.EAST))
+		} else if (Orientations.contains(Orientation.EAST))
 		{
 			O = Orientation.WEST;
 			LockOrient(O);
-		}
-		else if (Orientations.contains(Orientation.WEST))
+		} else if (Orientations.contains(Orientation.WEST))
 		{
 			O = Orientation.EAST;
 			LockOrient(O);
 		}
 
-		Mountain.Init(O, Tile.Type.MOUNTAIN);
+		Mountain.Init(O, Tile.Type.MOUNTAIN, true);
 
 		if (O != Orientation.DEFAULT)
 		{
-			Mountain.Init(O, Tile.Type.MOUNTAIN);
 
 			for (int i = 1; i < Mountain.EndX.length; i++)
 			{
@@ -403,6 +428,12 @@ public class Mapbuilder
 							for (int x = Mountain.EndX[i - 1]; x < Mountain.EndX[i]; x++)
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Mountain.TType);
+
+								if (y == Mountain.EndY[i] - 1)
+								{
+									Mountain.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 						break;
@@ -413,6 +444,11 @@ public class Mapbuilder
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Mountain.TType);
 
+								if (y == Dimension - Mountain.EndY[i - 1])
+								{
+									Mountain.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 						break;
@@ -422,6 +458,12 @@ public class Mapbuilder
 							for (int x = Dimension - Mountain.EndX[i - 1]; x < Dimension; x++)
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Mountain.TType);
+
+								if (x == Dimension - Mountain.EndX[i - 1])
+								{
+									Mountain.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 						break;
@@ -432,15 +474,49 @@ public class Mapbuilder
 							{
 								Map.MapTiles[Map.GetTileIndex(x, y)].ChangeType(Mountain.TType);
 
+								if (x == Mountain.EndX[i] - 1)
+								{
+									Mountain.Border[count] = Map.GetTileIndex(x, y);
+									count++;
+								}
 							}
 						}
 						break;
 					case DEFAULT:
 					case CENTER:
-						Logging.getInstance().Write(Type.WARNING, "Something Terrible has happened while generating OCEAN in MapBuilder");
+					default:
+						Logging.getInstance().Write(Type.ERROR, "Something Terrible has happened while generating OCEAN in MapBuilder");
 						break;
 				}
 			}
+		}
+	}
+
+	private void River()
+	{
+		Orientation O = Orientation.DEFAULT;
+		Orientation Direction;
+		O = GenerateOrient();
+		
+		int bends = 7 ;
+		
+		
+		switch(O)
+		{
+			case NORTH:
+				break;
+			case SOUTH:
+				break;
+			case EAST:
+				break;
+			case WEST:
+				break;
+			case DEFAULT:
+			default:
+				Logging.getInstance().Write(Type.ERROR, "Default case in River Generation");
+				break;
+				
+				
 		}
 	}
 
@@ -482,7 +558,7 @@ public class Mapbuilder
 				break;
 			}
 		}
-
+		
 		return O;
 	}
 
