@@ -19,6 +19,11 @@ public class Map extends renderable.Renderable
 	protected int TileSize = 0;
 	protected Tile[] MapTiles;
 	private static Map Instance;
+	
+	public enum Direction
+	{
+		NORTH, SOUTH, EAST, WEST, CURRENT, UNKNOWN
+	}
 
 	private Map()
 	{
@@ -125,6 +130,32 @@ public class Map extends renderable.Renderable
 			return MapTiles[index];
 		else 
 			return new Tile();
+	}
+	
+	public Direction GetCardinalPositionOfTarget(Vector2D TV, Vector2D CV)
+	{
+		int x = TV.x - CV.x;
+		int y = TV.y - CV.y;
+		
+		if (TV.x == CV.x && TV.y == CV.y)
+			return Direction.CURRENT;
+		
+		if (Math.abs(x) > Math.abs(y))
+		{
+			if (x < 0)
+				return Direction.WEST;
+			else if (x > 0)
+				return Direction.EAST;
+		}
+		else 
+		{
+			if (y < 0)
+				return Direction.NORTH;
+			else 
+				return Direction.SOUTH;
+		}
+		return Direction.UNKNOWN;
+			
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class Game
 	}
 	
 	/**
-	 * Start up the game instance and initialize all the singleton componets for the first time
+	 * Start up the game instance and initialize all the singleton components for the first time
 	 */
 	private void Init()
 	{		

@@ -182,6 +182,24 @@ public class Mapbuilder
 	private enum Orientation
 	{
 		NORTH, SOUTH, EAST, WEST, CENTER, DEFAULT;
+
+		@SuppressWarnings({ "incomplete-switch", "unused" })
+		public Orientation Opposite(Orientation O)
+		{
+			switch (O)
+			{
+				case NORTH:
+					return SOUTH;
+				case SOUTH:
+					return NORTH;
+				case EAST:
+					return WEST;
+				case WEST:
+					return EAST;
+			}
+
+			return O;
+		}
 	}
 
 	public enum MassType
@@ -242,6 +260,8 @@ public class Mapbuilder
 		Sea();
 		Mountain();
 		River();
+		Decorate(Dimension * 3);
+		DecorateBorders();
 
 		return Map;
 	}
@@ -270,7 +290,7 @@ public class Mapbuilder
 		int count = 0;
 
 		Orientation O = GenerateOrient();
-		O = Orientation.SOUTH;
+		O = Orientation.NORTH;
 		LockOrient(O);
 
 		if (O != Orientation.DEFAULT)
@@ -494,14 +514,12 @@ public class Mapbuilder
 
 	private void River()
 	{
-		Orientation O = Orientation.DEFAULT;
-		Orientation Direction;
-		O = GenerateOrient();
-		
-		int bends = 7 ;
-		
-		
-		switch(O)
+		Orientation MountainO = Mountain.MassOrientation;
+		Orientation Direction = Mountain.MassOrientation.Opposite(Mountain.MassOrientation);
+
+		int bends = 7;
+
+		switch (MountainO)
 		{
 			case NORTH:
 				break;
@@ -515,8 +533,7 @@ public class Mapbuilder
 			default:
 				Logging.getInstance().Write(Type.ERROR, "Default case in River Generation");
 				break;
-				
-				
+
 		}
 	}
 
@@ -558,7 +575,7 @@ public class Mapbuilder
 				break;
 			}
 		}
-		
+
 		return O;
 	}
 
@@ -586,5 +603,57 @@ public class Mapbuilder
 			return true;
 
 		return false;
+	}
+
+	/**
+	 * 
+	 * @param max
+	 */
+	private void Decorate(int max)
+	{
+		int Index = Map.MapTiles[Rand.nextInt(Dimension * Dimension)].TileID;
+		int Num_Deco = 0;
+		int Max_Deco = max;
+
+		boolean Running = true;
+
+		while (Running)
+		{
+			if (Map.MapTiles[Index].Type() == Tile.Type.DIRT || Map.MapTiles[Index].Type() == Tile.Type.GRASS)
+			{
+				Map.MapTiles[Index].ChangeType(Tile.Type.WATER);
+
+				Num_Deco++;
+			}
+
+			if (Map.MapTiles[Index].Type() == Tile.Type.SAND)
+			{
+				Map.MapTiles[Index].ChangeType(Tile.Type.MOUNTAIN);
+
+				Num_Deco++;
+			}
+
+			if (Num_Deco == Max_Deco)
+			{
+				Running = false;
+			}
+			
+			Index = Rand.nextInt(Dimension * Dimension);
+		}
+	}
+	
+	private void DecorateBorders()
+	{
+		int Max_Deco = Dimension / 10;
+		int Random;
+		
+		for (int i = 0; i < Max_Deco; i++)
+		{
+			Random = Rand.nextInt(Dimension);
+			Map.MapTiles[Ocean.Border[Random]].ChangeType(Tile.Type.DIRT);
+			
+			Random = Rand.nextInt(Dimension);
+			Map.MapTiles[Mountain.Border[Random]].ChangeType(Tile.Type.SAND);
+		}
 	}
 }

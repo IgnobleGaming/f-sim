@@ -17,7 +17,8 @@ import java.util.*;
 public class Entity extends Renderable
 {
 	/**
-	 * Entity class extends Renderable 
+	 * Entity class extends Renderable
+	 * 
 	 * @author Michael
 	 *
 	 */
@@ -25,7 +26,7 @@ public class Entity extends Renderable
 	{
 		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED
 	}
-	
+
 	public enum State
 	{
 		STATIONARY(0), MOVINGLEFT(1), MOVINGRIGHT(2), MOVINGUP(3), MOVINGDOWN(4);
@@ -55,18 +56,26 @@ public class Entity extends Renderable
 
 	/**
 	 * Creates a new entity
-	 * @param Name ( display name of entity )
-	 * @param Desc ( display description of entity )
-	 * @param Position ( initial position )
-	 * @param Velocity ( initial velocity )
-	 * @param width ( width in pixels of ent )
-	 * @param height ( height in pixels of ent )
-	 * @param Flags ( initial array of flags )
+	 * 
+	 * @param Name
+	 *            ( display name of entity )
+	 * @param Desc
+	 *            ( display description of entity )
+	 * @param Position
+	 *            ( initial position )
+	 * @param Velocity
+	 *            ( initial velocity )
+	 * @param width
+	 *            ( width in pixels of ent )
+	 * @param height
+	 *            ( height in pixels of ent )
+	 * @param Flags
+	 *            ( initial array of flags )
 	 */
 	public Entity(String Name, String Desc, Vector2D Position, Vector Velocity, int width, int height, Flag... Flags)
 	{
-		super(width,height);
-		this.Position = new Vector2D(0,0);
+		super(width, height);
+		this.Position = new Vector2D(0, 0);
 		this.Name = Name;
 		this.Description = Desc;
 		this.Velocity = Velocity;
@@ -88,7 +97,8 @@ public class Entity extends Renderable
 	/**
 	 * Updates the current entity's name
 	 * 
-	 * @param NewName ( string containing new name )
+	 * @param NewName
+	 *            ( string containing new name )
 	 */
 	public void Name(String NewName)
 	{
@@ -99,7 +109,7 @@ public class Entity extends Renderable
 	public String Name()
 	{
 		return Name;
-	} 
+	}
 
 	public void Description(String NewDesc)
 	{
@@ -153,7 +163,7 @@ public class Entity extends Renderable
 		if (!Flags.contains(Flag.LOCKED) && Flags.contains(Removing))
 			Flags.remove(Removing);
 	}
-	
+
 	/**
 	 * Render the entity's current sprite ( overrides renderable draw )
 	 */
@@ -163,55 +173,53 @@ public class Entity extends Renderable
 			CurrentSprite = null;
 		interfaces.Render.DrawImage(CurrentSprite, Position);
 	}
-	
+
 	/**
 	 * Move the current entity in a specific direction
 	 * 
-	 * @param Dir ( direction )
+	 * @param Dir
+	 *            ( direction )
 	 */
-	@Override public void Move(Direction.Relative Dir)
+	@Override
+	public void Move(Direction.Relative Dir)
 	{
-		/*int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
-		
-		if (LastTile != game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16))
-		{
-			LastTile.RemoveFlag(game.Tile.Flag.BLOCKED);
-			LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16);
-			LastTile.AddFlag(game.Tile.Flag.BLOCKED);
-		}*/
-		
+		/*
+		 * int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
+		 * 
+		 * if (LastTile != game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16)) { LastTile.RemoveFlag(game.Tile.Flag.BLOCKED); LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16); LastTile.AddFlag(game.Tile.Flag.BLOCKED); }
+		 */
 
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
-		
-		game.Tile CollisionTile = null; 
+
+		game.Tile CollisionTile = null;
 		int XPlus = 0;
 		int YPlus = 0;
-		
+
 		switch (Dir)
-		{			
+		{
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
-					YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
-			case DOWN: 		
+			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
-					YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
-					XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
-					XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
 				break;
 		}
-		
-		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);	
-		
+
+		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
+
 		LastMoveTime += Game.GetInstance().Delta();
-		
-		if (LastMoveTime >= StepSize);
+
+		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
 		if (CollisionTile.TileID != CurrentTile)
@@ -219,21 +227,21 @@ public class Entity extends Renderable
 			Position.x += XPlus;
 			Position.y += YPlus;
 		}
-		
-		if (TotalMoveTime >= MovementSpeed )
+
+		if (TotalMoveTime >= MovementSpeed)
 		{
 			CurrentTile = CollisionTile.TileID;
 			TotalMoveTime = 0;
 			LastMoveTime = 0;
 		}
 	}
-	
+
 	/**
 	 * Process the current entity's state ( does not change state )
 	 */
 	public void Update()
 	{
-		switch(CurrentState)
+		switch (CurrentState)
 		{
 			case STATIONARY:
 				break;
@@ -250,35 +258,38 @@ public class Entity extends Renderable
 				this.Move(Direction.Relative.RIGHT);
 				break;
 		}
-		
+
 		if (Animation.size() > CurrentState.val && Animation.get(CurrentState.val) != null)
 		{
 			MaterialFile NewSprite = Animation.get(CurrentState.val).RequestNextFrame();
 			if (NewSprite != null)
 				CurrentSprite = NewSprite;
-		}
-		else
+		} else
 			Logging.getInstance().Write(Type.WARNING, "entity \"%s\" has has no animation for current state \"%s\"", this.Name, this.CurrentState.toString());
 	}
-	
+
 	/**
 	 * Change the current entity's state
-	 * @param S ( state to set to )
+	 * 
+	 * @param S
+	 *            ( state to set to )
 	 */
 	public void SetState(State S)
 	{
 		if (!Flags.contains(Flag.LOCKED))
 			CurrentState = S;
 	}
-	
+
 	public double MovementSpeed()
 	{
 		return MovementSpeed;
 	}
-	
+
 	/**
 	 * Scale the entity's movement speed ( less precise factors work better )
-	 * @param factor ( speed to scale by )
+	 * 
+	 * @param factor
+	 *            ( speed to scale by )
 	 */
 	public void MovementSpeed(double factor)
 	{
@@ -289,20 +300,24 @@ public class Entity extends Renderable
 				A.UpdateSpeedScale(factor);
 		}
 	}
-	
+
 	/**
 	 * Add a new animation to current entity
-	 * @param AnimState ( the state that the animation is played in )
-	 * @param length ( how long the animation should last for )
-	 * @param Textures ( array of material files consisting of each frame *no nulls* )
+	 * 
+	 * @param AnimState
+	 *            ( the state that the animation is played in )
+	 * @param length
+	 *            ( how long the animation should last for )
+	 * @param Textures
+	 *            ( array of material files consisting of each frame *no nulls* )
 	 */
 	public void AddAnimation(State AnimState, int length, MaterialFile... Textures) // length the animation time
 	{
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
 		if (NewAnim.Valid)
-			Animation.add(AnimState.val,NewAnim);
+			Animation.add(AnimState.val, NewAnim);
 	}
-	
+
 	public int TileID()
 	{
 		return CurrentTile;
