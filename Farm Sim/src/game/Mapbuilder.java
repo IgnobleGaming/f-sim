@@ -240,6 +240,11 @@ public class Mapbuilder
 
 		Map = game.Map.GetInstance();
 	}
+	
+	public Mapbuilder(Map Map)
+	{
+		
+	}
 
 	public void init()
 	{
