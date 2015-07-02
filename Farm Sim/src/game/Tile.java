@@ -155,6 +155,7 @@ public class Tile extends renderable.Renderable
 		TileID = id;
 	}
 	
+	
 	public Type Type()
 	{
 		return this.TileType;

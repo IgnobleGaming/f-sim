@@ -130,7 +130,7 @@ public class Mapbuilder
 							while (Math.abs(EndY[i - 1] - EndY[i]) < RandMin || Math.abs(EndY[i - 1] - EndY[i]) > RandMax)
 							{
 								EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
-								System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
+								//System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
 							}
 						}
 

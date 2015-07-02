@@ -8,6 +8,7 @@ import specifier.*;
 import renderable.*;
 import renderable.Renderable.Position;
 import renderable.Renderable.PositionType;
+import interfaces.Camera;
 
 import java.util.*;
 
@@ -37,6 +38,7 @@ public class Game
 	public boolean IsRunning = true;
 	private object.Entity PlayerEnt;
 	private Mapbuilder MapBuilder;
+	private Camera GameCamera;
 
 	
 	public int SelectedEnt = 0;
@@ -74,6 +76,7 @@ public class Game
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
 		
+		GameCamera = Camera.getInstance(Output.Width(), Output.Height(), 1);
 		MapBuilder = new Mapbuilder(Mapbuilder.Size.SMALL);
 		
 		MaterialFile TextMat = new MaterialFile("resources\\hud\\fonts\\consolas_huge.png", MaterialFile.Type.PNG);
@@ -210,8 +213,8 @@ public class Game
 		GameVariables.Set(new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));
 		GameVariables.Set(new object.Variable("fs_logfile", "name of the log file", "console.log", object.Variable.Flag.Latched));
 		
-		GameVariables.Set(new object.Variable("vid_width", "horizontal screen resolution", 1600, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 1100, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_width", "horizontal screen resolution", 1280, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 720, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 		
@@ -271,8 +274,11 @@ public class Game
 	public void UpdateWorld()
 	{
 		for (renderable.Renderable R : GameObjects.Objs())
+		{
 			if (R instanceof object.Entity)
 				((object.Entity) R).Update();
+		}
+		GameCamera.Update();
 	}
 	
 	public State State()

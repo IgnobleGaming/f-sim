@@ -1,6 +1,7 @@
 package game;
 
 import game.Tile.Flag;
+import interfaces.Camera;
 import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.FileManager;
@@ -164,11 +165,13 @@ public class Map extends renderable.Renderable
 	public void Draw()
 	{
 		for (Tile T : MapTiles)
-			if (T != null && T.CheckFlag(Flag.DRAWABLE))
+		{
+			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
 				T.Draw();
+		}
 		
 		
-		interfaces.Render.DrawMap(GetMinimap());
+		//interfaces.Render.DrawMap(GetMinimap());
 	}
 	
 	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)

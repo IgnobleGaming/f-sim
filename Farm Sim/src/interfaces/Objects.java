@@ -42,4 +42,15 @@ public class Objects
 	{
 		return Objs;
 	}
+	
+	public ArrayList<object.Entity> Entities()
+	{
+		ArrayList<object.Entity> entityList = new ArrayList<object.Entity>();
+		for (Renderable R : Objs)
+		{
+			if (R.getClass().isInstance(object.Entity.class))
+				entityList.add((object.Entity)R);
+		}
+		return entityList;
+	}
 }

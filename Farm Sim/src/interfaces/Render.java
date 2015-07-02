@@ -112,7 +112,7 @@ public class Render
 	{
 		for (Renderable R : interfaces.Objects.GetInstance().Objs())
 		{
-			if (R.Visible)
+			if (R.Visible && interfaces.Camera.getInstance().inViewPlane(R))
 				RenderQueue.add(R);
 		}
 	}
@@ -130,9 +130,8 @@ public class Render
 	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
 	{
 		Mat.Texture().bind();
-		
-		
 
+		GL11.glViewport(Camera.getInstance().cameraLookPoint().x - 640, Camera.getInstance().cameraLookPoint().y - 360, 1280, 720);
 		GL11.glBegin(GL11.GL_QUADS);
 		
 		switch (Mat.Facing())

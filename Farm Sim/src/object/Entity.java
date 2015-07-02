@@ -222,7 +222,7 @@ public class Entity extends Renderable
 		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
-		if (CollisionTile.TileID != CurrentTile)
+		//if (CollisionTile.TileID != CurrentTile)
 		{
 			Position.x += XPlus;
 			Position.y += YPlus;
