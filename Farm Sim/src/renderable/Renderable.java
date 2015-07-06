@@ -1,6 +1,7 @@
 package renderable;
 
 import specifier.*;
+import interfaces.Camera;
 import interfaces.Render;
 import interfaces.Variables;
 import interfaces.file.Logging;
@@ -18,7 +19,9 @@ public abstract class Renderable
 	private int Height;
 	public boolean Visible;
 	protected MaterialFile CurrentSprite;
-
+	protected RenderType R;
+	
+	
 	public enum Position
 	{
 		TOPLEFT, TOPCENTER, TOPRIGHT, CENTERLEFT, CENTERCENTER, CENTERRIGHT, BOTTOMLEFT, BOTTOMCENTER, BOTTOMRIGHT
@@ -27,6 +30,10 @@ public abstract class Renderable
 	public enum PositionType
 	{
 		RELATIVE, ABSOLUTE
+	}
+	
+	public enum RenderType {
+		MENU, GAME
 	}
 
 	public void Draw()
@@ -41,6 +48,11 @@ public abstract class Renderable
 		Height = height;
 		//Logging.getInstance().Write(Logging.Type.INFO, "New renderable object created! [ z=%d, visible=%b ]", ZIndex, Visible);
 	}
+	
+	public RenderType RenType()
+	{
+		return R;
+	}
 
 	public void Position(int x, int y)
 	{
@@ -52,6 +64,11 @@ public abstract class Renderable
 	{
 		XPos = V.x;
 		YPos = V.y;
+	}
+
+	public specifier.Vector2D translatedRelativePos()
+	{
+		return new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x / 42 + this.Position().x, Camera.getInstance().cameraLookPoint().y / 42 + this.Position().y);
 	}
 
 	public specifier.Vector2D Position()

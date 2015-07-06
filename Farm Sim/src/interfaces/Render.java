@@ -7,6 +7,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
+import org.lwjgl.util.glu.GLU;
 import org.lwjgl.LWJGLException;
 
 import java.util.ArrayList;
@@ -131,9 +132,17 @@ public class Render
 	{
 		Mat.Texture().bind();
 
-		GL11.glViewport(Camera.getInstance().cameraLookPoint().x - 640, Camera.getInstance().cameraLookPoint().y - 360, 1280, 720);
-		GL11.glBegin(GL11.GL_QUADS);
+		//GL11.glViewport(Camera.getInstance().cameraLookPoint().x - 640, Camera.getInstance().cameraLookPoint().y - 360, 1280, 720);
+		int[] orthoPos = Camera.getInstance().translatedOrtho();
 		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(orthoPos[0],orthoPos[1],orthoPos[2],orthoPos[3], 1, -1);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
+		
+		GL11.glBegin(GL11.GL_QUADS);
+
 		switch (Mat.Facing())
 		{
 			case NORMAL:

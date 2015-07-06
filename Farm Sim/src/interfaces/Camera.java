@@ -1,7 +1,5 @@
 package interfaces;
 
-import java.awt.TrayIcon.MessageType;
-
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 
@@ -9,6 +7,7 @@ public class Camera
 {
 	private static Camera Instance;
 	private object.Entity Focus;
+	//private 
 	
 	public Camera(int Width, int Height, float Distance)
 	{
@@ -38,9 +37,6 @@ public class Camera
 	{
 		if (Focus == null)
 			return false;
-		
-		
-		Logging.getInstance().Write(Type.INFO, "entity class is: " + R.getClass().toString() );
 		
 		if (R.getClass().isInstance(object.Entity.class) || R.getClass().isInstance(game.Tile.class) || R.getClass().isInstance(game.Map.class))
 		{
@@ -85,6 +81,26 @@ public class Camera
 	public specifier.Vector2D cameraLookPoint()
 	{
 		return new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
+	}
+	
+	public int Width()
+	{
+		return Width;
+	}
+	
+	public int Height()
+	{
+		return Height;
+	}
+	
+	public int[] translatedOrtho()
+	{
+		int left = Focus.Position().x - Width / 2;
+		int right = Focus.Position().x + Width / 2;
+		int top = Focus.Position().y - Height / 2;
+		int bottom = Focus.Position().y + Height / 2;
+		
+		return new int[] { left, right, bottom, top };
 	}
 	
 	private int Width;

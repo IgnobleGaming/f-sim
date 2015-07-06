@@ -86,7 +86,7 @@ public class Console extends HUD
 
 	public void Draw()
 	{
-		Render.DrawImage(Texture, Position());
+		Render.DrawImage(Texture, translatedRelativePos());
 
 		In.Draw();
 

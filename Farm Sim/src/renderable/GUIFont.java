@@ -47,7 +47,8 @@ public class GUIFont extends Renderable
 
 	public void Draw()
 	{
-		Render.DrawString(this.Text, this.Position().x, this.Position().y, Colour, Sheet);
+		
+		Render.DrawString(this.Text, translatedRelativePos().x,translatedRelativePos().y, Colour, Sheet);
 	}
 
 	public void Text(String NewText)

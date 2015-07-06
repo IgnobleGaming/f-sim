@@ -144,6 +144,7 @@ public class Game
 		game.Map GameMap = MapBuilder.Build();
 		GameObjects.Add(GameMap);
 		
+		
 		/***************************************************************************************************/
 		
 		HUD.GetInstance().Init();
