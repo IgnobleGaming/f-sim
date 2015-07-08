@@ -1,15 +1,18 @@
 package game;
 
+import interfaces.Camera;
 import interfaces.Game;
 import interfaces.Objects;
 import interfaces.file.Logging;
 import object.Entity.State;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import renderable.Console;
 import renderable.Renderable;
 
+import java.awt.TrayIcon.MessageType;
 import java.util.ArrayList;
 
 import jdk.nashorn.internal.runtime.regexp.joni.constants.Arguments;
@@ -23,7 +26,7 @@ public class Controller
 
 	private enum InputType
 	{
-		UP, DOWN, LEFT, RIGHT, ESCAPE, CONSOLE, RELEASE, ENTER, NONE, BACK
+		UP, DOWN, LEFT, RIGHT, ESCAPE, ZOOM, CONSOLE, RELEASE, ENTER, NONE, BACK
 	};
 
 	public Controller()
@@ -126,6 +129,37 @@ public class Controller
 	private void ReadInput()
 	{
 		// this is polled
+		while(Mouse.next())
+		{
+			int EventButton = Mouse.getEventButton();
+			int MouseWheelDelta = Mouse.getEventDWheel();
+			
+			switch (EventButton)
+			{
+				default:
+					break;
+			}
+			
+			if (Math.abs(MouseWheelDelta) > 100)
+			{
+				double CurDist = Camera.getInstance().Distance();
+				double ZoomDelta = CurDist;
+						
+				if (MouseWheelDelta > 0)
+				{
+					if (CurDist > .2)
+						ZoomDelta = CurDist * .95;
+				}
+				else
+				{
+					if (CurDist < 5)
+						ZoomDelta = CurDist * 1.05;
+				}
+					
+				Camera.getInstance().SetDistance(ZoomDelta);
+			}
+		}
+		
 		while (Keyboard.next())
 		{
 			int EventKey = Keyboard.getEventKey();

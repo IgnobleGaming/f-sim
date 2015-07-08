@@ -133,7 +133,7 @@ public class Render
 		Mat.Texture().bind();
 
 		//GL11.glViewport(Camera.getInstance().cameraLookPoint().x - 640, Camera.getInstance().cameraLookPoint().y - 360, 1280, 720);
-		int[] orthoPos = Camera.getInstance().translatedOrtho();
+		double[] orthoPos = Camera.getInstance().translatedOrtho();
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();

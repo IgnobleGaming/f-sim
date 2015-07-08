@@ -33,6 +33,11 @@ public class Camera
 		return Instance;		
 	}
 	
+	public void SetDistance(double dist)
+	{
+		Distance = dist;
+	}
+	
 	public boolean inViewPlane(renderable.Renderable R)
 	{
 		if (Focus == null)
@@ -40,10 +45,10 @@ public class Camera
 		
 		if (R.getClass().isInstance(object.Entity.class) || R.getClass().isInstance(game.Tile.class) || R.getClass().isInstance(game.Map.class))
 		{
-			int maxWidth = Focus.Position().x + Width / 4;
-			int minWidth = Focus.Position().x - Width / 4;
-			int maxHeight = Focus.Position().y + Height / 4;
-			int minHeight = Focus.Position().y - Height / 4;
+			int maxWidth = Focus.Position().x + Width;
+			int minWidth = Focus.Position().x - Width;
+			int maxHeight = Focus.Position().y + Height;
+			int minHeight = Focus.Position().y - Height;
 		
 			if (R.Position().x <= maxWidth && R.Position().x >= minWidth && R.Position().y <= maxHeight && R.Position().y >= minHeight )
 				return true;
@@ -60,12 +65,12 @@ public class Camera
 	public boolean inViewPlane(game.Tile T)
 	{
 		if (Focus == null)
-			return false;
+			return false;	
 		
-		int maxWidth = Focus.Position().x + Width / 2;
-		int minWidth = Focus.Position().x - Width / 2;
-		int maxHeight = Focus.Position().y + Height / 2;
-		int minHeight = Focus.Position().y - Height / 2;
+		double maxWidth = Focus.Position().x + Width * Distance;
+		double minWidth = Focus.Position().x - Width * Distance;
+		double maxHeight = Focus.Position().y + Height * Distance;
+		double minHeight = Focus.Position().y - Height * Distance;
 		
 		if (T.Position().x <= maxWidth && T.Position().x >= minWidth && T.Position().y <= maxHeight && T.Position().y >= minHeight )
 				return true;
@@ -93,17 +98,22 @@ public class Camera
 		return Height;
 	}
 	
-	public int[] translatedOrtho()
+	public double Distance()
 	{
-		int left = Focus.Position().x - Width / 2;
-		int right = Focus.Position().x + Width / 2;
-		int top = Focus.Position().y - Height / 2;
-		int bottom = Focus.Position().y + Height / 2;
+		return Distance;
+	}
+	
+	public double[] translatedOrtho()
+	{
+		double left = Focus.Position().x - Width / 2 * Distance;
+		double right = Focus.Position().x + Width / 2 * Distance;
+		double top = Focus.Position().y - Height / 2 * Distance;
+		double bottom = Focus.Position().y + Height / 2 * Distance;
 		
-		return new int[] { left, right, bottom, top };
+		return new double[] { left, right, bottom, top };
 	}
 	
 	private int Width;
 	private int Height;
-	private float Distance;
+	private double Distance;
 }
