@@ -9,4 +9,12 @@ public class Vector2D
 		this.x = x;
 		this.y = y;
 	}
+	
+	public boolean Match(int x, int y)
+	{
+		if (x == this.x && y == this.y)
+			return true;
+		else 
+			return false;
+	}
 }

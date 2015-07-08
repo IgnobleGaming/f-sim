@@ -9,6 +9,7 @@ import renderable.*;
 import renderable.Renderable.Position;
 import renderable.Renderable.PositionType;
 import interfaces.Camera;
+import game.Map;
 
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class Game
 	private Objects GameObjects;
 	public boolean IsRunning = true;
 	private object.Entity PlayerEnt;
-	private Mapbuilder MapBuilder;
+	private Map Map;
 	private Camera GameCamera;
 
 	
@@ -76,8 +77,14 @@ public class Game
 		Files = FileManager.getInstance();
 		Input = new game.Controller();
 		
+		Map = game.Map.GetInstance();
+		Mapbuilder MB = game.Mapbuilder.GetInstance();
+		
+		MB.Build();
+		
+		GameObjects.Add(Map);
+		
 		GameCamera = Camera.getInstance(Output.Width(), Output.Height(), 1);
-		MapBuilder = new Mapbuilder(Mapbuilder.Size.SMALL);
 		
 		MaterialFile TextMat = new MaterialFile("resources\\hud\\fonts\\consolas_huge.png", MaterialFile.Type.PNG);
 		TextMat.Open();
@@ -117,32 +124,6 @@ public class Game
 		 *****************************************Tile Image Resources************************************
 		 ************************************************************************************************/
 		
-		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass.png", MaterialFile.Type.PNG);
-		TileSprite.Open();
-		Files.Add(TileSprite);
-		
-		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\dirt.png", MaterialFile.Type.PNG);
-		TileSprite2.Open();
-		Files.Add(TileSprite2);
-		
-		MaterialFile TileSprite3 = new MaterialFile("resources\\ingame\\tiles\\grass_stone.png", MaterialFile.Type.PNG);
-		TileSprite3.Open();
-		Files.Add(TileSprite3);
-		
-		MaterialFile TileSprite4 = new MaterialFile("resources\\ingame\\tiles\\water.png", MaterialFile.Type.PNG);
-		TileSprite4.Open();
-		Files.Add(TileSprite4);
-		
-		MaterialFile SandTile = new MaterialFile("resources\\ingame\\tiles\\sand.png", MaterialFile.Type.PNG);
-		SandTile.Open();
-		Files.Add(SandTile);
-		
-		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
-		MountainTile.Open();
-		Files.Add(MountainTile);
-		
-		game.Map GameMap = MapBuilder.Build();
-		GameObjects.Add(GameMap);
 		
 		
 		/***************************************************************************************************/
@@ -277,7 +258,9 @@ public class Game
 		for (renderable.Renderable R : GameObjects.Objs())
 		{
 			if (R instanceof object.Entity)
+			{
 				((object.Entity) R).Update();
+			}
 		}
 		GameCamera.Update();
 	}
@@ -297,3 +280,4 @@ public class Game
 		return PlayerEnt;
 	}
 }
+

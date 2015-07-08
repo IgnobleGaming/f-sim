@@ -7,9 +7,12 @@ import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
+import interfaces.file.types.MaterialFile;
 import specifier.Vector2D;
 
 import java.util.Random;
+
+import object.Entity;
 
 import org.newdawn.slick.Color;
 
@@ -38,8 +41,14 @@ public class Map extends renderable.Renderable
 	public static Map GetInstance()
 	{
 		if (Instance == null)
+		{
 			Instance = new Map();
-		return Instance;	
+			Instance.init();
+			
+			return Instance;
+		}
+		else 
+			return Instance;	
 	}
 
 	/*
@@ -62,6 +71,34 @@ public class Map extends renderable.Renderable
 	public int TileSize()
 	{
 		return TileSize;
+	}
+	
+	public void init()
+	{
+		
+		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass.png", MaterialFile.Type.PNG);
+		TileSprite.Open();
+		FileManager.getInstance().Add(TileSprite);
+		
+		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\dirt.png", MaterialFile.Type.PNG);
+		TileSprite2.Open();
+		FileManager.getInstance().Add(TileSprite2);
+		
+		MaterialFile TileSprite3 = new MaterialFile("resources\\ingame\\tiles\\grass_stone.png", MaterialFile.Type.PNG);
+		TileSprite3.Open();
+		FileManager.getInstance().Add(TileSprite3);
+		
+		MaterialFile TileSprite4 = new MaterialFile("resources\\ingame\\tiles\\water.png", MaterialFile.Type.PNG);
+		TileSprite4.Open();
+		FileManager.getInstance().Add(TileSprite4);
+		
+		MaterialFile SandTile = new MaterialFile("resources\\ingame\\tiles\\sand.png", MaterialFile.Type.PNG);
+		SandTile.Open();
+		FileManager.getInstance().Add(SandTile);
+		
+		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
+		MountainTile.Open();
+		FileManager.getInstance().Add(MountainTile);
 	}
 
 	/**
@@ -167,10 +204,19 @@ public class Map extends renderable.Renderable
 		for (Tile T : MapTiles)
 		{
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
+			{
 				T.Draw();
+				System.out.println("Tile is Visible " + T.TileType());				
+			}
+			if (T == null)
+				System.out.println("Tile is null");
+			if(!T.CheckFlag(Flag.DRAWABLE))
+				System.out.println("Tile is not Drawable");
+		
+			
 		}
 		
-		
+		System.out.println("No tiles");
 		//interfaces.Render.DrawMap(GetMinimap());
 	}
 	
@@ -193,13 +239,13 @@ public class Map extends renderable.Renderable
 					return MapTiles[tileInt];
 			case UP:
 				tileInt = CurTile - HorizontalTileNum;
-				if (tileInt < 0 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
-					return MapTiles[CurTile];
+				if (tileInt > 0 && MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+					return MapTiles[tileInt];
 				else
-					return MapTiles[tileInt];			
+					return MapTiles[CurTile];			
 			case DOWN:
 				tileInt = CurTile + HorizontalTileNum;
-				if (tileInt < MapTiles.length && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+				if (tileInt < MapTiles.length && MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
 					return MapTiles[tileInt];
 				else
 					return MapTiles[CurTile];
@@ -271,4 +317,9 @@ public class Map extends renderable.Renderable
 
 		return M;
 	} 
+	
+	public Entity GetEntityFromIndex(int index)
+	{
+		return null;
+	}
 }

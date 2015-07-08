@@ -19,22 +19,21 @@ public class Tile extends renderable.Renderable
 	{
 		GRASS, WATER, DIRT, SAND, MOUNTAIN
 	}
-	
+
 	private EnumSet<Flag> Flags;
 	private Type TileType;
 	private int hash;
 	public int TileID = 0;
-	
-	
+
 	public Tile()
 	{
-		super(32,32); // default tile size
+		super(32, 32); // default tile size
 		Flags = EnumSet.of(Flag.DRAWABLE);
 	}
-	
+
 	public Tile(Type T)
 	{
-		super(32,32); // default tile size
+		super(32, 32); // default tile size
 		Flags = EnumSet.of(Flag.DRAWABLE);
 		ChangeType(T);
 	}
@@ -56,7 +55,7 @@ public class Tile extends renderable.Renderable
 
 		return true;
 	}
-	
+
 	public void Resource(Object Resource)
 	{
 		if (!Flags.contains(Flag.RESOURCE))
@@ -65,24 +64,24 @@ public class Tile extends renderable.Renderable
 			Flags.add(Flag.OCCUPIED);
 		}
 	}
-	
+
 	public void ChangeType(Type T)
 	{
 		TileType = T;
-		
-		if(TileType == Type.WATER)
+
+		if (TileType == Type.WATER)
 			AddFlag(Flag.BLOCKED);
 		else
 			RemoveFlag(Flag.BLOCKED);
-		
+
 		UpdateTexture();
 	}
-	
+
 	private void UpdateTexture()
 	{
-		
-		//Sprites.clear();
-		
+
+		// Sprites.clear();
+
 		switch (TileType)
 		{
 			case GRASS:
@@ -101,6 +100,25 @@ public class Tile extends renderable.Renderable
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\mountain.png");
 				break;
 		}
+	}
+
+	public String TileType()
+	{
+		switch (TileType)
+		{
+			case GRASS:
+				return "Grass";
+			case DIRT:
+				return "Dirt";
+			case WATER:
+				return "Water";
+			case SAND:
+				return "Sand";
+			case MOUNTAIN:
+				return "Mountain";
+		}
+		
+		return "Butts";
 	}
 
 	public void AddFlag(Flag NewFlag)
@@ -127,35 +145,34 @@ public class Tile extends renderable.Renderable
 			Logging.getInstance().Write(Logging.Type.INFO, "removed flag \"%s\" for tile at ( %d, %d )", Removing.toString(), this.Position().x, this.Position().y);
 		}
 	}
-	
+
 	public void Lock()
 	{
 		if (!Flags.contains(Flag.LOCKED))
-			Flags.add(Flag.LOCKED);		
+			Flags.add(Flag.LOCKED);
 	}
-	
+
 	public void Unlock()
 	{
 		if (Flags.contains(Flag.LOCKED))
-			Flags.remove(Flag.LOCKED);		
+			Flags.remove(Flag.LOCKED);
 	}
-	
+
 	public void Draw()
 	{
 		interfaces.Render.DrawPartialImage(CurrentSprite, Position(), 0, 0, this.Height(), this.Width());
 	}
-	
+
 	public int ID()
 	{
 		return TileID;
 	}
-	
+
 	public void ID(int id)
 	{
 		TileID = id;
 	}
-	
-	
+
 	public Type Type()
 	{
 		return this.TileType;

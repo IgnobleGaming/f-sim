@@ -2,8 +2,10 @@ package game;
 
 import interfaces.Game;
 import interfaces.Variables;
+import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
+import interfaces.file.types.MaterialFile;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -209,7 +211,7 @@ public class Mapbuilder
 
 	private Size Size;
 	private int Dimension;
-	private Map Map;
+	private static Map Map;
 	private int Max_Mass;
 	private Random Rand;
 	private EnumSet<Orientation> Orientations;
@@ -218,37 +220,37 @@ public class Mapbuilder
 	private Mass Sand;
 	private Mass Mountain;
 	private Mass River;
+	
+	private static Mapbuilder Instance;
 
 	public Mapbuilder()
-	{
-		Rand = new Random(System.currentTimeMillis());
-		// int Random = Rand.nextInt(3);
-		// change depending on random
-
-		Dimension = Size.value;
-	}
-
-	public Mapbuilder(Size S)
 	{
 		this.Rand = new Random(System.currentTimeMillis());
 		this.Dimension = (int) Variables.GetInstance().Get("m_width").Current();
 		this.Orientations = EnumSet.noneOf(Orientation.class);
+		Orientations.add(Orientation.DEFAULT);
 		this.Ocean = new Mass();
 		this.Sand = new Mass();
 		this.Mountain = new Mass();
 		this.River = new Mass();
-
-		Map = game.Map.GetInstance();
 	}
 	
 	public Mapbuilder(Map Map)
 	{
 		
 	}
-
-	public void init()
+	
+	public static Mapbuilder GetInstance()
 	{
-		Orientations.add(Orientation.DEFAULT);
+		if (Instance == null)
+		{
+			Instance = new Mapbuilder();
+			Map = game.Map.GetInstance();
+			
+			return Instance;
+		}
+		else
+			return Instance;
 	}
 
 	/**
@@ -259,14 +261,12 @@ public class Mapbuilder
 	public Map Build()
 	{
 
-		Map = game.Map.GetInstance();
-
-		Land();
-		Sea();
-		Mountain();
-		River();
-		Decorate(Dimension * 3);
-		DecorateBorders();
+		Instance.Land();
+		Instance.Sea();
+		Instance.Mountain();
+		Instance.River();
+		Instance.Decorate(Dimension * 3);
+		Instance.DecorateBorders();
 
 		return Map;
 	}
