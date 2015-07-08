@@ -67,10 +67,10 @@ public class Camera
 		if (Focus == null)
 			return false;	
 		
-		double maxWidth = Focus.Position().x + Width * Distance;
-		double minWidth = Focus.Position().x - Width * Distance;
-		double maxHeight = Focus.Position().y + Height * Distance;
-		double minHeight = Focus.Position().y - Height * Distance;
+		double maxWidth = Focus.Position().x + Width / 1.75 * Distance;
+		double minWidth = Focus.Position().x - Width / 1.75 * Distance;
+		double maxHeight = Focus.Position().y + Height / 1.75 * Distance;
+		double minHeight = Focus.Position().y - Height / 1.75 * Distance;
 		
 		if (T.Position().x <= maxWidth && T.Position().x >= minWidth && T.Position().y <= maxHeight && T.Position().y >= minHeight )
 				return true;

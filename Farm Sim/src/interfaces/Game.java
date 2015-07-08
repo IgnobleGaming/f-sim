@@ -145,7 +145,7 @@ public class Game
 		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", Renderable.GetPosFromLocation(Position.CENTERCENTER, PositionType.ABSOLUTE, 16, 16, 0, 0, null), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
+		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D((int)GameVariables.Get("m_width").Current() * 16 / 2, (int)GameVariables.Get("m_height").Current() * 16 / 2), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
 		
 		player.SetSprite(playersprite);		
 		

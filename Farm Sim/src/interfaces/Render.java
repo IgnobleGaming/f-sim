@@ -132,7 +132,7 @@ public class Render
 	{
 		Mat.Texture().bind();
 
-		//GL11.glViewport(Camera.getInstance().cameraLookPoint().x - 640, Camera.getInstance().cameraLookPoint().y - 360, 1280, 720);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		double[] orthoPos = Camera.getInstance().translatedOrtho();
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -183,6 +183,7 @@ public class Render
 	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, float VerticalOffset, float HorizontalOffset, int Width, int Height)
 	{
 		Mat.Texture().bind();
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glBegin(GL11.GL_QUADS);
 		// TOP LEFT
 		GL11.glTexCoord2f(0 + HorizontalOffset, 0 + VerticalOffset);

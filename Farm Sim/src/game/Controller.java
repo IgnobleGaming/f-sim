@@ -147,12 +147,12 @@ public class Controller
 						
 				if (MouseWheelDelta > 0)
 				{
-					if (CurDist > .2)
+					if (CurDist > .35)
 						ZoomDelta = CurDist * .95;
 				}
 				else
 				{
-					if (CurDist < 5)
+					if (CurDist < 2)
 						ZoomDelta = CurDist * 1.05;
 				}
 					

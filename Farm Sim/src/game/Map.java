@@ -204,19 +204,8 @@ public class Map extends renderable.Renderable
 		for (Tile T : MapTiles)
 		{
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
-			{
-				T.Draw();
-				System.out.println("Tile is Visible " + T.TileType());				
-			}
-			if (T == null)
-				System.out.println("Tile is null");
-			if(!T.CheckFlag(Flag.DRAWABLE))
-				System.out.println("Tile is not Drawable");
-		
-			
+				T.Draw();	
 		}
-		
-		System.out.println("No tiles");
 		//interfaces.Render.DrawMap(GetMinimap());
 	}
 	
