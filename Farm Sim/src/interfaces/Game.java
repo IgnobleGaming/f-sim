@@ -149,6 +149,7 @@ public class Game
 		
 		player.SetSprite(playersprite);		
 		
+		/*~~~~~~~~~~ Stationary animation ~~~~~~~~~~*/
 		MaterialFile playeranim_0 = new MaterialFile("resources\\player_stationary_0.png", MaterialFile.Type.PNG);
 		playeranim_0.Open();
 		
@@ -160,17 +161,55 @@ public class Game
 		
 		player.AddAnimation(object.Entity.State.STATIONARY, 550, playeranim_0, playeranim_1, playeranim_2);
 		
-		MaterialFile playerwalkside_0 = new MaterialFile("resources\\player_walkside_0.png", MaterialFile.Type.PNG);
-		playerwalkside_0.Open();
+		/*~~~~~~~~~~ Walking left Animation ~~~~~~~~~~*/
+		MaterialFile playerwalkleft_0 = new MaterialFile("resources\\player_walkleft_0.png", MaterialFile.Type.PNG);
+		playerwalkleft_0.Open();
 		
-		MaterialFile playerwalkside_1 = new MaterialFile("resources\\player_walkside_1.png", MaterialFile.Type.PNG);
-		playerwalkside_1.Open();
+		MaterialFile playerwalkleft_1 = new MaterialFile("resources\\player_walkleft_1.png", MaterialFile.Type.PNG);
+		playerwalkleft_1.Open();
 		
-		MaterialFile playerwalkside_2 = new MaterialFile("resources\\player_walkside_2.png", MaterialFile.Type.PNG);
-		playerwalkside_2.Open();
+		MaterialFile playerwalkleft_2 = new MaterialFile("resources\\player_walkleft_2.png", MaterialFile.Type.PNG);
+		playerwalkleft_2.Open();
 		
-		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkside_0.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN), playerwalkside_2.SetOrientation(Orientation.DOWN), playerwalkside_1.SetOrientation(Orientation.DOWN));
+		player.AddAnimation(object.Entity.State.MOVINGLEFT, 450, playerwalkleft_0.SetOrientation(Orientation.DOWN), playerwalkleft_1.SetOrientation(Orientation.DOWN), playerwalkleft_2.SetOrientation(Orientation.DOWN), playerwalkleft_1.SetOrientation(Orientation.DOWN));
 
+		/*~~~~~~~~~~ Walking right Animation ~~~~~~~~~~*/
+		MaterialFile playerwalkright_0 = new MaterialFile("resources\\player_walkright_0.png", MaterialFile.Type.PNG);
+		playerwalkright_0.Open();
+		
+		MaterialFile playerwalkright_1 = new MaterialFile("resources\\player_walkright_1.png", MaterialFile.Type.PNG);
+		playerwalkright_1.Open();
+		
+		MaterialFile playerwalkright_2 = new MaterialFile("resources\\player_walkright_2.png", MaterialFile.Type.PNG);
+		playerwalkright_2.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkright_0.SetOrientation(Orientation.DOWN), playerwalkright_1.SetOrientation(Orientation.DOWN), playerwalkright_2.SetOrientation(Orientation.DOWN), playerwalkright_1.SetOrientation(Orientation.DOWN));
+
+		/*~~~~~~~~~~ Walking up Animation ~~~~~~~~~~*/
+		MaterialFile playerwalkup_0 = new MaterialFile("resources\\player_walkup_0.png", MaterialFile.Type.PNG);
+		playerwalkup_0.Open();
+		
+		MaterialFile playerwalkup_1 = new MaterialFile("resources\\player_walkup_1.png", MaterialFile.Type.PNG);
+		playerwalkup_1.Open();
+		
+		MaterialFile playerwalkup_2 = new MaterialFile("resources\\player_walkup_2.png", MaterialFile.Type.PNG);
+		playerwalkup_2.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGUP, 450, playerwalkup_0.SetOrientation(Orientation.DOWN), playerwalkup_1.SetOrientation(Orientation.DOWN), playerwalkup_2.SetOrientation(Orientation.DOWN), playerwalkup_1.SetOrientation(Orientation.DOWN));
+
+		/*~~~~~~~~~~ Walking down Animation ~~~~~~~~~~*/
+		MaterialFile playerwalkdown_0 = new MaterialFile("resources\\player_walkdown_0.png", MaterialFile.Type.PNG);
+		playerwalkdown_0.Open();
+		
+		MaterialFile playerwalkdown_1 = new MaterialFile("resources\\player_walkdown_1.png", MaterialFile.Type.PNG);
+		playerwalkdown_1.Open();
+		
+		MaterialFile playerwalkdown_2 = new MaterialFile("resources\\player_walkdown_2.png", MaterialFile.Type.PNG);
+		playerwalkdown_2.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGDOWN, 250, playerwalkdown_0.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN), playerwalkdown_2.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN));
+
+		
 		/******************************************************************************************************/
 		
 		PlayerEnt = player;
