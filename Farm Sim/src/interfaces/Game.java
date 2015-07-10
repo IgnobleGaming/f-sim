@@ -120,14 +120,6 @@ public class Game
 			Log.Write(Logging.Type.INFO, "Sample Text File Contains: %s", test2.getText());
 		}
 		
-		/*************************************************************************************************
-		 *****************************************Tile Image Resources************************************
-		 ************************************************************************************************/
-		
-		
-		
-		/***************************************************************************************************/
-		
 		HUD.GetInstance().Init();
 		HUD.GetInstance().ZIndex(1000);
 		GameObjects.Add(renderable.HUD.GetInstance());
@@ -207,10 +199,12 @@ public class Game
 		MaterialFile playerwalkdown_2 = new MaterialFile("resources\\player_walkdown_2.png", MaterialFile.Type.PNG);
 		playerwalkdown_2.Open();
 		
-		player.AddAnimation(object.Entity.State.MOVINGDOWN, 250, playerwalkdown_0.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN), playerwalkdown_2.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN));
+		player.AddAnimation(object.Entity.State.MOVINGDOWN, 250, playerwalkdown_0.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN));
 
 		
 		/******************************************************************************************************/
+		
+		
 		
 		PlayerEnt = player;
 		PlayerEnt.MovementSpeed(1);

@@ -3,12 +3,7 @@ package renderable;
 import specifier.*;
 import interfaces.Camera;
 import interfaces.Render;
-import interfaces.Variables;
-import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
-
-import java.util.Comparator;
-import java.util.ArrayList;
 
 public abstract class Renderable
 {

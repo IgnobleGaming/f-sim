@@ -173,15 +173,19 @@ public class Controller
 				switch (EventKey)
 				{
 					case Keyboard.KEY_UP:
+					case Keyboard.KEY_W:
 						In = InputType.UP;
 						break;
 					case Keyboard.KEY_DOWN:
+					case Keyboard.KEY_S:
 						In = InputType.DOWN;
 						break;
 					case Keyboard.KEY_LEFT:
+					case Keyboard.KEY_A:
 						In = InputType.LEFT;
 						break;
 					case Keyboard.KEY_RIGHT:
+					case Keyboard.KEY_D:
 						In = InputType.RIGHT;
 						break;
 					case Keyboard.KEY_GRAVE:

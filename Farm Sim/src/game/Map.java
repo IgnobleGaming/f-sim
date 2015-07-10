@@ -32,6 +32,7 @@ public class Map extends renderable.Renderable
 	private Map()
 	{
 		super(0,0);
+		this.ZIndex(1);
 		HorizontalTileNum = (int) Variables.GetInstance().Get("m_width").Current();
 		VerticalTileNum = (int) Variables.GetInstance().Get("m_height").Current();
 		TileSize = (int) Variables.GetInstance().Get("m_tilesize").Current();
@@ -76,9 +77,29 @@ public class Map extends renderable.Renderable
 	public void init()
 	{
 		
-		MaterialFile TileSprite = new MaterialFile("resources\\ingame\\tiles\\grass.png", MaterialFile.Type.PNG);
-		TileSprite.Open();
-		FileManager.getInstance().Add(TileSprite);
+		MaterialFile Grass1 = new MaterialFile("resources\\ingame\\tiles\\g1.png", MaterialFile.Type.PNG);
+		Grass1.Open();
+		FileManager.getInstance().Add(Grass1);
+		
+		MaterialFile Grass2 = new MaterialFile("resources\\ingame\\tiles\\g2.png", MaterialFile.Type.PNG);
+		Grass2.Open();
+		FileManager.getInstance().Add(Grass2);
+		
+		MaterialFile Grass3 = new MaterialFile("resources\\ingame\\tiles\\g3.png", MaterialFile.Type.PNG);
+		Grass3.Open();
+		FileManager.getInstance().Add(Grass3);
+		
+		MaterialFile Grass4 = new MaterialFile("resources\\ingame\\tiles\\g4.png", MaterialFile.Type.PNG);
+		Grass4.Open();
+		FileManager.getInstance().Add(Grass4);
+		
+		MaterialFile Grass5 = new MaterialFile("resources\\ingame\\tiles\\g5.png", MaterialFile.Type.PNG);
+		Grass5.Open();
+		FileManager.getInstance().Add(Grass5);
+		
+		MaterialFile Grass6 = new MaterialFile("resources\\ingame\\tiles\\g6.png", MaterialFile.Type.PNG);
+		Grass6.Open();
+		FileManager.getInstance().Add(Grass6);
 		
 		MaterialFile TileSprite2 = new MaterialFile("resources\\ingame\\tiles\\dirt.png", MaterialFile.Type.PNG);
 		TileSprite2.Open();
@@ -204,7 +225,7 @@ public class Map extends renderable.Renderable
 		for (Tile T : MapTiles)
 		{
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
-				T.Draw();	
+				T.Draw();
 		}
 		//interfaces.Render.DrawMap(GetMinimap());
 	}

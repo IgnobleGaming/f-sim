@@ -4,8 +4,8 @@ import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
 
-import java.io.IOException;
 import java.util.EnumSet;
+import java.util.Random;
 
 public class Tile extends renderable.Renderable
 {
@@ -24,11 +24,14 @@ public class Tile extends renderable.Renderable
 	private Type TileType;
 	private int hash;
 	public int TileID = 0;
+	private object.Resource Resource;
 
 	public Tile()
 	{
 		super(32, 32); // default tile size
 		Flags = EnumSet.of(Flag.DRAWABLE);
+		
+		this.ZIndex(0);
 	}
 
 	public Tile(Type T)
@@ -36,6 +39,7 @@ public class Tile extends renderable.Renderable
 		super(32, 32); // default tile size
 		Flags = EnumSet.of(Flag.DRAWABLE);
 		ChangeType(T);
+		this.ZIndex(0);
 	}
 
 	public int Height()
@@ -55,13 +59,28 @@ public class Tile extends renderable.Renderable
 
 		return true;
 	}
+	
+	public object.Resource Resource()
+	{
+		if (Resource != null)
+			return Resource;
+		return null;
+	}
 
-	public void Resource(Object Resource)
+	public void Resource(object.Resource Resource)
 	{
 		if (!Flags.contains(Flag.RESOURCE))
 		{
 			Flags.add(Flag.INTERACTABLE);
 			Flags.add(Flag.OCCUPIED);
+			Flags.add(Flag.RESOURCE);
+			
+			
+			if (Resource != null)
+			{
+				this.Resource = Resource;
+				this.Resource.Init(Position());
+			}
 		}
 	}
 
@@ -85,7 +104,30 @@ public class Tile extends renderable.Renderable
 		switch (TileType)
 		{
 			case GRASS:
-				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\grass.png");
+				Random rand = new Random();
+				int i = rand.nextInt(6);
+				switch (i)
+				{
+					case 0:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g1.png");
+						break;
+					case 1:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g2.png");
+						break;
+					case 2:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g3.png");
+						break;
+					case 3:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g4.png");
+						break;
+					case 4:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g5.png");
+						break;
+					case 5:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g6.png");
+						break;
+				}
+				
 				break;
 			case DIRT:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png");
@@ -160,7 +202,7 @@ public class Tile extends renderable.Renderable
 
 	public void Draw()
 	{
-		interfaces.Render.DrawPartialImage(CurrentSprite, Position(), 0, 0, this.Height(), this.Width());
+		interfaces.Render.DrawImage(CurrentSprite, Position());
 	}
 
 	public int ID()

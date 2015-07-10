@@ -1,8 +1,12 @@
 package object;
 
+import interfaces.file.FileManager;
+import interfaces.file.types.MaterialFile;
+
 import java.util.Random;
 
 import renderable.Renderable;
+import specifier.Vector2D;
 
 public class Resource extends Renderable
 {
@@ -45,8 +49,10 @@ public class Resource extends Renderable
 	private int Num_Harvests;
 	private boolean depleted;
 	private int Skill_Req;
+	private static Resource Instance;
 	//private Random Rand;
 	private static Random Rand;
+	private MaterialFile CurrentSprite;
 	
 	
 	/**
@@ -76,9 +82,36 @@ public class Resource extends Renderable
 	{
 		super(width, height);
 		
-		Res_Type = T;
+		this.Res_Type = T;
+		
+		this.ID = ID;
+		
+		this.ZIndex(1);
 		
 		depleted = false;
+	}
+	
+	// DEPRECATING NOT GOING TO WORK USING THIS
+	public static Resource GetInstance()
+	{
+		if (Instance == null)
+		{
+			Instance = new Resource(32, 32, Type.MINERAL, 0);
+		}
+		return Instance;
+	}
+	
+	public void Init(Vector2D pos)
+	{
+		this.XPos = pos.x;
+		this.YPos = pos.y;
+		
+		MaterialFile Rock = new MaterialFile("resources\\rock1.png", MaterialFile.Type.PNG);
+		Rock.Open();
+
+		FileManager.getInstance().Add(Rock);
+		
+		SetResource();
 	}
 	
 	public Object Harvest()
@@ -91,7 +124,15 @@ public class Resource extends Renderable
 		return NumberOfHarvests(this.Res_Type, this.ID);
 	}
 	
-	private static int NumberOfHarvests(Resource.Type T, int ID)
+	@Override
+	public void Draw()
+	{
+		if (CurrentSprite == null)
+			CurrentSprite = null;
+		interfaces.Render.DrawImage(CurrentSprite, new Vector2D(XPos, YPos));
+	}
+	
+	public static int NumberOfHarvests(Resource.Type T, int ID)
 	{
 		switch(T)
 		{
@@ -106,7 +147,7 @@ public class Resource extends Renderable
 					default:
 				}
 			case MINERAL:
-				return Rand.nextInt();
+				return 1;
 			case FLORA:
 			case MISC:
 			case SEASHORE:
@@ -116,5 +157,49 @@ public class Resource extends Renderable
 				return 0;
 				
 		}
+	}
+	
+	private void SetResource()
+	{
+		switch(this.Res_Type)
+		{
+			case VEGETATION:
+				switch (ID)
+				{
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					default:
+				}
+			case MINERAL:
+				switch (this.ID)
+				{
+					case 0:
+						this.CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\rock1.png");
+					case 1:
+					case 2:
+						
+				}
+			case FLORA:
+			case MISC:
+			case SEASHORE:
+			default:
+			case UNKNOWN:
+				
+		}
+		
+		this.Num_Harvests = NumberOfHarvests();
+	}
+	
+	public MaterialFile Sprite()
+	{
+		return CurrentSprite;
+	}
+	
+	public Type Type()
+	{
+		return this.Res_Type;
 	}
 }

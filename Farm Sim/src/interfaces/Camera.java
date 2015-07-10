@@ -43,21 +43,23 @@ public class Camera
 		if (Focus == null)
 			return false;
 		
-		if (R.getClass().isInstance(object.Entity.class) || R.getClass().isInstance(game.Tile.class) || R.getClass().isInstance(game.Map.class))
+		else if (R instanceof game.Map)
+			return true;
+		
+		else if (R instanceof object.Entity || R instanceof game.Tile || R instanceof object.Resource)
 		{
-			int maxWidth = Focus.Position().x + Width;
-			int minWidth = Focus.Position().x - Width;
-			int maxHeight = Focus.Position().y + Height;
-			int minHeight = Focus.Position().y - Height;
+			int maxWidth = (int) (Focus.Position().x + Width / 1.65 * Distance);
+			int minWidth = (int) (Focus.Position().x - Width / 1.65 * Distance);
+			int maxHeight = (int) (Focus.Position().y + Height / 1.65 * Distance);
+			int minHeight = (int) (Focus.Position().y - Height / 1.65 * Distance);
 		
 			if (R.Position().x <= maxWidth && R.Position().x >= minWidth && R.Position().y <= maxHeight && R.Position().y >= minHeight )
 				return true;
 			else
 				return false;
 		}
-		
 		else
-			return true;
+			return false;
 		
 		//Logging.getInstance().Write(Type.INFO, "x =  " + R.Position().x + " y = " + R.Position().y );
 	}
@@ -67,10 +69,10 @@ public class Camera
 		if (Focus == null)
 			return false;	
 		
-		double maxWidth = Focus.Position().x + Width / 1.75 * Distance;
-		double minWidth = Focus.Position().x - Width / 1.75 * Distance;
-		double maxHeight = Focus.Position().y + Height / 1.75 * Distance;
-		double minHeight = Focus.Position().y - Height / 1.75 * Distance;
+		double maxWidth = Focus.Position().x + Width / 1.65 * Distance;
+		double minWidth = Focus.Position().x - Width / 1.65 * Distance;
+		double maxHeight = Focus.Position().y + Height / 1.65 * Distance;
+		double minHeight = Focus.Position().y - Height / 1.65 * Distance;
 		
 		if (T.Position().x <= maxWidth && T.Position().x >= minWidth && T.Position().y <= maxHeight && T.Position().y >= minHeight )
 				return true;

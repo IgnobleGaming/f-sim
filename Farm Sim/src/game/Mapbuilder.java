@@ -1,15 +1,13 @@
 package game;
 
-import interfaces.Game;
+import interfaces.Objects;
 import interfaces.Variables;
-import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
-import interfaces.file.types.MaterialFile;
-
 import java.util.EnumSet;
 import java.util.Random;
 
+import object.Resource;
 import specifier.Vector2D;
 
 /**
@@ -266,7 +264,7 @@ public class Mapbuilder
 		Instance.Mountain();
 		Instance.River();
 		Instance.Decorate(Dimension * 3);
-		Instance.DecorateBorders();
+		//Instance.DecorateBorders();
 
 		return Map;
 	}
@@ -626,16 +624,18 @@ public class Mapbuilder
 		{
 			if (Map.MapTiles[Index].Type() == Tile.Type.DIRT || Map.MapTiles[Index].Type() == Tile.Type.GRASS)
 			{
-				Map.MapTiles[Index].ChangeType(Tile.Type.WATER);
+				Map.MapTiles[Index].Resource(new Resource(32, 32, Resource.Type.MINERAL, 0));
+				
+				Objects.GetInstance().Add(Map.MapTiles[Index].Resource());
 
 				Num_Deco++;
 			}
 
 			if (Map.MapTiles[Index].Type() == Tile.Type.SAND)
 			{
-				Map.MapTiles[Index].ChangeType(Tile.Type.MOUNTAIN);
+				//Map.MapTiles[Index].ChangeType(Tile.Type.MOUNTAIN);
 
-				Num_Deco++;
+				//Num_Deco++;
 			}
 
 			if (Num_Deco == Max_Deco)

@@ -45,7 +45,7 @@ public class Entity extends Renderable
 	protected Vector Velocity;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
-	protected int MovementSpeed = 500;
+	protected int MovementSpeed = 5000;
 	protected double MovementSpeedScale = 2;
 	protected ArrayList<specifier.Animation> Animation;
 	protected game.Tile LastTile;
@@ -79,12 +79,13 @@ public class Entity extends Renderable
 		this.Name = Name;
 		this.Description = Desc;
 		this.Velocity = Velocity;
+		this.ZIndex(11);
 		this.Flags = EnumSet.noneOf(Flag.class);
 		for (Flag F : Flags)
 			this.Flags.add(F);
 		CurrentState = State.STATIONARY;
 		Animation = new ArrayList<specifier.Animation>(5);
-		for (Flag F : Flags)
+		for (int i = 0; i < 5; i++)
 		{
 			Animation.add(null); // this is so we can access them by index later
 		}
@@ -199,19 +200,19 @@ public class Entity extends Renderable
 		{
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
-				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
 				break;
 			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
-				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
-				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2;
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
-				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2;
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
 				break;
 		}
 

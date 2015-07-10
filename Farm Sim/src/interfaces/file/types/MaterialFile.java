@@ -130,4 +130,8 @@ public class MaterialFile extends IFile
 		return FacingDirection;
 	}
 
+	public int ID()
+	{
+		return ID;
+	}
 }

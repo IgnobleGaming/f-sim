@@ -91,6 +91,12 @@ public class Render
 	 */
 	public boolean Update()
 	{
+		int counts [] = new int [3];
+		counts[0] = 0; // E
+		counts[1] = 0; // T
+		counts[2] = 0; // R
+		
+		
 		if (!Display.isCloseRequested())
 		{
 			UpdateRenderable();
@@ -98,7 +104,19 @@ public class Render
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
 			while (RenderQueue.size() > 0)
-				RenderQueue.remove().Draw();
+			{
+				Renderable R = RenderQueue.remove();
+
+				
+				if (R instanceof object.Entity)
+					counts[0]++;
+				if (R instanceof object.Resource)
+					counts[2]++;
+				
+				R.Draw();
+			}
+			
+			System.out.println("dump [e, t, r]" + counts[0] + " " + counts[1] + " " + counts[2]);
 
 			Display.update();
 			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());
@@ -114,7 +132,9 @@ public class Render
 		for (Renderable R : interfaces.Objects.GetInstance().Objs())
 		{
 			if (R.Visible && interfaces.Camera.getInstance().inViewPlane(R))
+			{
 				RenderQueue.add(R);
+			}
 		}
 	}
 
