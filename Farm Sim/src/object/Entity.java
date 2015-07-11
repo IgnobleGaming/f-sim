@@ -79,7 +79,7 @@ public class Entity extends Renderable
 		this.Name = Name;
 		this.Description = Desc;
 		this.Velocity = Velocity;
-		this.ZIndex(11);
+		this.ZIndex(2);
 		this.Flags = EnumSet.noneOf(Flag.class);
 		for (Flag F : Flags)
 			this.Flags.add(F);
@@ -200,19 +200,19 @@ public class Entity extends Renderable
 		{
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
-				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
-				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
-				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
-				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 10;
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 		}
 

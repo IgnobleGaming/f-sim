@@ -4,6 +4,7 @@ import interfaces.Objects;
 import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
+
 import java.util.EnumSet;
 import java.util.Random;
 
@@ -130,7 +131,7 @@ public class Mapbuilder
 							while (Math.abs(EndY[i - 1] - EndY[i]) < RandMin || Math.abs(EndY[i - 1] - EndY[i]) > RandMax)
 							{
 								EndY[i] = Rand.nextInt(Max_Mass) + Max_Mass / 2;
-								//System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
+								// System.out.println("endy @ i - " + EndY[i] + " Endy @ i -1 - " + EndY[i - 1]);
 							}
 						}
 
@@ -218,7 +219,7 @@ public class Mapbuilder
 	private Mass Sand;
 	private Mass Mountain;
 	private Mass River;
-	
+
 	private static Mapbuilder Instance;
 
 	public Mapbuilder()
@@ -232,22 +233,21 @@ public class Mapbuilder
 		this.Mountain = new Mass();
 		this.River = new Mass();
 	}
-	
+
 	public Mapbuilder(Map Map)
 	{
-		
+
 	}
-	
+
 	public static Mapbuilder GetInstance()
 	{
 		if (Instance == null)
 		{
 			Instance = new Mapbuilder();
 			Map = game.Map.GetInstance();
-			
+
 			return Instance;
-		}
-		else
+		} else
 			return Instance;
 	}
 
@@ -264,7 +264,7 @@ public class Mapbuilder
 		Instance.Mountain();
 		Instance.River();
 		Instance.Decorate(Dimension * 3);
-		//Instance.DecorateBorders();
+		// Instance.DecorateBorders();
 
 		return Map;
 	}
@@ -625,40 +625,251 @@ public class Mapbuilder
 			if (Map.MapTiles[Index].Type() == Tile.Type.DIRT || Map.MapTiles[Index].Type() == Tile.Type.GRASS)
 			{
 				Map.MapTiles[Index].Resource(new Resource(32, 32, Resource.Type.MINERAL, 0));
-				
-				Objects.GetInstance().Add(Map.MapTiles[Index].Resource());
 
+				Objects.GetInstance().Add(Map.MapTiles[Index].Resource());
+				
 				Num_Deco++;
 			}
 
 			if (Map.MapTiles[Index].Type() == Tile.Type.SAND)
 			{
-				//Map.MapTiles[Index].ChangeType(Tile.Type.MOUNTAIN);
+				// Map.MapTiles[Index].ChangeType(Tile.Type.MOUNTAIN);
 
-				//Num_Deco++;
+				// Num_Deco++;
 			}
 
 			if (Num_Deco == Max_Deco)
 			{
 				Running = false;
 			}
-			
+
 			Index = Rand.nextInt(Dimension * Dimension);
 		}
 	}
-	
+
 	private void DecorateBorders()
 	{
 		int Max_Deco = Dimension / 10;
 		int Random;
-		
+
 		for (int i = 0; i < Max_Deco; i++)
 		{
 			Random = Rand.nextInt(Dimension);
 			Map.MapTiles[Ocean.Border[Random]].ChangeType(Tile.Type.DIRT);
-			
+
 			Random = Rand.nextInt(Dimension);
 			Map.MapTiles[Mountain.Border[Random]].ChangeType(Tile.Type.SAND);
 		}
+	}
+
+	public enum Direction
+	{
+		NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, NORTHWEST, SOUTHWEST, NONE;
+
+		public Direction Opposite(Direction D)
+		{
+			switch (D)
+			{
+				case NORTH:
+					return SOUTH;
+				case SOUTH:
+					return NORTH;
+				case EAST:
+					return WEST;
+				case WEST:
+					return EAST;
+				case NORTHEAST:
+					return SOUTHWEST;
+				case SOUTHEAST:
+					return NORTHWEST;
+				case NORTHWEST:
+					return SOUTHEAST;
+				case SOUTHWEST:
+					return NORTHEAST;
+				case NONE:
+					return NONE;
+			}
+
+			return D;
+		}
+
+		public Direction Random()
+		{
+			Random Rand = new Random(System.currentTimeMillis());
+			switch (Rand.nextInt(8))
+			{
+				case 0:
+					return NORTH;
+				case 1:
+					return SOUTH;
+				case 2:
+					return EAST;
+				case 3:
+					return WEST;
+				case 4:
+					return NORTHEAST;
+				case 5:
+					return SOUTHEAST;
+				case 6:
+					return NORTHWEST;
+				case 7:
+					return SOUTHWEST;
+			}
+			return NORTH;
+		}
+
+		public static Direction DirectionOf(int XS, int YS, int XE, int YE)
+		{
+			if (YS > YE && XS == XE)
+				return NORTH;
+			else if (YS < YE && XS == XE)
+				return SOUTH;
+			else if (XS < XE && YS == YE)
+				return EAST;
+			else if (XS > XE && YS == YE)
+				return WEST;
+			else if (XS < XE && YS > YE)
+				return NORTHEAST;
+			else if (XS < XE && YS < YE)
+				return SOUTHEAST;
+			else if (XS > XE && YS > YE)
+				return NORTHWEST;
+			else if (XS > XE && YS < YE)
+				return SOUTHWEST;
+			else
+				return NONE;
+		}
+	}
+
+	/**
+	 * Get Array Indexes in a straight line
+	 * @param XS - Starting X
+	 * @param YS - Starting Y
+	 * @param XE - Ending X
+	 * @param YE - Ending Y
+	 * @return - Indices of tiles from start to end
+	 */
+	public int[] Line(int XS, int YS, int XE, int YE)
+	{
+		int Ind[] = null; // Array of Tile Indexes
+		int Curr = Map.GetTileIndex(XS, YS); // Current Tile we are on
+		int Length = 1; // Length of Array
+		int Change = 0; // Change in each Tile Movement
+		int Dim = (int) Variables.GetInstance().Get("m_width").Current(); // Dimension of world (Convenience)
+		Direction D = Direction.NORTH; // Direction we will be moving in
+		
+		/* Find Direction */
+		D = D.DirectionOf(XS, YS, XE, YE);
+		
+		/* Determine length of array and instantiate */
+		
+		if (XS == YS && XE == YE)
+		{
+			Ind = new int [Length];
+			Ind[0] = -1;
+			return Ind;
+		}
+		else if (Math.abs(XS - XE) <= Math.abs(YS - YE))
+		{
+			Length = Math.abs(YS - YE);
+		}
+		else if (Math.abs(XS - XE) > Math.abs(YS - YE))
+		{
+			Length = Math.abs(XS - XE);
+		}
+		
+		Ind = new int [Length];
+
+		/* Determine the change in each tile index movement */
+		
+		if (D == D.NORTH)
+			Change = -Dimension;
+		else if (D == D.SOUTH)
+			Change = Dimension;
+		else if (D == D.EAST)
+			Change = 1;
+		else if (D == D.WEST)
+			Change = -1;
+		else if (D == D.NORTHEAST)
+			Change = -(Dimension - 1);
+		else if (D == D.SOUTHEAST)
+			Change = Dimension + 1;
+		else if (D == D.NORTHWEST)
+			Change = - (Dimension + 1);
+		else if (D == D.SOUTHWEST)
+			Change = Dimension - 1;
+		
+		/* Build Index */
+		
+		for (int i = 0; i < Length - 1; i++)
+		{
+			Ind[i] = Curr;
+			
+			Curr += Change;
+		}
+
+		return Ind;
+	}
+	
+	private int[] LineCurve(int XS, int YS, int XE, int YE, int Max)
+	{
+		int Ind[] = null; // Array of Tile Indexes
+		int Curr = Map.GetTileIndex(XS, YS); // Current Tile we are on
+		int Length = 1; // Length of Array
+		int Change = 0; // Change in each Tile Movement
+		int Dim = (int) Variables.GetInstance().Get("m_width").Current(); // Dimension of world (Convenience)
+		Direction D = Direction.NORTH; // Direction we will be moving in
+		
+		/* Find Direction */
+		D = D.DirectionOf(XS, YS, XE, YE);
+		
+		/* Determine length of array and instantiate */
+		
+		if (XS == YS && XE == YE)
+		{
+			Ind = new int [Length];
+			Ind[0] = -1;
+			return Ind;
+		}
+		else if (Math.abs(XS - XE) <= Math.abs(YS - YE))
+		{
+			Length = Math.abs(YS - YE);
+		}
+		else if (Math.abs(XS - XE) > Math.abs(YS - YE))
+		{
+			Length = Math.abs(XS - XE);
+		}
+		
+		Ind = new int [Length];
+
+		/* Determine the change in each tile index movement */
+		
+		if (D == D.NORTH)
+			Change = -Dimension;
+		else if (D == D.SOUTH)
+			Change = Dimension;
+		else if (D == D.EAST)
+			Change = 1;
+		else if (D == D.WEST)
+			Change = -1;
+		else if (D == D.NORTHEAST)
+			Change = -(Dimension - 1);
+		else if (D == D.SOUTHEAST)
+			Change = Dimension + 1;
+		else if (D == D.NORTHWEST)
+			Change = - (Dimension + 1);
+		else if (D == D.SOUTHWEST)
+			Change = Dimension - 1;
+		
+		/* Build Index */
+		
+		for (int i = 0; i < Length - 1; i++)
+		{
+			Ind[i] = Curr;
+			
+			Curr += Change;
+		}
+
+		return Ind;
 	}
 }

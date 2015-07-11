@@ -32,7 +32,7 @@ public class Map extends renderable.Renderable
 	private Map()
 	{
 		super(0,0);
-		this.ZIndex(1);
+		this.ZIndex(0);
 		HorizontalTileNum = (int) Variables.GetInstance().Get("m_width").Current();
 		VerticalTileNum = (int) Variables.GetInstance().Get("m_height").Current();
 		TileSize = (int) Variables.GetInstance().Get("m_tilesize").Current();

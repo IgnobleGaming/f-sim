@@ -16,6 +16,8 @@ public abstract class Renderable
 	protected MaterialFile CurrentSprite;
 	protected RenderType R;
 	
+	public boolean showing;
+	
 	
 	public enum Position
 	{

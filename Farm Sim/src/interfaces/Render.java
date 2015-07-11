@@ -91,10 +91,9 @@ public class Render
 	 */
 	public boolean Update()
 	{
-		int counts [] = new int [3];
+		int counts [] = new int [2];
 		counts[0] = 0; // E
-		counts[1] = 0; // T
-		counts[2] = 0; // R
+		counts[1] = 0; // R
 		
 		
 		if (!Display.isCloseRequested())
@@ -111,12 +110,12 @@ public class Render
 				if (R instanceof object.Entity)
 					counts[0]++;
 				if (R instanceof object.Resource)
-					counts[2]++;
+					counts[1]++;
 				
 				R.Draw();
 			}
 			
-			System.out.println("dump [e, t, r]" + counts[0] + " " + counts[1] + " " + counts[2]);
+			//System.out.println("dump [e, r]" + counts[0] +  " " + counts[1]);
 
 			Display.update();
 			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());
