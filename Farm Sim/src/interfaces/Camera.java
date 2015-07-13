@@ -42,7 +42,7 @@ public class Camera
 
 	public boolean inViewPlane(renderable.Renderable R)
 	{
-		boolean debug = true;
+		boolean debug = false;
 		
 		
 		if (Focus == null)

@@ -5,8 +5,6 @@ import specifier.Vector;
 import specifier.Vector2D;
 import game.Tile;
 import interfaces.Game;
-import interfaces.Render;
-import interfaces.Variables;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
@@ -91,8 +89,7 @@ public class Entity extends Renderable
 		}
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
-		this.Position.x = game.Map.GetInstance().GetCoordPos(CurrentTile).x;
-		this.Position.y = game.Map.GetInstance().GetCoordPos(CurrentTile).y;
+		Position(Position);
 	}
 
 	/**
@@ -126,7 +123,11 @@ public class Entity extends Renderable
 	public void Position(Vector2D NewPosition)
 	{
 		if (!Flags.contains(Flag.LOCKED))
+		{
 			Position = NewPosition;
+			XPos = Position.x;
+			YPos = Position.y;
+		}
 	}
 
 	public Vector2D Position()
@@ -192,6 +193,8 @@ public class Entity extends Renderable
 
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 31);
+
 		game.Tile CollisionTile = null;
 		int XPlus = 0;
 		int YPlus = 0;
@@ -200,19 +203,23 @@ public class Entity extends Renderable
 		{
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
-				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				if (Collide(CollisionTile))
+					YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
-				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				if (Collide(CollisionTile))
+					YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
-				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				if (Collide(CollisionTile))
+					XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
-				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				if (Collide(CollisionTile))
+					XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 		}
 
@@ -223,17 +230,15 @@ public class Entity extends Renderable
 		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
-		//if (CollisionTile.TileID != CurrentTile)
+		if (XPlus != 0 || YPlus != 0)
 		{
-			Position.x += XPlus;
-			Position.y += YPlus;
-		}
-
-		if (TotalMoveTime >= MovementSpeed)
-		{
-			CurrentTile = CollisionTile.TileID;
-			TotalMoveTime = 0;
-			LastMoveTime = 0;
+			Position(new Vector2D(Position.x + XPlus, Position.y + YPlus));
+			if (TotalMoveTime >= MovementSpeed)
+			{
+				System.out.println("Entity.Move: CurrT - " + CurrentTile);
+				TotalMoveTime = 0;
+				LastMoveTime = 0;
+			}
 		}
 	}
 
@@ -317,6 +322,14 @@ public class Entity extends Renderable
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
 		if (NewAnim.Valid)
 			Animation.add(AnimState.val, NewAnim);
+	}
+
+	private boolean Collide(Tile T)
+	{
+		if (T.CheckFlag(Tile.Flag.BLOCKED))
+			return false;
+		else
+			return true;
 	}
 
 	public int TileID()

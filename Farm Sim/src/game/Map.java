@@ -5,8 +5,6 @@ import interfaces.Camera;
 import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.FileManager;
-import interfaces.file.Logging;
-import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import specifier.Vector2D;
 
@@ -237,25 +235,25 @@ public class Map extends renderable.Renderable
 		{
 			case RIGHT:
 				tileInt = CurTile + 1;
-				if (CurTile % HorizontalTileNum == HorizontalTileNum -1 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+				if (CurTile % HorizontalTileNum == HorizontalTileNum -1)
 					return MapTiles[CurTile];
 				else 
 					return MapTiles[tileInt]; 
 			case LEFT:
 				tileInt = CurTile - 1;
-				if (CurTile % HorizontalTileNum == 0 && !MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+				if (CurTile % HorizontalTileNum == 0)
 					return MapTiles[CurTile];
 				else 
 					return MapTiles[tileInt];
 			case UP:
 				tileInt = CurTile - HorizontalTileNum;
-				if (tileInt > 0 && MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+				if (tileInt > 0)
 					return MapTiles[tileInt];
 				else
 					return MapTiles[CurTile];			
 			case DOWN:
 				tileInt = CurTile + HorizontalTileNum;
-				if (tileInt < MapTiles.length && MapTiles[CurTile].CheckFlag(Flag.BLOCKED))
+				if (tileInt < MapTiles.length)
 					return MapTiles[tileInt];
 				else
 					return MapTiles[CurTile];

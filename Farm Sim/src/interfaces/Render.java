@@ -6,11 +6,8 @@ import interfaces.file.types.MaterialFile.Orientation;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.util.glu.GLU;
 import org.lwjgl.LWJGLException;
 
-import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import renderable.Renderable;

@@ -22,7 +22,7 @@ public class Tile extends renderable.Renderable
 
 	private EnumSet<Flag> Flags;
 	private Type TileType;
-	private int hash;
+	//private int hash;
 	public int TileID = 0;
 	private object.Resource Resource;
 
@@ -74,6 +74,7 @@ public class Tile extends renderable.Renderable
 			Flags.add(Flag.INTERACTABLE);
 			Flags.add(Flag.OCCUPIED);
 			Flags.add(Flag.RESOURCE);
+			Flags.add(Flag.BLOCKED);
 			
 			
 			if (Resource != null)
