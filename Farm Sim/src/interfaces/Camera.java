@@ -42,7 +42,7 @@ public class Camera
 
 	public boolean inViewPlane(renderable.Renderable R)
 	{
-		boolean debug = true;
+		boolean debug = false;
 		
 		
 		if (Focus == null)
@@ -52,10 +52,10 @@ public class Camera
 
 		else if (R instanceof object.Entity || R instanceof object.Resource)
 		{
-			int maxWidth = (int) (Focus.Position().x + (Width / 2));
-			int minWidth = (int) (Focus.Position().x - (Width / 2));
-			int maxHeight = (int) (Focus.Position().y + (Height / 2));
-			int minHeight = (int) (Focus.Position().y - (Height / 2));
+			int maxWidth = (int) (Focus.Position().x + (Width / 2) * Distance);
+			int minWidth = (int) (Focus.Position().x - (Width / 2) * Distance);
+			int maxHeight = (int) (Focus.Position().y + (Height / 2) * Distance);
+			int minHeight = (int) (Focus.Position().y - (Height / 2) * Distance);
 
 			// System.out.println("MW - " + maxWidth + " mW " + minWidth + " MH - " + maxHeight + " mH - " + minHeight);
 

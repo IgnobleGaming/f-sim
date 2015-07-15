@@ -79,8 +79,11 @@ public class Entity extends Renderable
 		this.Velocity = Velocity;
 		this.ZIndex(2);
 		this.Flags = EnumSet.noneOf(Flag.class);
-		for (Flag F : Flags)
-			this.Flags.add(F);
+		if (Flags != null)
+		{
+			for (Flag F : Flags)
+				this.Flags.add(F);
+		}
 		CurrentState = State.STATIONARY;
 		Animation = new ArrayList<specifier.Animation>(5);
 		for (int i = 0; i < 5; i++)
@@ -134,11 +137,10 @@ public class Entity extends Renderable
 	{
 		return Position;
 	}
-	
+
 	public void SetPosition(Vector2D NewPosition)
 	{
-		if (!Flags.contains(Flag.LOCKED))
-			Position = NewPosition;
+		this.Position(NewPosition);
 	}
 
 	public void Velocity(Vector NewVelocity)
