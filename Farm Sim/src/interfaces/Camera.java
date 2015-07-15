@@ -1,13 +1,13 @@
 package interfaces;
 
+import object.Entity;
 import game.Mapbuilder;
-import interfaces.file.Logging;
-import interfaces.file.Logging.Type;
 
 public class Camera
 {
 	private static Camera Instance;
 	private object.Entity Focus;
+	
 
 	// private
 
@@ -18,7 +18,7 @@ public class Camera
 		this.Distance = Distance;
 
 		// Focus = new object.Entity("CameraFocus", "Entity that the camera points at", new specifier.Vector2D(0,0), new specifier.Vector(), 1, 1, object.Entity.Flag.VISIBLE);
-		Focus = Game.GetInstance().Player();
+		Focus = new Entity("Camera Focus", "Position where the camera is cented", new specifier.Vector2D(0, 0), new specifier.Vector(), 0, 0, null);
 	}
 
 	public static Camera getInstance()
@@ -42,7 +42,7 @@ public class Camera
 
 	public boolean inViewPlane(renderable.Renderable R)
 	{
-		boolean debug = false;
+		boolean debug = true;
 		
 		
 		if (Focus == null)
@@ -115,7 +115,20 @@ public class Camera
 
 	public void Update()
 	{
-		Focus = Game.GetInstance().Player();
+		Entity potentialFocus = Game.GetInstance().Player();
+		
+		if (potentialFocus == null)
+			return;
+		
+		int mWidth = (int)interfaces.Variables.GetInstance().Get("m_width").Current() * 32;
+		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
+		
+		if ((potentialFocus.Position().x + Width / 1.65) * Distance > mWidth || (potentialFocus.Position().x - Width / 1.65 ) * Distance < 0)	
+			Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, potentialFocus.Position().y));
+		else if ((potentialFocus.Position().y + Height / 1.65) * Distance > mHeight || (potentialFocus.Position().y - Height / 1.65 ) * Distance  < 0)
+			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
+		else
+			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));
 	}
 
 	public specifier.Vector2D cameraLookPoint()

@@ -134,6 +134,12 @@ public class Entity extends Renderable
 	{
 		return Position;
 	}
+	
+	public void SetPosition(Vector2D NewPosition)
+	{
+		if (!Flags.contains(Flag.LOCKED))
+			Position = NewPosition;
+	}
 
 	public void Velocity(Vector NewVelocity)
 	{
