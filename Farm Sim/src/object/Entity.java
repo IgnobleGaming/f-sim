@@ -201,7 +201,7 @@ public class Entity extends Renderable
 
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 31);
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
 
 		game.Tile CollisionTile = null;
 		int XPlus = 0;
@@ -334,7 +334,11 @@ public class Entity extends Renderable
 
 	private boolean Collide(Tile T)
 	{
-		if (T.CheckFlag(Tile.Flag.BLOCKED))
+		if (T.CheckFlag(Tile.Flag.BLOCKED) 
+				&& this.Position.x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX() 
+				&& this.Position.y + HitboxOffsetY + HitboxHeight > T.Position().y + T.HitboxOffsetY()
+				&& this.Position.x + this.HitboxOffsetX < T.Position().x + T.HitboxOffsetX() + T.HitboxWidth() 
+				&& this.Position.y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY() + T.HitboxHeight())
 			return false;
 		else
 			return true;
