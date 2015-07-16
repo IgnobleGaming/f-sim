@@ -201,7 +201,7 @@ public class Entity extends Renderable
 
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 28);
 
 		game.Tile CollisionTile = null;
 		int XPlus = 0;

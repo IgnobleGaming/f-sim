@@ -123,7 +123,7 @@ public class Camera
 		int mWidth = (int)interfaces.Variables.GetInstance().Get("m_width").Current() * 32;
 		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
 		
-		if ((potentialFocus.Position().x + Width / 1.65) * Distance > mWidth || (potentialFocus.Position().x - Width / 1.65 ) * Distance < 0)	
+		if (potentialFocus.Position().x + Width * 1.2 * Distance > mWidth || potentialFocus.Position().x - Width * 1.2 * Distance < 0)	
 			Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, potentialFocus.Position().y));
 		else if ((potentialFocus.Position().y + Height / 1.65) * Distance > mHeight || (potentialFocus.Position().y - Height / 1.65 ) * Distance  < 0)
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		

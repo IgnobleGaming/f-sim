@@ -1,7 +1,11 @@
 package renderable;
 
+import interfaces.Objects;
 import interfaces.Render;
+
 import org.newdawn.slick.Color;
+
+import interfaces.file.FileManager;
 import interfaces.file.types.MaterialFile;
 
 public class GUIFont extends Renderable
@@ -114,9 +118,18 @@ public class GUIFont extends Renderable
 				1,1,1,59, };
 		Sheet.A = 123;
 		Sheet.LineSpacing = 9;
-		MaterialFile Map = new MaterialFile("resources\\hud\\fonts\\consolas_small.png", MaterialFile.Type.PNG);
-		Map.Open();
-		Sheet.BitMap = Map;
+		interfaces.file.IFile Mat = FileManager.getInstance().Retrieve("resources\\hud\\fonts\\consolas_small.png");
+		
+		if (Mat instanceof interfaces.file.types.MaterialFile)
+			Sheet.BitMap = (MaterialFile)Mat;
+		else
+		{	
+			MaterialFile Map = new MaterialFile("resources\\hud\\fonts\\consolas_small.png", MaterialFile.Type.PNG);
+			Sheet.BitMap = Map;
+			FileManager.getInstance().Add(Map);
+			Map.Open();
+		}
+		
 		switch (S)
 		{
 			case HUGE:

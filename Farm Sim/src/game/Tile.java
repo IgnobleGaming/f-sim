@@ -1,11 +1,17 @@
 package game;
 
+import interfaces.Game;
+import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.types.MaterialFile;
 
 import java.util.EnumSet;
 import java.util.Random;
+
+import org.newdawn.slick.Color;
+
+import renderable.GUIFont.FontFamily;
 
 public class Tile extends renderable.Renderable
 {
@@ -25,21 +31,19 @@ public class Tile extends renderable.Renderable
 	//private int hash;
 	public int TileID = 0;
 	private object.Resource Resource;
-
-	public Tile()
-	{
-		super(32, 32); // default tile size
-		Flags = EnumSet.of(Flag.DRAWABLE);
-		
-		this.ZIndex(0);
-	}
+	private renderable.GUIFont debugText;
 
 	public Tile(Type T)
 	{
-		super(32, 32); // default tile size
-		Flags = EnumSet.of(Flag.DRAWABLE);
-		ChangeType(T);
+		super(32, 32);
+		Flags = EnumSet.of(Flag.DRAWABLE);	
 		this.ZIndex(0);
+		if ((boolean)Variables.GetInstance().Get("g_debuginfo").Current() == true)
+		{
+			debugText = new renderable.GUIFont(FontFamily.Consolas, "D", renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
+			debugText.ZIndex(1337);
+		}
+		ChangeType(T);
 	}
 
 	public int Height()
@@ -204,6 +208,11 @@ public class Tile extends renderable.Renderable
 	public void Draw()
 	{
 		interfaces.Render.DrawImage(CurrentSprite, Position());
+		if (debugText != null)
+		{
+			debugText.Position(this.XPos, this.YPos);
+			debugText.Draw();
+		}
 	}
 
 	public int ID()

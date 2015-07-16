@@ -55,7 +55,7 @@ public class Map extends renderable.Renderable
 	 */
 	public void Load()
 	{
-		for (int num = 0; num < MapTiles.length; num++)
+		/*for (int num = 0; num < MapTiles.length; num++)
 		{
 			MapTiles[num] = new Tile();
 			MapTiles[num].SetSprite(GetRandomTile()); // this will be randomized
@@ -64,7 +64,7 @@ public class Map extends renderable.Renderable
 			//Vector2D TilePos = GetTilePos(num);
 			//MapTiles[num].Position(TilePos.x, TilePos.y);
 		}
-		this.Resize(HorizontalTileNum * TileSize, VerticalTileNum * TileSize);
+		this.Resize(HorizontalTileNum * TileSize, VerticalTileNum * TileSize);*/
 	}
 	
 	public int TileSize()
@@ -186,7 +186,7 @@ public class Map extends renderable.Renderable
 		if (index > -1 && index < MapTiles.length)
 			return MapTiles[index];
 		else 
-			return new Tile();
+			return new Tile(Tile.Type.GRASS);
 	}
 	
 	public Direction GetCardinalPositionOfTarget(Vector2D TV, Vector2D CV)

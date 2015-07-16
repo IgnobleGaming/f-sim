@@ -223,7 +223,7 @@ public class Game
 		
 		GameVariables.Set(new object.Variable("g_cheats", "cheats enabled", false, object.Variable.Flag.Developer));
 		GameVariables.Set(new object.Variable("g_developer", "developer mode enabled", false, object.Variable.Flag.Developer));
-		GameVariables.Set(new object.Variable("g_debuginfo", "draw debug information on screen", false, object.Variable.Flag.Developer));
+		GameVariables.Set(new object.Variable("g_debuginfo", "draw debug information on screen", true, object.Variable.Flag.Developer));
 		
 		GameVariables.Set(new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));
 		GameVariables.Set(new object.Variable("fs_logfile", "name of the log file", "console.log", object.Variable.Flag.Latched));
