@@ -93,6 +93,11 @@ public class Entity extends Renderable
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
 		Position(Position);
+
+		HitboxOffsetX = 5;
+		HitboxOffsetY = 25;
+		HitboxHeight = 7;
+		HitboxWidth = 22;
 	}
 
 	/**
@@ -211,23 +216,19 @@ public class Entity extends Renderable
 		{
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
-				if (Collide(CollisionTile))
-					YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
-				if (Collide(CollisionTile))
-					YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
-				if (Collide(CollisionTile))
-					XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
-				if (Collide(CollisionTile))
-					XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				break;
 		}
 
@@ -238,12 +239,12 @@ public class Entity extends Renderable
 		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
-		if (XPlus != 0 || YPlus != 0)
+		if ((XPlus != 0 || YPlus != 0) && !Collide(Position().x + XPlus, Position().y + YPlus))
 		{
 			Position(new Vector2D(Position.x + XPlus, Position.y + YPlus));
 			if (TotalMoveTime >= MovementSpeed)
 			{
-				System.out.println("Entity.Move: CurrT - " + CurrentTile);
+				// System.out.println("Entity.Move: CurrT - " + CurrentTile);
 				TotalMoveTime = 0;
 				LastMoveTime = 0;
 			}
@@ -332,13 +333,27 @@ public class Entity extends Renderable
 			Animation.add(AnimState.val, NewAnim);
 	}
 
+	private boolean Collide(int x, int y)
+	{
+		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
+
+		for (int i = 0; i < Tiles.length; i++)
+		{
+			Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
+			
+			if (T.CheckFlag(Tile.Flag.BLOCKED)
+					&& x + this.HitboxOffsetX + this.HitboxWidth > game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() && y + this.HitboxOffsetY + this.HitboxHeight > game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY()
+							&& x + this.HitboxOffsetX < game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth() && y + this.HitboxOffsetY < game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
+				return true;
+		}
+
+		return false;
+	}
+
 	private boolean Collide(Tile T)
 	{
-		if (T.CheckFlag(Tile.Flag.BLOCKED) 
-				&& this.Position.x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX() 
-				&& this.Position.y + HitboxOffsetY + HitboxHeight > T.Position().y + T.HitboxOffsetY()
-				&& this.Position.x + this.HitboxOffsetX < T.Position().x + T.HitboxOffsetX() + T.HitboxWidth() 
-				&& this.Position.y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY() + T.HitboxHeight())
+		if (T.CheckFlag(Tile.Flag.BLOCKED) && this.Position.x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX() && this.Position.y + HitboxOffsetY + HitboxHeight > T.Position().y + T.HitboxOffsetY()
+				&& this.Position.x + this.HitboxOffsetX < T.Position().x + T.HitboxOffsetX() + T.HitboxWidth() && this.Position.y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY() + T.HitboxHeight())
 			return false;
 		else
 			return true;

@@ -28,7 +28,7 @@ public class Tile extends renderable.Renderable
 
 	private EnumSet<Flag> Flags;
 	private Type TileType;
-	//private int hash;
+	// private int hash;
 	public int TileID = 0;
 	private object.Resource Resource;
 	private renderable.GUIFont debugText;
@@ -36,12 +36,12 @@ public class Tile extends renderable.Renderable
 	public Tile(Type T)
 	{
 		super(32, 32);
-		Flags = EnumSet.of(Flag.DRAWABLE);	
+		Flags = EnumSet.of(Flag.DRAWABLE);
 		this.ZIndex(0);
-		if ((boolean)Variables.GetInstance().Get("g_debuginfo").Current() == true)
+		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == true)
 		{
-			debugText = new renderable.GUIFont(FontFamily.Consolas, "D", renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
-			debugText.ZIndex(1337);
+			// debugText = new renderable.GUIFont(FontFamily.Consolas, "D", renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
+			// debugText.ZIndex(1337);
 		}
 		ChangeType(T);
 	}
@@ -63,7 +63,7 @@ public class Tile extends renderable.Renderable
 
 		return true;
 	}
-	
+
 	public object.Resource Resource()
 	{
 		if (Resource != null)
@@ -73,19 +73,20 @@ public class Tile extends renderable.Renderable
 
 	public void Resource(object.Resource Resource)
 	{
-		if (!Flags.contains(Flag.RESOURCE))
+		if (!Flags.contains(Flag.RESOURCE) && Resource != null)
 		{
 			Flags.add(Flag.INTERACTABLE);
 			Flags.add(Flag.OCCUPIED);
 			Flags.add(Flag.RESOURCE);
 			Flags.add(Flag.BLOCKED);
+
+			this.HitboxOffsetX = 0;
+			this.HitboxOffsetY = 0;
+			this.HitboxHeight = 32;
+			this.HitboxWidth = 32;
 			
-			
-			if (Resource != null)
-			{
-				this.Resource = Resource;
-				this.Resource.Init(Position());
-			}
+			this.Resource = Resource;
+			this.Resource.Init(Position());
 		}
 	}
 
@@ -94,9 +95,20 @@ public class Tile extends renderable.Renderable
 		TileType = T;
 
 		if (TileType == Type.WATER)
+		{
 			AddFlag(Flag.BLOCKED);
-		else
+			HitboxOffsetX = 0;
+			HitboxOffsetY = 0;
+			HitboxHeight = 32;
+			HitboxWidth = 32;
+		} else
+		{
 			RemoveFlag(Flag.BLOCKED);
+			HitboxOffsetX = 0;
+			HitboxOffsetY = 0;
+			HitboxHeight = 0;
+			HitboxWidth = 0;
+		}
 
 		UpdateTexture();
 	}
@@ -132,7 +144,7 @@ public class Tile extends renderable.Renderable
 						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g6.png");
 						break;
 				}
-				
+
 				break;
 			case DIRT:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png");
@@ -164,7 +176,7 @@ public class Tile extends renderable.Renderable
 			case MOUNTAIN:
 				return "Mountain";
 		}
-		
+
 		return "Butts";
 	}
 

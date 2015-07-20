@@ -50,8 +50,8 @@ public abstract class Renderable
 		
 		HitboxOffsetX = 0;
 		HitboxOffsetY = 0;
-		HitboxHeight = 32;
-		HitboxWidth = 32;
+		HitboxHeight = 0;
+		HitboxWidth = 0;
 		//Logging.getInstance().Write(Logging.Type.INFO, "New renderable object created! [ z=%d, visible=%b ]", ZIndex, Visible);
 	}
 	
