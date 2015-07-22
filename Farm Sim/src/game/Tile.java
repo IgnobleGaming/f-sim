@@ -20,7 +20,7 @@ public class Tile extends renderable.Renderable
 
 	public enum Flag
 	{
-		BLOCKED, RESOURCE, OCCUPIED, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
+		BLOCKED, RESOURCE, COLLIDABLE, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
 	}
 
 	public enum Type
@@ -82,24 +82,30 @@ public class Tile extends renderable.Renderable
 		{
 			if (this.CheckFlag(Flag.RESOURCE))
 			{
+				System.out.println("Tile.Interact | ding");
 				Resource.Interact(R);
 				if (Resource.Depleted())
 				{
 					Resource = null;
 					Flags.remove(Flag.RESOURCE);
+					Flags.remove(Flag.BLOCKED);
 					HitboxOffsetX = 0;
 					HitboxOffsetY = 0;
 					HitboxHeight = 0;
 					HitboxWidth = 0;
-
-					if (!CheckFlag(Flag.FARMABLE))
+					
+					if ((TileType == Type.GRASS || TileType == Type.DIRT) && !CheckFlag(Flag.FARMABLE))
 						AddFlag(Flag.FARMABLE);
 				}
-			} else if (this.CheckFlag(Flag.FARMABLE))
+			} else if (TileType.equals(Type.GRASS))
 			{
 				this.ChangeType(Type.DIRT);
-				System.out.println("ding");
+				System.out.println("Tile.Interact | ding");
 
+			}
+			else 
+			{
+				System.out.println(TileType);
 			}
 		}
 	}
@@ -140,6 +146,8 @@ public class Tile extends renderable.Renderable
 			HitboxWidth = 32;
 		} else if (TileType == Type.GRASS)
 		{
+			if (!CheckFlag(Flag.INTERACTABLE))
+				AddFlag(Flag.INTERACTABLE);
 			if (!CheckFlag(Flag.FARMABLE))
 				AddFlag(Flag.FARMABLE);
 		} else
