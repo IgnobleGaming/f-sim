@@ -1,5 +1,7 @@
 package object;
 
+import interfaces.Game;
+import interfaces.Objects;
 import interfaces.file.FileManager;
 import interfaces.file.types.MaterialFile;
 
@@ -119,9 +121,14 @@ public class Resource extends Renderable
 		return null;
 	}
 	
-	public int NumberOfHarvests()
+	public int HarvestsLeft()
 	{
-		return NumberOfHarvests(this.Res_Type, this.ID);
+		return Num_Harvests;
+	}
+	
+	public int MaxNumberOfHarvests()
+	{
+		return MaxNumberOfHarvests(this.Res_Type, this.ID);
 	}
 	
 	@Override
@@ -132,12 +139,58 @@ public class Resource extends Renderable
 		interfaces.Render.DrawImage(CurrentSprite, new Vector2D(XPos, YPos));
 	}
 	
-	public static int NumberOfHarvests(Resource.Type T, int ID)
+	@Override
+	public void Interact(Renderable R)
+	{
+		if (R instanceof Entity)
+		{
+			Num_Harvests -= 1;
+			
+			if (Num_Harvests <= 0)
+			{
+				Objects.GetInstance().Remove(this);
+				depleted = true;
+			}
+		}
+		else
+		{
+			
+		}
+	}
+	
+	public static int MaxNumberOfHarvests(Resource.Type T, int ID)
 	{
 		switch(T)
 		{
 			case VEGETATION:
 				switch (ID)
+				{
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					default:
+				}
+			case MINERAL:
+				return 1;
+			case FLORA:
+			case MISC:
+			case SEASHORE:
+			default:
+				return 1;
+			case UNKNOWN:
+				return 0;
+				
+		}
+	}
+	
+	public static int SkillReq(Resource R)
+	{
+		switch(R.Res_Type)
+		{
+			case VEGETATION:
+				switch (R.ID)
 				{
 					case 0:
 					case 1:
@@ -190,7 +243,7 @@ public class Resource extends Renderable
 				
 		}
 		
-		this.Num_Harvests = NumberOfHarvests();
+		this.Num_Harvests = MaxNumberOfHarvests();
 	}
 	
 	public MaterialFile Sprite()
@@ -201,5 +254,10 @@ public class Resource extends Renderable
 	public Type Type()
 	{
 		return this.Res_Type;
+	}
+	
+	public boolean Depleted()
+	{
+		return depleted;
 	}
 }

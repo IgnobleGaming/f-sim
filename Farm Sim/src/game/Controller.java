@@ -26,7 +26,7 @@ public class Controller
 
 	private enum InputType
 	{
-		UP, DOWN, LEFT, RIGHT, ESCAPE, ZOOM, CONSOLE, RELEASE, ENTER, NONE, BACK
+		UP, DOWN, LEFT, RIGHT, INTERACT, ESCAPE, ZOOM, CONSOLE, RELEASE, ENTER, NONE, BACK
 	};
 
 	public Controller()
@@ -116,6 +116,9 @@ public class Controller
 					case CONSOLE:
 						Console.GetInstance().ToggleVisibility();
 						break;
+					case INTERACT:
+						Game.GetInstance().Controllable().Interact();
+						break;
 				}
 				break;
 		}
@@ -198,6 +201,8 @@ public class Controller
 					case Keyboard.KEY_BACK:
 						In = InputType.BACK;
 						break;
+					case Keyboard.KEY_E:
+						In = InputType.INTERACT;
 					default:
 						ProcessInput(InputType.NONE, Keyboard.getEventCharacter());
 				}

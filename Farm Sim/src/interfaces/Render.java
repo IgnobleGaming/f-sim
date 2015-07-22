@@ -7,6 +7,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.LWJGLException;
+import org.newdawn.slick.Color;
 
 import java.util.PriorityQueue;
 
@@ -195,6 +196,27 @@ public class Render
 		Mat.SetOrientation(Orientation.NORMAL);
 
 	}
+	
+	public static void DrawLine(int x1, int y1, int x2, int y2, Color Color)
+	{
+		GL11.glBegin(GL11.GL_LINES);
+		GL11.glLineWidth(2.0f); 
+		GL11.glColor3f(Color.r, Color.g, Color.b);
+		GL11.glVertex2i(x1, y1);
+		GL11.glVertex2i(x2, y2);
+		GL11.glEnd();
+		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
+	}
+	
+	public static void DrawLine(specifier.Vector2D Pos, specifier.Vector2D Pos2, Color Color)
+	{
+		GL11.glBegin(GL11.GL_LINES);
+		GL11.glLineWidth(1.0f); 
+		GL11.glColor3f(Color.r, Color.g, Color.b);
+		GL11.glVertex2i(Pos.x, Pos.y);
+		GL11.glVertex2i(Pos2.x, Pos.y);
+		GL11.glEnd();
+	}
 
 	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, float VerticalOffset, float HorizontalOffset, int Width, int Height)
 	{
@@ -252,6 +274,9 @@ public class Render
 		GL11.glEnd();		
 	}
 	
+	/*
+	 * 
+	 */
 	public static void DrawMap(specifier.MinimapItem[] Map)
 	{
 		specifier.Vector2D tempPos = renderable.Renderable.GetPosFromLocation(Position.TOPLEFT, PositionType.ABSOLUTE, Map.length, Map.length, 0,0, null);

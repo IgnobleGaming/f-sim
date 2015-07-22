@@ -5,12 +5,15 @@ import specifier.Vector;
 import specifier.Vector2D;
 import game.Tile;
 import interfaces.Game;
+import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
 
 import java.util.*;
+
+import org.newdawn.slick.Color;
 
 public class Entity extends Renderable
 {
@@ -40,6 +43,7 @@ public class Entity extends Renderable
 	protected String Name;
 	protected String Description;
 	protected Vector2D Position;
+	protected Vector2D LookAt;
 	protected Vector Velocity;
 	protected EnumSet<Flag> Flags; // sadly we can't `bitwise and` :(
 	protected State CurrentState;
@@ -51,6 +55,7 @@ public class Entity extends Renderable
 	protected int CurrentStep = 0;
 	protected int TotalMoveTime = 0;
 	protected long LastMoveTime = 0;
+	protected MaterialFile Shadow;
 
 	/**
 	 * Creates a new entity
@@ -93,6 +98,10 @@ public class Entity extends Renderable
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
 		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
 		Position(Position);
+		LookAt = new Vector2D(0, 0);
+		
+		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
+		Shadow.Open();
 
 		HitboxOffsetX = 5;
 		HitboxOffsetY = 25;
@@ -186,7 +195,13 @@ public class Entity extends Renderable
 	{
 		if (CurrentSprite == null)
 			CurrentSprite = null;
+
 		interfaces.Render.DrawImage(CurrentSprite, Position);
+		interfaces.Render.DrawImage(Shadow, new Vector2D(Position.x, Position.y + 4));
+		
+		//Trying to get hitboxes to draw, not going so well
+		//interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY, Color.orange);
+		//interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY + this.HitboxHeight, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY + this.HitboxHeight, Color.orange);
 	}
 
 	/**
@@ -217,18 +232,26 @@ public class Entity extends Renderable
 			case UP:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
 				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				LookAt.x = 0;
+				LookAt.y = - (CurrentSprite.Height() / 2);
 				break;
 			case DOWN:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
 				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				LookAt.x = 0;
+				LookAt.y = (CurrentSprite.Height() / 2);
 				break;
 			case LEFT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
 				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				LookAt.x = - (CurrentSprite.Width() / 2);
+				LookAt.y = 0;
 				break;
 			case RIGHT:
 				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
 				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				LookAt.x = (CurrentSprite.Width() / 2);
+				LookAt.y = 0;
 				break;
 		}
 
@@ -332,24 +355,54 @@ public class Entity extends Renderable
 		if (NewAnim.Valid)
 			Animation.add(AnimState.val, NewAnim);
 	}
-
+	
+	public void Interact()
+	{
+		Tile T = game.Map.GetInstance().GetTileFromIndex(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		
+		if (T != null)
+		{
+			if (T.CheckFlag(Tile.Flag.INTERACTABLE))
+			{
+				Interact(T);
+			}
+		}
+	}
+	
+	@Override
+	public void Interact(Renderable R)
+	{
+		if (R instanceof Tile) 
+		{
+			R.Interact(this);
+		}
+		else
+		{
+			
+		}
+	}
+	
 	private boolean Collide(int x, int y)
 	{
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
+		if (x + this.HitboxOffsetX < -1 || x + this.HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
+			return true;
+		
 		for (int i = 0; i < Tiles.length; i++)
 		{
 			Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
-			
-			if (T.CheckFlag(Tile.Flag.BLOCKED)
-					&& x + this.HitboxOffsetX + this.HitboxWidth > game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() && y + this.HitboxOffsetY + this.HitboxHeight > game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY()
-							&& x + this.HitboxOffsetX < game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth() && y + this.HitboxOffsetY < game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
+
+			if (T.CheckFlag(Tile.Flag.BLOCKED) && x + this.HitboxOffsetX + this.HitboxWidth > game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX()
+					&& y + this.HitboxOffsetY + this.HitboxHeight > game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX < game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
+					&& y + this.HitboxOffsetY < game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
 				return true;
 		}
 
 		return false;
 	}
 
+	/*
 	private boolean Collide(Tile T)
 	{
 		if (T.CheckFlag(Tile.Flag.BLOCKED) && this.Position.x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX() && this.Position.y + HitboxOffsetY + HitboxHeight > T.Position().y + T.HitboxOffsetY()
@@ -358,6 +411,7 @@ public class Entity extends Renderable
 		else
 			return true;
 	}
+	*/
 
 	public int TileID()
 	{

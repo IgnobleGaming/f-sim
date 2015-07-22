@@ -32,6 +32,11 @@ public class Objects
 		return Objs.get(index);
 	}
 	
+	public boolean Remove(Renderable Obj)
+	{
+		return Objs.remove(Obj);
+	}
+	
 	public boolean Add(Renderable Obj)
 	{
 		Objs.add(Obj);

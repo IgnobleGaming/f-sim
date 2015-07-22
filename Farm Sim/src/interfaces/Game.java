@@ -141,6 +141,8 @@ public class Game
 		
 		player.SetSprite(playersprite);		
 		
+		
+		
 		/*~~~~~~~~~~ Stationary animation ~~~~~~~~~~*/
 		MaterialFile playeranim_0 = new MaterialFile("resources\\player_stationary_0.png", MaterialFile.Type.PNG);
 		playeranim_0.Open();

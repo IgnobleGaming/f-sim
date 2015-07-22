@@ -291,71 +291,79 @@ public class Map extends renderable.Renderable
 		{
 			if (Left)
 			{
-				Tiles = new int [3];
+				Tiles = new int [4];
+				
 				Tiles[0] = Curr + 1; // MR
 				Tiles[1] = Curr + Dimension; // BM
 				Tiles[2] = Curr + Dimension + 1; // BR
+				Tiles[3] = Curr;
 			}
 			else if (Right)
 			{
-				Tiles = new int [3];
+				Tiles = new int [4];
 				
 				Tiles[0] = Curr - 1; // ML
 				Tiles[1] = Curr + Dimension - 1; // BL
 				Tiles[2] = Curr + Dimension; // BM
+				Tiles[3] = Curr;
 			}
 			else
 			{
-				Tiles = new int [5];
+				Tiles = new int [6];
 				
 				Tiles[0] = Curr - 1; // ML
-				Tiles[1] = Curr + 1; // MR
-				Tiles[2] = Curr + Dimension - 1; // BL
-				Tiles[3] = Curr + Dimension; // BM
-				Tiles[4] = Curr + Dimension + 1; // BR
+				Tiles[1] = Curr;
+				Tiles[2] = Curr + 1; // MR
+				Tiles[3] = Curr + Dimension - 1; // BL
+				Tiles[4] = Curr + Dimension; // BM
+				Tiles[5] = Curr + Dimension + 1; // BR
 			}
 		}
 		else if (Bottom)
 		{
 			if (Left)
 			{
-				Tiles = new int [3];
+				Tiles = new int [4];
 
 				Tiles[0] = Curr - Dimension; // TM
 				Tiles[1] = Curr - Dimension + 1; // TR
 				Tiles[2] = Curr + 1; // MR
+				Tiles[3] = Curr;
 			}
 			else if (Right)
 			{
-				Tiles = new int [3];
+				Tiles = new int [4];
 
-				Tiles[3] = Curr - 1; // ML
-				Tiles[0] = Curr - Dimension - 1; // TL
-				Tiles[1] = Curr - Dimension; // TM
+				Tiles[0] = Curr - 1; // ML
+				Tiles[1] = Curr - Dimension - 1; // TL
+				Tiles[2] = Curr - Dimension; // TM
+				Tiles[3] = Curr;
 			}
 			else
 			{
-				Tiles = new int [5];
+				Tiles = new int [6];
 				
 				Tiles[0] = Curr - Dimension - 1; // TL
 				Tiles[1] = Curr - Dimension; // TM
 				Tiles[2] = Curr - Dimension + 1; // TR
 				Tiles[3] = Curr - 1; // ML
+				Tiles[4] = Curr;
 				Tiles[5] = Curr + 1; // MR
 			}
 		}
 		else
 		{
-			Tiles = new int [8];
+			Tiles = new int [9];
 			
 			Tiles[0] = Curr - Dimension - 1; // TL
 			Tiles[1] = Curr - Dimension; // TM
 			Tiles[2] = Curr - Dimension + 1; // TR
 			Tiles[3] = Curr - 1; // ML
-			Tiles[4] = Curr + 1; // MR
-			Tiles[5] = Curr + Dimension - 1; // BL
-			Tiles[6] = Curr + Dimension; // BM
-			Tiles[7] = Curr + Dimension + 1; // BR
+			Tiles[4] = Curr;
+			Tiles[5] = Curr + 1; // MR
+			Tiles[6] = Curr + Dimension - 1; // BL
+			Tiles[7] = Curr + Dimension; // BM
+			Tiles[8] = Curr + Dimension + 1; // BR
 		}
 		
 		return Tiles;
@@ -429,5 +437,15 @@ public class Map extends renderable.Renderable
 	public Entity GetEntityFromIndex(int index)
 	{
 		return null;
+	}
+	
+	public int HorizontalTileNum()
+	{
+		return HorizontalTileNum;
+	}
+	
+	public int VerticalTileNum()
+	{
+		return VerticalTileNum;
 	}
 }

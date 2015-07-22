@@ -214,4 +214,10 @@ public abstract class Renderable
 	{
 		return HitboxWidth;
 	}
+
+	public void Interact(Renderable R)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

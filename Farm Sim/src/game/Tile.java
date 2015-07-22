@@ -9,6 +9,8 @@ import interfaces.file.types.MaterialFile;
 import java.util.EnumSet;
 import java.util.Random;
 
+import object.Entity;
+
 import org.newdawn.slick.Color;
 
 import renderable.GUIFont.FontFamily;
@@ -71,20 +73,53 @@ public class Tile extends renderable.Renderable
 		return null;
 	}
 
+	public void Interact(renderable.Renderable R)
+	{
+		if (this.CheckFlag(Flag.LOCKED))
+			return;
+
+		if (R instanceof Entity)
+		{
+			if (this.CheckFlag(Flag.RESOURCE))
+			{
+				Resource.Interact(R);
+				if (Resource.Depleted())
+				{
+					Resource = null;
+					Flags.remove(Flag.RESOURCE);
+					HitboxOffsetX = 0;
+					HitboxOffsetY = 0;
+					HitboxHeight = 0;
+					HitboxWidth = 0;
+
+					if (!CheckFlag(Flag.FARMABLE))
+						AddFlag(Flag.FARMABLE);
+				}
+			} else if (this.CheckFlag(Flag.FARMABLE))
+			{
+				this.ChangeType(Type.DIRT);
+				System.out.println("ding");
+
+			}
+		}
+	}
+
 	public void Resource(object.Resource Resource)
 	{
 		if (!Flags.contains(Flag.RESOURCE) && Resource != null)
 		{
 			Flags.add(Flag.INTERACTABLE);
-			Flags.add(Flag.OCCUPIED);
 			Flags.add(Flag.RESOURCE);
 			Flags.add(Flag.BLOCKED);
 
-			this.HitboxOffsetX = 0;
-			this.HitboxOffsetY = 0;
-			this.HitboxHeight = 32;
-			this.HitboxWidth = 32;
-			
+			if (CheckFlag(Flag.FARMABLE))
+				RemoveFlag(Flag.FARMABLE);
+
+			HitboxOffsetX = 2;
+			HitboxOffsetY = 7;
+			HitboxHeight = 18;
+			HitboxWidth = 28;
+
 			this.Resource = Resource;
 			this.Resource.Init(Position());
 		}
@@ -96,18 +131,27 @@ public class Tile extends renderable.Renderable
 
 		if (TileType == Type.WATER)
 		{
+			if (CheckFlag(Flag.FARMABLE))
+				RemoveFlag(Flag.FARMABLE);
 			AddFlag(Flag.BLOCKED);
 			HitboxOffsetX = 0;
 			HitboxOffsetY = 0;
 			HitboxHeight = 32;
 			HitboxWidth = 32;
+		} else if (TileType == Type.GRASS)
+		{
+			if (!CheckFlag(Flag.FARMABLE))
+				AddFlag(Flag.FARMABLE);
 		} else
 		{
+			if (CheckFlag(Flag.FARMABLE))
+				RemoveFlag(Flag.FARMABLE);
 			RemoveFlag(Flag.BLOCKED);
-			HitboxOffsetX = 0;
-			HitboxOffsetY = 0;
-			HitboxHeight = 0;
-			HitboxWidth = 0;
+
+			this.HitboxOffsetX = 0;
+			this.HitboxOffsetY = 0;
+			this.HitboxHeight = 32;
+			this.HitboxWidth = 32;
 		}
 
 		UpdateTexture();
