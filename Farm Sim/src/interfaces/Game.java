@@ -156,28 +156,48 @@ public class Game
 		player.AddAnimation(object.Entity.State.STATIONARY, 550, playeranim_0, playeranim_1, playeranim_2);
 		
 		/*~~~~~~~~~~ Walking left Animation ~~~~~~~~~~*/
-		MaterialFile playerwalkleft_0 = new MaterialFile("resources\\player_walkleft_0.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkleft_0 = new MaterialFile("resources\\WL0.png", MaterialFile.Type.PNG);
 		playerwalkleft_0.Open();
 		
-		MaterialFile playerwalkleft_1 = new MaterialFile("resources\\player_walkleft_1.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkleft_1 = new MaterialFile("resources\\WL1.png", MaterialFile.Type.PNG);
 		playerwalkleft_1.Open();
 		
-		MaterialFile playerwalkleft_2 = new MaterialFile("resources\\player_walkleft_2.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkleft_2 = new MaterialFile("resources\\WL2.png", MaterialFile.Type.PNG);
 		playerwalkleft_2.Open();
 		
-		player.AddAnimation(object.Entity.State.MOVINGLEFT, 450, playerwalkleft_0.SetOrientation(Orientation.DOWN), playerwalkleft_1.SetOrientation(Orientation.DOWN), playerwalkleft_2.SetOrientation(Orientation.DOWN), playerwalkleft_1.SetOrientation(Orientation.DOWN));
+		MaterialFile playerwalkleft_3 = new MaterialFile("resources\\WL3.png", MaterialFile.Type.PNG);
+		playerwalkleft_3.Open();
+		
+		MaterialFile playerwalkleft_4 = new MaterialFile("resources\\WL4.png", MaterialFile.Type.PNG);
+		playerwalkleft_4.Open();
+		
+		MaterialFile playerwalkleft_5 = new MaterialFile("resources\\WL5.png", MaterialFile.Type.PNG);
+		playerwalkleft_5.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGLEFT, 550, playerwalkleft_0.SetOrientation(Orientation.DOWN), playerwalkleft_1.SetOrientation(Orientation.DOWN),
+				playerwalkleft_2.SetOrientation(Orientation.DOWN), playerwalkleft_3.SetOrientation(Orientation.DOWN), playerwalkleft_4.SetOrientation(Orientation.DOWN), playerwalkleft_5.SetOrientation(Orientation.DOWN));
 
 		/*~~~~~~~~~~ Walking right Animation ~~~~~~~~~~*/
-		MaterialFile playerwalkright_0 = new MaterialFile("resources\\player_walkright_0.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkright_0 = new MaterialFile("resources\\WR0.png", MaterialFile.Type.PNG);
 		playerwalkright_0.Open();
 		
-		MaterialFile playerwalkright_1 = new MaterialFile("resources\\player_walkright_1.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkright_1 = new MaterialFile("resources\\WR1.png", MaterialFile.Type.PNG);
 		playerwalkright_1.Open();
 		
-		MaterialFile playerwalkright_2 = new MaterialFile("resources\\player_walkright_2.png", MaterialFile.Type.PNG);
+		MaterialFile playerwalkright_2 = new MaterialFile("resources\\WR2.png", MaterialFile.Type.PNG);
 		playerwalkright_2.Open();
 		
-		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkright_0.SetOrientation(Orientation.DOWN), playerwalkright_1.SetOrientation(Orientation.DOWN), playerwalkright_2.SetOrientation(Orientation.DOWN), playerwalkright_1.SetOrientation(Orientation.DOWN));
+		MaterialFile playerwalkright_3 = new MaterialFile("resources\\WR3.png", MaterialFile.Type.PNG);
+		playerwalkright_3.Open();
+		
+		MaterialFile playerwalkright_4 = new MaterialFile("resources\\WR4.png", MaterialFile.Type.PNG);
+		playerwalkright_4.Open();
+		
+		MaterialFile playerwalkright_5 = new MaterialFile("resources\\WR5.png", MaterialFile.Type.PNG);
+		playerwalkright_5.Open();
+		
+		player.AddAnimation(object.Entity.State.MOVINGRIGHT, 450, playerwalkright_0.SetOrientation(Orientation.DOWN), playerwalkright_1.SetOrientation(Orientation.DOWN),
+				playerwalkright_2.SetOrientation(Orientation.DOWN), playerwalkright_3.SetOrientation(Orientation.DOWN), playerwalkright_4.SetOrientation(Orientation.DOWN), playerwalkright_5.SetOrientation(Orientation.DOWN));
 
 		/*~~~~~~~~~~ Walking up Animation ~~~~~~~~~~*/
 		MaterialFile playerwalkup_0 = new MaterialFile("resources\\player_walkup_0.png", MaterialFile.Type.PNG);
