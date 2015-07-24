@@ -82,7 +82,6 @@ public class Tile extends renderable.Renderable
 		{
 			if (this.CheckFlag(Flag.RESOURCE))
 			{
-				System.out.println("Tile.Interact | ding");
 				Resource.Interact(R);
 				if (Resource.Depleted())
 				{
@@ -100,12 +99,10 @@ public class Tile extends renderable.Renderable
 			} else if (TileType.equals(Type.GRASS))
 			{
 				this.ChangeType(Type.DIRT);
-				System.out.println("Tile.Interact | ding");
 
 			}
 			else 
 			{
-				System.out.println(TileType);
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import interfaces.Camera;
 import interfaces.Game;
 import interfaces.Objects;
 import interfaces.file.Logging;
+import object.Entity;
 import object.Entity.State;
 
 import org.lwjgl.input.Keyboard;
@@ -23,6 +24,8 @@ public class Controller
 	private ArrayList<Character> InputChars;
 	private ArrayList<String> Args = new ArrayList<String>();
 	private String InputStr = "";
+	private int CT = 0;
+	private int TT = 300;
 
 	private enum InputType
 	{
@@ -42,8 +45,11 @@ public class Controller
 
 	/**
 	 * Interpret the read input depending on current game state
-	 * @param input ( type of input )
-	 * @param chars ( optional characters if in console or menu state )
+	 * 
+	 * @param input
+	 *            ( type of input )
+	 * @param chars
+	 *            ( optional characters if in console or menu state )
 	 */
 	private void ProcessInput(InputType input, char... chars)
 	{
@@ -89,7 +95,7 @@ public class Controller
 						if (InputChars.size() > 0 && InputStr.length() > 0)
 						{
 							InputChars.remove(InputChars.size() - 1);
-							InputStr = InputStr.substring(0,InputStr.length() - 1);
+							InputStr = InputStr.substring(0, InputStr.length() - 1);
 						}
 						break;
 				}
@@ -119,6 +125,8 @@ public class Controller
 					case INTERACT:
 						Game.GetInstance().Controllable().Interact();
 						break;
+					case NONE:
+						break;
 				}
 				break;
 		}
@@ -132,91 +140,92 @@ public class Controller
 	private void ReadInput()
 	{
 		// this is polled
-		while(Mouse.next())
+		if (Game.GetInstance().Controllable() != null && !Game.GetInstance().Controllable().CheckFlag(Entity.Flag.LOCKED))
 		{
-			int EventButton = Mouse.getEventButton();
-			int MouseWheelDelta = Mouse.getEventDWheel();
-			
-			switch (EventButton)
+			while (Mouse.next())
 			{
-				default:
-					break;
-			}
-			
-			if (Math.abs(MouseWheelDelta) > 100)
-			{
-				double CurDist = Camera.getInstance().Distance();
-				double ZoomDelta = CurDist;
-						
-				if (MouseWheelDelta > 0)
-				{
-					if (CurDist > .35)
-						ZoomDelta = CurDist * .95;
-				}
-				else
-				{
-					if (CurDist < 2)
-						ZoomDelta = CurDist * 1.05;
-				}
-					
-				Camera.getInstance().SetDistance(ZoomDelta);
-			}
-		}
-		
-		while (Keyboard.next())
-		{
-			int EventKey = Keyboard.getEventKey();
-			if (Keyboard.getEventKeyState()) // key is pressed
-			{
-				if (NewestKey != EventKey) // a new input detected so force state to this one
-					NewestKey = EventKey;
+				int EventButton = Mouse.getEventButton();
+				int MouseWheelDelta = Mouse.getEventDWheel();
 
-				InputType In = InputType.RELEASE;
-
-				switch (EventKey)
+				switch (EventButton)
 				{
-					case Keyboard.KEY_UP:
-					case Keyboard.KEY_W:
-						In = InputType.UP;
-						break;
-					case Keyboard.KEY_DOWN:
-					case Keyboard.KEY_S:
-						In = InputType.DOWN;
-						break;
-					case Keyboard.KEY_LEFT:
-					case Keyboard.KEY_A:
-						In = InputType.LEFT;
-						break;
-					case Keyboard.KEY_RIGHT:
-					case Keyboard.KEY_D:
-						In = InputType.RIGHT;
-						break;
-					case Keyboard.KEY_GRAVE:
-						if (Keyboard.getEventKeyState())
-							In = InputType.CONSOLE;
-						break;
-					case Keyboard.KEY_RETURN:
-						In = InputType.ENTER;
-						break;
-					case Keyboard.KEY_BACK:
-						In = InputType.BACK;
-						break;
-					case Keyboard.KEY_E:
-						In = InputType.INTERACT;
 					default:
-						ProcessInput(InputType.NONE, Keyboard.getEventCharacter());
+						break;
 				}
 
-				ProcessInput(In);
+				if (Math.abs(MouseWheelDelta) > 100)
+				{
+					double CurDist = Camera.getInstance().Distance();
+					double ZoomDelta = CurDist;
+
+					if (MouseWheelDelta > 0)
+					{
+						if (CurDist > .35)
+							ZoomDelta = CurDist * .95;
+					} else
+					{
+						if (CurDist < 2)
+							ZoomDelta = CurDist * 1.05;
+					}
+
+					Camera.getInstance().SetDistance(ZoomDelta);
+				}
 			}
 
-			else			// key is being released
+			ReadMovementInput();
+			ReadActionInput();
+
+		}
+	}
+
+	/**
+	 * Read Movement Input - Detects if any movement key is pressed and moves the controllable in that direction otherwise set player anim to stationary
+	 */
+	private void ReadMovementInput()
+	{
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_D)
+				|| Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+		{
+			if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP))
+				ProcessInput(InputType.UP);
+			if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+				ProcessInput(InputType.LEFT);
+			if (Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+				ProcessInput(InputType.DOWN);
+			if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				ProcessInput(InputType.RIGHT);
+		} else
+			ProcessInput(InputType.RELEASE);
+	}
+
+	private void ReadActionInput()
+	{
+		InputType In = InputType.NONE;  // Input to Process
+		
+		CT += Game.GetInstance().Delta(); // Current Time
+
+		// Checks to see if another action can be processed //
+		if (CT > TT)
+		{
+			if (Keyboard.isKeyDown(Keyboard.KEY_E))
 			{
-				if (EventKey == NewestKey)
-				{
-					ProcessInput(InputType.RELEASE);
-					NewestKey = 0;
-				}
+				ProcessInput(InputType.INTERACT);
+				CT = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE))
+			{
+				In = InputType.CONSOLE;
+				CT = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			{
+				In = InputType.ENTER;
+				CT = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_BACK))
+			{
+				In = InputType.BACK;
+				CT = 0;
 			}
 		}
 	}
