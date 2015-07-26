@@ -1,7 +1,6 @@
 package interfaces;
 
 import object.Entity;
-import game.Mapbuilder;
 
 public class Camera
 {
@@ -67,28 +66,6 @@ public class Camera
 				return true;
 			} else
 			{
-				if (R.showing)
-				{
-					boolean t1 = (R.Position().x <= maxWidth);
-					boolean t2 = R.Position().x >= minWidth;
-					boolean t3 = R.Position().y <= maxHeight;
-					boolean t4 = R.Position().y >= minHeight;
-
-					if (debug)
-					{
-						System.out.println(R.getClass());
-						System.out.println("----------------------------------------------------");
-						System.out.println("|                " + t4 + " " + minHeight);
-						System.out.println("| " + t2 + " " + minWidth + "                               " + t1 + " " + maxWidth);
-						System.out.println("|                     " + t3 + " " + maxHeight);
-						System.out.println("----------------------------------------------------");
-
-						System.out.println(Mapbuilder.Direction.DirectionOf(Focus.Position().x, Focus.Position().y, R.Position().x, R.Position().y));
-						System.out.println("P - " + Focus.Position().x + ", " + Focus.Position().y + " || R - " + R.Position().x + ", " + R.Position().y);
-						System.out.println("=======================================================");
-					}
-				}
-
 				R.showing = false;
 				return false;
 			}
@@ -123,8 +100,6 @@ public class Camera
 		
 		int mWidth = (int)interfaces.Variables.GetInstance().Get("m_width").Current() * 32;
 		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
-		
-		System.out.println("Camera.Update | " + Distance);
 		
 		if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)	
 			Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, potentialFocus.Position().y));

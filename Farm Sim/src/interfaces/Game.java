@@ -78,10 +78,9 @@ public class Game
 		Input = new game.Controller();
 		
 		Map = game.Map.GetInstance();
-		Mapbuilder MB = game.Mapbuilder.GetInstance();
 		
-		MB.Build();
-		
+		Mapbuilder.MapGeneration(Map);
+
 		GameObjects.Add(Map);
 		
 		GameCamera = Camera.getInstance(Output.Width(), Output.Height(), 1);
@@ -137,7 +136,7 @@ public class Game
 		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(3216, 3216), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
+		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(512, 512), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
 		
 		player.SetSprite(playersprite);		
 		

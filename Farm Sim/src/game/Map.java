@@ -114,6 +114,19 @@ public class Map extends renderable.Renderable
 		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
 		MountainTile.Open();
 		FileManager.getInstance().Add(MountainTile);
+		
+		int SizeActual = Dimension * Dimension;
+
+		for (int i = 0; i < SizeActual; i++)
+		{
+			MapTiles[i] = new Tile(Tile.Type.GRASS);
+			if (TileSize == 0)
+				TileSize = MapTiles[0].Width();
+			Vector2D TilePos = GetCoordPos(i);
+			MapTiles[i].Position(TilePos.x, TilePos.y);
+			MapTiles[i].TileID = i;
+		}
+		Resize(Dimension * TileSize, Dimension * TileSize);
 	}
 
 	/**
@@ -197,6 +210,15 @@ public class Map extends renderable.Renderable
 			return new Tile(Tile.Type.GRASS);
 	}
 	
+	public Tile GetTileFromIndex(Vector2D V)
+	{
+		int index = GetTileIndex(V.x, V.y);
+		if (index > -1 && index < MapTiles.length)
+			return MapTiles[index];
+		else
+			return new Tile(Tile.Type.GRASS);
+	}
+	
 	public Tile GetTileFromIndex(int i)
 	{
 		if (i > -1 && i < MapTiles.length)
@@ -240,7 +262,7 @@ public class Map extends renderable.Renderable
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
 				T.Draw();
 		}
-		// interfaces.Render.DrawMap(GetMinimap());
+		interfaces.Render.DrawMap(GetMinimap());
 	}
 
 	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)
