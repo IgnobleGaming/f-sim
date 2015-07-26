@@ -2,8 +2,6 @@ package game;
 
 import interfaces.Camera;
 import interfaces.Game;
-import interfaces.Objects;
-import interfaces.file.Logging;
 import object.Entity;
 import object.Entity.State;
 
@@ -11,12 +9,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import renderable.Console;
-import renderable.Renderable;
-
-import java.awt.TrayIcon.MessageType;
 import java.util.ArrayList;
-
-import jdk.nashorn.internal.runtime.regexp.joni.constants.Arguments;
 
 public class Controller
 {
@@ -160,12 +153,12 @@ public class Controller
 
 					if (MouseWheelDelta > 0)
 					{
-						if (CurDist > .35)
-							ZoomDelta = CurDist * .95;
+						if (CurDist > .30)
+							ZoomDelta = CurDist - .05f;
 					} else
 					{
 						if (CurDist < 2)
-							ZoomDelta = CurDist * 1.05;
+							ZoomDelta = CurDist + .05f;
 					}
 
 					Camera.getInstance().SetDistance(ZoomDelta);

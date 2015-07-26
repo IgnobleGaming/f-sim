@@ -8,8 +8,9 @@ public class Camera
 	private static Camera Instance;
 	private object.Entity Focus;
 	
-
-	// private
+	private int Width;
+	private int Height;
+	private double Distance;
 
 	public Camera(int Width, int Height, float Distance)
 	{
@@ -59,7 +60,7 @@ public class Camera
 
 			// System.out.println("MW - " + maxWidth + " mW " + minWidth + " MH - " + maxHeight + " mH - " + minHeight);
 
-			if (R.Position().x < maxWidth && R.Position().x > minWidth && R.Position().y < maxHeight && R.Position().y > minHeight)
+			if (R.Position().x < maxWidth && R.Position().x > minWidth - 32 && R.Position().y < maxHeight && R.Position().y > minHeight - 32)
 			{
 				// System.out.println(R.getClass() + " = P - " + Focus.Position().x + ", " + Focus.Position().y + " || R - " + R.Position().x + ", " + R.Position().y);
 				R.showing = true;
@@ -123,9 +124,11 @@ public class Camera
 		int mWidth = (int)interfaces.Variables.GetInstance().Get("m_width").Current() * 32;
 		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
 		
-		if (potentialFocus.Position().x + Width * 1.2 * Distance > mWidth || potentialFocus.Position().x - Width * 1.2 * Distance < 0)	
+		System.out.println("Camera.Update | " + Distance);
+		
+		if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)	
 			Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, potentialFocus.Position().y));
-		else if ((potentialFocus.Position().y + Height / 1.65) * Distance > mHeight || (potentialFocus.Position().y - Height / 1.65 ) * Distance  < 0)
+		else if (potentialFocus.Position().y + ((Height / 2)- game.Map.GetInstance().TileSize() / 2) * Distance > mHeight || potentialFocus.Position().y - ((Height / 2) - game.Map.GetInstance().TileSize() / 2) * Distance  < 0)
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
 		else
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));
@@ -163,8 +166,4 @@ public class Camera
 
 		return new double[] { left, right, bottom, top };
 	}
-
-	private int Width;
-	private int Height;
-	private double Distance;
 }
