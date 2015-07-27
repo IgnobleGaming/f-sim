@@ -220,6 +220,8 @@ public class Controller
 				In = InputType.BACK;
 				CT = 0;
 			}
+			
+			ProcessInput(In);
 		}
 	}
 }

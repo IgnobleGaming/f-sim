@@ -102,18 +102,9 @@ public class Render
 
 			while (RenderQueue.size() > 0)
 			{
-				Renderable R = RenderQueue.remove();
-
-				
-				if (R instanceof object.Entity)
-					counts[0]++;
-				if (R instanceof object.Resource)
-					counts[1]++;
-				
+				Renderable R = RenderQueue.remove();				
 				R.Draw();
 			}
-			
-			//System.out.println("dump [e, r]" + counts[0] +  " " + counts[1]);
 
 			Display.update();
 			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());

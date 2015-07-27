@@ -2,6 +2,7 @@ package renderable;
 
 import specifier.*;
 import interfaces.Camera;
+import interfaces.Game;
 import interfaces.Render;
 import interfaces.file.types.MaterialFile;
 
@@ -74,7 +75,7 @@ public abstract class Renderable
 
 	public specifier.Vector2D translatedRelativePos()
 	{
-		return new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x / 42 + this.Position().x, Camera.getInstance().cameraLookPoint().y / 42 + this.Position().y);
+		return new specifier.Vector2D((Camera.getInstance().cameraLookPoint().x - Render.GetInstance().Width() / 2) + this.Position().x, (Camera.getInstance().cameraLookPoint().y - Render.GetInstance().Height() / 2 ) + this.Position().y);
 	}
 
 	public specifier.Vector2D Position()

@@ -262,7 +262,7 @@ public class Map extends renderable.Renderable
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
 				T.Draw();
 		}
-		interfaces.Render.DrawMap(GetMinimap());
+		//interfaces.Render.DrawMap(GetMinimap());
 	}
 
 	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)

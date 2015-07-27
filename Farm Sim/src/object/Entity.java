@@ -386,7 +386,7 @@ public class Entity extends Renderable
 	{
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
-		if (x + this.HitboxOffsetX < -1 || x + this.HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
+		if (x + this.HitboxOffsetX < -1 || x + this.HitboxOffsetX + this.HitboxWidth> (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
 			return true;
 
 		for (int i = 0; i < Tiles.length; i++)

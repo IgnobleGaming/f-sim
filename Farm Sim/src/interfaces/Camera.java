@@ -47,7 +47,7 @@ public class Camera
 		
 		if (Focus == null)
 			return false;
-		else if (R instanceof game.Map)
+		else if (R instanceof game.Map || R instanceof renderable.HUD)
 			return true;
 
 		else if (R instanceof object.Entity || R instanceof object.Resource)
@@ -107,6 +107,8 @@ public class Camera
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
 		else
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));
+		
+		renderable.HUD.GetInstance().Position(Focus.Position());
 	}
 
 	public specifier.Vector2D cameraLookPoint()
