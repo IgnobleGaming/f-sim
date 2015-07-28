@@ -215,6 +215,16 @@ public abstract class Renderable
 	{
 		return HitboxWidth;
 	}
+	
+	public boolean IsTargetedBy(Vector2D V)
+	{
+		if (V.x >= this.XPos + this.HitboxOffsetX && V.x <= this.XPos + this.HitboxOffsetX + this.HitboxWidth && V.y >= this.YPos + this.HitboxOffsetY && V.y <= this.YPos + this.HitboxOffsetY + this.HitboxHeight)
+		{
+			return true;
+		}
+		else 
+			return false;
+	}
 
 	public void Interact(Renderable R)
 	{

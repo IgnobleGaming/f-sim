@@ -30,7 +30,7 @@ public class Entity extends Renderable
 
 	public enum State
 	{
-		STATIONARY(0), MOVINGLEFT(1), MOVINGRIGHT(2), MOVINGUP(3), MOVINGDOWN(4);
+		STATIONARY(0), MOVINGLEFT(1), MOVINGRIGHT(2), MOVINGUP(3), MOVINGDOWN(4), INTERACTING(5);
 		private int val;
 
 		private State(int val)
@@ -196,8 +196,8 @@ public class Entity extends Renderable
 		if (CurrentSprite == null)
 			CurrentSprite = null;
 
-		interfaces.Render.DrawImage(CurrentSprite, Position);
 		interfaces.Render.DrawImage(Shadow, new Vector2D(Position.x, Position.y + 4));
+		interfaces.Render.DrawImage(CurrentSprite, Position);
 
 		// Trying to get hitboxes to draw, not going so well
 		// interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY, Color.orange);
@@ -213,12 +213,6 @@ public class Entity extends Renderable
 	@Override
 	public void Move(Direction.Relative Dir)
 	{
-		/*
-		 * int TileSize = (int)Variables.GetInstance().Get("m_tilesize").Current();
-		 * 
-		 * if (LastTile != game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16)) { LastTile.RemoveFlag(game.Tile.Flag.BLOCKED); LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y + 16); LastTile.AddFlag(game.Tile.Flag.BLOCKED); }
-		 */
-
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
 		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 28);
@@ -295,6 +289,8 @@ public class Entity extends Renderable
 			case MOVINGRIGHT:
 				this.Move(Direction.Relative.RIGHT);
 				break;
+			case INTERACTING:
+				this.Interact();
 		}
 
 		if (Animation.size() > CurrentState.val && Animation.get(CurrentState.val) != null)
@@ -332,7 +328,7 @@ public class Entity extends Renderable
 	public void MovementSpeed(double factor)
 	{
 		MovementSpeed = 500;
-		
+
 		for (specifier.Animation A : Animation)
 		{
 			if (A != null)
@@ -359,24 +355,37 @@ public class Entity extends Renderable
 
 	public void Interact()
 	{
-		Tile T = game.Map.GetInstance().GetTileFromIndex(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
-
-		if (T != null)
+		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		Renderable Target = null;
+		
+		
+		for (Renderable R : interfaces.Objects.GetInstance().Entities())
 		{
-			if (T.CheckFlag(Tile.Flag.INTERACTABLE))
-			{
-				Interact(T);
-			}
+			if (R.IsTargetedBy(Targeting))
+				Target = R;
 		}
+		
+		if (Target == null)
+			Target = game.Map.GetInstance().GetTileFromIndex(Targeting);
+		
+		Interact(Target);
 	}
 
 	@Override
 	public void Interact(Renderable R)
 	{
-		if (R instanceof Tile)
+		if (R == null)
+			return;
+		else if (R instanceof Tile)
+		{
+			if (((Tile) R).CheckFlag(Tile.Flag.INTERACTABLE))
+				R.Interact(this);
+		} 
+		else if (R instanceof Resource)
 		{
 			R.Interact(this);
-		} else
+		}
+		else
 		{
 
 		}
@@ -386,8 +395,11 @@ public class Entity extends Renderable
 	{
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
-		if (x + this.HitboxOffsetX < -1 || x + this.HitboxOffsetX + this.HitboxWidth> (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
+		if (x + this.HitboxOffsetX <= 0 || x + this.HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
+		{
+			System.out.println("Poop");
 			return true;
+		}
 
 		for (int i = 0; i < Tiles.length; i++)
 		{

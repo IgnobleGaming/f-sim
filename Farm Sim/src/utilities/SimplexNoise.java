@@ -20,6 +20,8 @@ public class SimplexNoise
 		this.seed = seed;
 
 		// recieves a number (eg 128) and calculates what power of 2 it is (eg 2^7)
+		
+		System.out.println((int) Math.ceil(Math.log10(largestFeature) / Math.log10(2)));
 		int numberOfOctaves = (int) Math.ceil(Math.log10(largestFeature) / Math.log10(2));
 
 		octaves = new SimplexNoise_octave[numberOfOctaves];
@@ -46,10 +48,11 @@ public class SimplexNoise
 
 		for (int i = 0; i < octaves.length; i++)
 		{
-			result = (result + octaves[i].noise(x / frequencys[i], y / frequencys[i]) * amplitudes[i]) * 10;
+			result = ((result + octaves[i].noise(x / frequencys[i], y / frequencys[i]) * amplitudes[i]) + 1 / 2);
+
 		}
 
-		System.out.println(result);
+		//System.out.println(result);
 		
 		return result;
 

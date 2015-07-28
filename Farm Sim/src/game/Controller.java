@@ -22,7 +22,7 @@ public class Controller
 
 	private enum InputType
 	{
-		UP, DOWN, LEFT, RIGHT, INTERACT, ESCAPE, ZOOM, CONSOLE, RELEASE, ENTER, NONE, BACK
+		UP, DOWN, LEFT, RIGHT, INTERACT, MAP, ESCAPE, ZOOM, CONSOLE, RELEASE, ENTER, NONE, BACK
 	};
 
 	public Controller()
@@ -116,7 +116,13 @@ public class Controller
 						Console.GetInstance().ToggleVisibility();
 						break;
 					case INTERACT:
-						Game.GetInstance().Controllable().Interact();
+						Game.GetInstance().Controllable().SetState(State.INTERACTING);
+						break;
+					case MAP:
+						if (Map.GetInstance().MM)
+							Map.GetInstance().MM = false;
+						else
+							Map.GetInstance().MM = true;
 						break;
 					case NONE:
 						break;
@@ -203,6 +209,11 @@ public class Controller
 			if (Keyboard.isKeyDown(Keyboard.KEY_E))
 			{
 				ProcessInput(InputType.INTERACT);
+				CT = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_M))
+			{
+				ProcessInput(InputType.MAP);
 				CT = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE))

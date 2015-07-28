@@ -55,6 +55,7 @@ public class Resource extends Renderable
 	//private Random Rand;
 	private static Random Rand;
 	private MaterialFile CurrentSprite;
+	private MaterialFile Shadow;
 	
 	
 	/**
@@ -107,11 +108,16 @@ public class Resource extends Renderable
 	{
 		this.XPos = pos.x;
 		this.YPos = pos.y;
+
+		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
+		Shadow.Open();
 		
 		MaterialFile Rock = new MaterialFile("resources\\rock1.png", MaterialFile.Type.PNG);
 		Rock.Open();
 
 		FileManager.getInstance().Add(Rock);
+		
+		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
 		
 		SetResource();
 	}
@@ -136,6 +142,8 @@ public class Resource extends Renderable
 	{
 		if (CurrentSprite == null)
 			CurrentSprite = null;
+		
+		interfaces.Render.DrawImage(Shadow,  new Vector2D(XPos, YPos + 4));
 		interfaces.Render.DrawImage(CurrentSprite, new Vector2D(XPos, YPos));
 	}
 	

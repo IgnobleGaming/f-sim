@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.LWJGLException;
 import org.newdawn.slick.Color;
 
+import java.util.Hashtable;
 import java.util.PriorityQueue;
 
 import renderable.Renderable;
@@ -23,6 +24,7 @@ import renderable.Renderable.PositionType;
 public class Render
 {
 	private PriorityQueue<Renderable> RenderQueue;
+	private Hashtable<Integer, Renderable> Renderable;
 	private int maxfps = 60;
 	private long TotalFrames = 0;
 	private int DeltaTime = 0;
@@ -37,6 +39,7 @@ public class Render
 		{
 			Logging.getInstance().Write(Logging.Type.INFO, "== GFX INIT ==");
 			RenderQueue = new PriorityQueue<Renderable>(new utilities.RenderPriorityCompare());
+			Renderable = new Hashtable<Integer, Renderable>();
 			int width = (int) Variables.GetInstance().Get("vid_width").Current();
 			int height = (int) Variables.GetInstance().Get("vid_height").Current();
 			boolean vsync = (boolean) Variables.GetInstance().Get("vid_vsync").Current();

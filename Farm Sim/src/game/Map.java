@@ -23,6 +23,7 @@ public class Map extends renderable.Renderable
 	protected Tile[] MapTiles;
 	private static Map Instance;
 	private int Dimension;
+	public boolean MM;
 
 	public enum Direction
 	{
@@ -262,7 +263,9 @@ public class Map extends renderable.Renderable
 			if (T != null && T.CheckFlag(Flag.DRAWABLE) && Camera.getInstance().inViewPlane(T))
 				T.Draw();
 		}
-		//interfaces.Render.DrawMap(GetMinimap());
+		
+		if (MM)
+			interfaces.Render.DrawMap(GetMinimap());
 	}
 
 	public Tile GetNextTile(int CurTile, specifier.Direction.Relative Dir)
