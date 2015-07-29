@@ -13,7 +13,7 @@ public class SimplexNoise
 	double persistence;
 	int seed;
 
-	public SimplexNoise(int largestFeature, double persistence, int seed)
+	public SimplexNoise(int largestFeature, double persistence, int seed, float Freq)
 	{
 		this.largestFeature = largestFeature;
 		this.persistence = persistence;
@@ -34,7 +34,7 @@ public class SimplexNoise
 		{
 			octaves[i] = new SimplexNoise_octave(rnd.nextInt());
 
-			frequencys[i] = Math.pow(2, i);
+			frequencys[i] = Math.pow(Freq, i);
 			amplitudes[i] = Math.pow(persistence, octaves.length - i);
 
 		}
@@ -49,13 +49,13 @@ public class SimplexNoise
 		for (int i = 0; i < octaves.length; i++)
 		{
 			result = ((result + octaves[i].noise(x / frequencys[i], y / frequencys[i]) * amplitudes[i]) + 1 / 2);
+			
 
 		}
 
 		//System.out.println(result);
 		
 		return result;
-
 	}
 
 	public double Noise(int x, int y, int z)

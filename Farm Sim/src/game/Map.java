@@ -404,7 +404,7 @@ public class Map extends renderable.Renderable
 				case GRASS:
 					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.green, GetMinimapCoord(T.TileID));
 					break;
-				case WATER:
+				case OCEAN:
 					Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.blue, GetMinimapCoord(T.TileID));
 					break;
 				case DIRT:

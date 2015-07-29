@@ -103,8 +103,8 @@ public class Entity extends Renderable
 		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
 		Shadow.Open();
 
-		HitboxOffsetX = 5;
-		HitboxOffsetY = 25;
+		HitboxOffsetX = -11;
+		HitboxOffsetY = 9;
 		HitboxHeight = 7;
 		HitboxWidth = 22;
 	}
@@ -215,7 +215,7 @@ public class Entity extends Renderable
 	{
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 28);
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y + 12);
 
 		game.Tile CollisionTile = null;
 		int XPlus = 0;
@@ -391,13 +391,13 @@ public class Entity extends Renderable
 		}
 	}
 
+	//THIS IS WHERE COLLISION NEEDS WORK.  THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
 	private boolean Collide(int x, int y)
 	{
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
-		if (x + this.HitboxOffsetX <= 0 || x + this.HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
+		if (x - HitboxOffsetX <= 0 || x + HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y + HitboxOffsetY < 0 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
 		{
-			System.out.println("Poop");
 			return true;
 		}
 
@@ -408,7 +408,11 @@ public class Entity extends Renderable
 			if (T.CheckFlag(Tile.Flag.BLOCKED) && x + this.HitboxOffsetX + this.HitboxWidth >= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX()
 					&& y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
 					&& y + this.HitboxOffsetY <= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
+			{
+				System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + 
+						" | R - " + (x + this.HitboxOffsetX  + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
 				return true;
+			}
 		}
 
 		return false;

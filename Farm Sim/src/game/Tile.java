@@ -25,7 +25,7 @@ public class Tile extends renderable.Renderable
 
 	public enum Type
 	{
-		GRASS, WATER, DIRT, SAND, MOUNTAIN
+		OCEAN, SAND, GRASS, POND, DIRT, MOUNTAIN, NONE
 	}
 
 	private EnumSet<Flag> Flags;
@@ -130,9 +130,12 @@ public class Tile extends renderable.Renderable
 
 	public void ChangeType(Type T)
 	{
+		if (T == Tile.Type.NONE)
+			return;
+		
 		TileType = T;
 
-		if (TileType == Type.WATER)
+		if (TileType == Type.OCEAN)
 		{
 			if (CheckFlag(Flag.FARMABLE))
 				RemoveFlag(Flag.FARMABLE);
@@ -198,7 +201,7 @@ public class Tile extends renderable.Renderable
 			case DIRT:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\dirt.png");
 				break;
-			case WATER:
+			case OCEAN:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png");
 				break;
 			case SAND:
@@ -218,7 +221,7 @@ public class Tile extends renderable.Renderable
 				return "Grass";
 			case DIRT:
 				return "Dirt";
-			case WATER:
+			case OCEAN:
 				return "Water";
 			case SAND:
 				return "Sand";
