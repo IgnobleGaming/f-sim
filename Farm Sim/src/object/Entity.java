@@ -103,8 +103,8 @@ public class Entity extends Renderable
 		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
 		Shadow.Open();
 
-		HitboxOffsetX = 5;
-		HitboxOffsetY = 25;
+		HitboxOffsetX = -11;
+		HitboxOffsetY = 9;
 		HitboxHeight = 7;
 		HitboxWidth = 22;
 	}
@@ -200,8 +200,7 @@ public class Entity extends Renderable
 		interfaces.Render.DrawImage(CurrentSprite, Position);
 
 		// Trying to get hitboxes to draw, not going so well
-		// interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY, Color.orange);
-		// interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY + this.HitboxHeight, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY + this.HitboxHeight, Color.orange);
+		interfaces.Render.DrawQuad(XPos, YPos + this.HitboxHeight / 2 + this.HitboxOffsetY, this.HitboxWidth, this.HitboxHeight, Color.orange);
 	}
 
 	/**
@@ -215,7 +214,7 @@ public class Entity extends Renderable
 	{
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x + 16, Position.y + 28);
+		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y + 12);
 
 		game.Tile CollisionTile = null;
 		int XPlus = 0;
@@ -249,7 +248,7 @@ public class Entity extends Renderable
 				break;
 		}
 
-		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
+		//Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
 
 		LastMoveTime += Game.GetInstance().Delta();
 
@@ -396,10 +395,10 @@ public class Entity extends Renderable
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
 		if (x + this.HitboxOffsetX <= 0 || x + this.HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y < -1 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
-		{
-			System.out.println("Poop");
 			return true;
-		}
+		
+	//	System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + 
+      //          " | R - " + (x + this.HitboxOffsetX  + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
 
 		for (int i = 0; i < Tiles.length; i++)
 		{
@@ -409,6 +408,7 @@ public class Entity extends Renderable
 					&& y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
 					&& y + this.HitboxOffsetY <= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
 				return true;
+			
 		}
 
 		return false;

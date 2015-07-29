@@ -193,13 +193,40 @@ public class Render
 	
 	public static void DrawLine(int x1, int y1, int x2, int y2, Color Color)
 	{
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glLineWidth(2.0f); 
-		GL11.glColor3f(Color.r, Color.g, Color.b);
-		GL11.glVertex2i(x1, y1);
-		GL11.glVertex2i(x2, y2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glColor3f(0.5f,0.5f,1.0f);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glVertex2f(x1, y1);
+		GL11.glVertex2f(100+200,100);
+		GL11.glVertex2f(100+200,100+200);
+		GL11.glVertex2f(100,100+200);
 		GL11.glEnd();
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	public static void DrawQuad(int xCenter, int yCenter, int Width, int Height, Color Color)
+	{
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glColor4f(Color.r, Color.g, Color.b, 0.5f);
+		GL11.glBegin(GL11.GL_QUADS);
+		
+		// top left
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(xCenter - Width / 2, yCenter - Height / 2);
+		// top right
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(xCenter + Width / 2, yCenter - Height / 2);
+		// bottom right
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(xCenter + Width / 2, yCenter + Height / 2);
+		// bottom left
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(xCenter - Width / 2, yCenter + Height / 2);
+		GL11.glEnd();
+		
+		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public static void DrawLine(specifier.Vector2D Pos, specifier.Vector2D Pos2, Color Color)
@@ -273,7 +300,7 @@ public class Render
 	 */
 	public static void DrawMap(specifier.MinimapItem[] Map)
 	{
-		specifier.Vector2D tempPos = renderable.Renderable.GetPosFromLocation(Position.TOPLEFT, PositionType.ABSOLUTE, Map.length, Map.length, 0,0, null);
+		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - Render.GetInstance().Width()/2, Camera.getInstance().cameraLookPoint().y - Render.GetInstance().Height()/2);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		GL11.glBegin(GL11.GL_QUADS);

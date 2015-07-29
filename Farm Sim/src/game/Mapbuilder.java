@@ -30,10 +30,10 @@ public class Mapbuilder
 	private static float[][] GenerateSimplexNoise(int width, int height)
 	{
 
-		SimplexNoise SimplexNoise = new SimplexNoise(64, 1, 100);
+		SimplexNoise SimplexNoise = new SimplexNoise(4, 12, 1337);
 
 		float[][] simplexnoise = new float[width][height];
-		float frequency = 5.0f / (float) width;
+		float frequency = 2.5f / (float) width;
 
 		for (int x = 0; x < width; x++)
 		{
@@ -55,15 +55,15 @@ public class Mapbuilder
 	{
 		//System.out.println("m + D/5 - " + (Min + Difference / 5) + " | m + D/4 - " + (Min + Difference / 4) + "");
 
-		if (S < Min + Difference / 5)
+	/*	if (S < Min + Difference / 5)
 			return Tile.Type.WATER;
-		else if (S > Min + Difference / 5 && S < Min + Difference / 4)
+		else if (S > Min + Difference / 5 && S < Min + Difference / 4.8)
 			return Tile.Type.SAND;
-		else if (S > Min + Difference / 4 && S < Max - Difference / 5)
-			return Tile.Type.GRASS;
-		else if (S > Max - Difference / 5)
+		else if (S > Min + Difference / 4.8 && S < Max - Difference / 5)
+			return Tile.Type.GRASS;*/
+		if (S > Max - Difference / 5)
 			return Tile.Type.MOUNTAIN;
 		else
-			return Tile.Type.WATER;
+			return Tile.Type.GRASS;
 	}
 }

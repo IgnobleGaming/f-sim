@@ -2,6 +2,7 @@ package game;
 
 import interfaces.Camera;
 import interfaces.Game;
+import interfaces.Variables;
 import object.Entity;
 import object.Entity.State;
 
@@ -9,7 +10,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import renderable.Console;
+
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Controller
 {
@@ -19,6 +23,22 @@ public class Controller
 	private String InputStr = "";
 	private int CT = 0;
 	private int TT = 300;
+	private PriorityBlockingQueue<InputOrder> keyBuffer;
+
+	private class InputOrder implements Comparable<InputOrder>
+	{
+		InputType Key;
+		long timePressed;
+
+		public InputOrder()
+		{
+		}
+
+		public int compareTo(InputOrder other)
+		{
+			return (int) (other.timePressed - this.timePressed);
+		}
+	}
 
 	private enum InputType
 	{
@@ -29,11 +49,14 @@ public class Controller
 	{
 		InputChars = new ArrayList<Character>();
 		Keyboard.enableRepeatEvents(true);
+		keyBuffer = new PriorityBlockingQueue<InputOrder>();
 	}
 
 	public void Update()
 	{
 		ReadInput();
+		if (keyBuffer.size() > 0 && keyBuffer.peek().Key != null)
+			ProcessInput(keyBuffer.peek().Key);
 	}
 
 	/**
@@ -141,29 +164,22 @@ public class Controller
 		// this is polled
 		if (Game.GetInstance().Controllable() != null && !Game.GetInstance().Controllable().CheckFlag(Entity.Flag.LOCKED))
 		{
-			while (Mouse.next())
+			if ((boolean) Variables.GetInstance().Get("g_developer").Current())
 			{
-				int EventButton = Mouse.getEventButton();
-				int MouseWheelDelta = Mouse.getEventDWheel();
+				int MouseWheelDir = Mouse.getDWheel();
 
-				switch (EventButton)
-				{
-					default:
-						break;
-				}
-
-				if (Math.abs(MouseWheelDelta) > 100)
+				if (MouseWheelDir != 0)
 				{
 					double CurDist = Camera.getInstance().Distance();
 					double ZoomDelta = CurDist;
 
-					if (MouseWheelDelta > 0)
+					if (MouseWheelDir > 0)
 					{
-						if (CurDist > .30)
+						if (CurDist > .1)
 							ZoomDelta = CurDist - .05f;
 					} else
 					{
-						if (CurDist < 2)
+						if (CurDist < 20)
 							ZoomDelta = CurDist + .05f;
 					}
 
@@ -173,7 +189,6 @@ public class Controller
 
 			ReadMovementInput();
 			ReadActionInput();
-
 		}
 	}
 
@@ -182,25 +197,65 @@ public class Controller
 	 */
 	private void ReadMovementInput()
 	{
-		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_D)
-				|| Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+		Keyboard.enableRepeatEvents(false);
+
+		while (Keyboard.next())
 		{
-			if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP))
-				ProcessInput(InputType.UP);
-			if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-				ProcessInput(InputType.LEFT);
-			if (Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-				ProcessInput(InputType.DOWN);
-			if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-				ProcessInput(InputType.RIGHT);
-		} else
-			ProcessInput(InputType.RELEASE);
+			int pressedKey = Keyboard.getEventKey();
+			InputOrder keyOrd = new InputOrder();
+			keyOrd.timePressed = Game.GetInstance().GameTime();
+
+			switch (pressedKey)
+			{
+				case Keyboard.KEY_W:
+				case Keyboard.KEY_UP:
+					keyOrd.Key = InputType.UP;
+					break;
+				case Keyboard.KEY_S:
+				case Keyboard.KEY_DOWN:
+					keyOrd.Key = InputType.DOWN;
+					break;
+				case Keyboard.KEY_A:
+				case Keyboard.KEY_LEFT:
+					keyOrd.Key = InputType.LEFT;
+					break;
+				case Keyboard.KEY_D:
+				case Keyboard.KEY_RIGHT:
+					keyOrd.Key = InputType.RIGHT;
+					break;
+				default:
+					return;
+			}
+
+			if (Keyboard.getEventKeyState())
+			{
+				keyBuffer.add(keyOrd);
+				// System.out.println("ADDED NEW INPUT " + keyOrd.Key);
+			}
+
+			else
+			{
+				if (!keyBuffer.isEmpty())
+				{
+					for (InputOrder P : keyBuffer)
+					{
+						if (P.Key == keyOrd.Key)
+						{
+							keyBuffer.remove(P);
+							ProcessInput(InputType.RELEASE);
+							// System.out.println("REMOVED NEW INPUT " + P.Key);
+						}
+					}
+
+				}
+			}
+		}
 	}
 
 	private void ReadActionInput()
 	{
-		InputType In = InputType.NONE;  // Input to Process
-		
+		InputType In = InputType.NONE; // Input to Process
+
 		CT += Game.GetInstance().Delta(); // Current Time
 
 		// Checks to see if another action can be processed //
@@ -210,28 +265,24 @@ public class Controller
 			{
 				ProcessInput(InputType.INTERACT);
 				CT = 0;
-			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_M))
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_M))
 			{
 				ProcessInput(InputType.MAP);
 				CT = 0;
-			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE))
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE))
 			{
 				In = InputType.CONSOLE;
 				CT = 0;
-			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 			{
 				In = InputType.ENTER;
 				CT = 0;
-			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_BACK))
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_BACK))
 			{
 				In = InputType.BACK;
 				CT = 0;
 			}
-			
+
 			ProcessInput(In);
 		}
 	}

@@ -17,7 +17,6 @@ public class Camera
 		this.Height = Height;
 		this.Distance = Distance;
 
-		// Focus = new object.Entity("CameraFocus", "Entity that the camera points at", new specifier.Vector2D(0,0), new specifier.Vector(), 1, 1, object.Entity.Flag.VISIBLE);
 		Focus = new Entity("Camera Focus", "Position where the camera is cented", new specifier.Vector2D(0, 0), new specifier.Vector(), 0, 0, null);
 	}
 
@@ -42,9 +41,6 @@ public class Camera
 
 	public boolean inViewPlane(renderable.Renderable R)
 	{
-		boolean debug = false;
-		
-		
 		if (Focus == null)
 			return false;
 		else if (R instanceof game.Map || R instanceof renderable.HUD)
@@ -56,12 +52,9 @@ public class Camera
 			int minWidth = (int) (Focus.Position().x - (Width / 2) * Distance);
 			int maxHeight = (int) (Focus.Position().y + (Height / 2) * Distance);
 			int minHeight = (int) (Focus.Position().y - (Height / 2) * Distance);
-
-			// System.out.println("MW - " + maxWidth + " mW " + minWidth + " MH - " + maxHeight + " mH - " + minHeight);
-
+			
 			if (R.Position().x < maxWidth && R.Position().x > minWidth - 32 && R.Position().y < maxHeight && R.Position().y > minHeight - 32)
 			{
-				// System.out.println(R.getClass() + " = P - " + Focus.Position().x + ", " + Focus.Position().y + " || R - " + R.Position().x + ", " + R.Position().y);
 				R.showing = true;
 				return true;
 			} else
@@ -71,8 +64,6 @@ public class Camera
 			}
 		} else
 			return false;
-
-		// Logging.getInstance().Write(Type.INFO, "x =  " + R.Position().x + " y = " + R.Position().y );
 	}
 
 	public boolean inViewPlane(game.Tile T)
