@@ -85,9 +85,9 @@ public class Game
 		
 		GameCamera = Camera.getInstance(Output.Width(), Output.Height(), 1);
 		
-		MaterialFile TextMat = new MaterialFile("resources\\hud\\fonts\\consolas_huge.png", MaterialFile.Type.PNG);
-		TextMat.Open();
-		Files.Add(TextMat);
+		//MaterialFile TextMat = new MaterialFile("resources\\hud\\fonts\\consolas_huge.png", MaterialFile.Type.PNG);
+		//TextMat.Open();
+		//Files.Add(TextMat);
 		
 		
 		Con = renderable.Console.GetInstance();
@@ -243,7 +243,7 @@ public class Game
 		GameVariables.Set(new object.Variable("c_maxinputqueue", "how many inputs can be queue before rejecting", 10, 1, 100, object.Variable.Flag.Modifiable));
 		
 		GameVariables.Set(new object.Variable("g_cheats", "cheats enabled", false, object.Variable.Flag.Developer));
-		GameVariables.Set(new object.Variable("g_developer", "developer mode enabled", false, object.Variable.Flag.Developer));
+		GameVariables.Set(new object.Variable("g_developer", "developer mode enabled", true, object.Variable.Flag.Developer));
 		GameVariables.Set(new object.Variable("g_debuginfo", "draw debug information on screen", true, object.Variable.Flag.Developer));
 		
 		GameVariables.Set(new object.Variable("fs_cwd", "base path for the file system", System.getProperty("user.dir"), object.Variable.Flag.ReadOnly));

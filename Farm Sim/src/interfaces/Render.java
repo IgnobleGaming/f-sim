@@ -301,7 +301,7 @@ public class Render
 	 */
 	public static void DrawMap(specifier.MinimapItem[] Map)
 	{
-		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - Render.GetInstance().Width()/2, Camera.getInstance().cameraLookPoint().y - Render.GetInstance().Height()/2);;
+		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - (int)Variables.GetInstance().Get("m_width").Current() / 2, Camera.getInstance().cameraLookPoint().y - (int)Variables.GetInstance().Get("m_width").Current() / 2);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		GL11.glBegin(GL11.GL_QUADS);

@@ -204,6 +204,14 @@ public class Controller
 			int pressedKey = Keyboard.getEventKey();
 			InputOrder keyOrd = new InputOrder();
 			keyOrd.timePressed = Game.GetInstance().GameTime();
+			
+			
+			if (Game.GetInstance().State() == Game.State.MENU)
+			{
+					ProcessInput(InputType.NONE, Keyboard.getEventCharacter()); 
+					return;
+			}
+
 
 			switch (pressedKey)
 			{
@@ -223,8 +231,9 @@ public class Controller
 				case Keyboard.KEY_RIGHT:
 					keyOrd.Key = InputType.RIGHT;
 					break;
-				default:
+				default:    
 					return;
+
 			}
 
 			if (Keyboard.getEventKeyState())
@@ -282,7 +291,7 @@ public class Controller
 				In = InputType.BACK;
 				CT = 0;
 			}
-
+			
 			ProcessInput(In);
 		}
 	}

@@ -146,8 +146,8 @@ public class Map extends renderable.Renderable
 
 	public Vector2D GetMinimapCoord(int num)
 	{
-		int x = (int) (num % HorizontalTileNum) * 2; // offset for
-		int y = (int) (Math.floor(num / VerticalTileNum)) * 2; // offset
+		int x = (int) (num % HorizontalTileNum); // offset for
+		int y = (int) (Math.floor(num / VerticalTileNum)); // offset
 		return new Vector2D(x, y);
 	}
 
