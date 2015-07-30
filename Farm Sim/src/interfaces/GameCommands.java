@@ -5,6 +5,8 @@ import interfaces.file.Logging.Type;
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import com.sun.javafx.binding.Logging;
+
 import renderable.Console;
 
 /**
@@ -19,7 +21,7 @@ public class GameCommands
 	
 	public enum CommandFunction
 	{
-		quit, map
+		quit, map, help
 	}
 	
 	private GameCommands()
@@ -83,6 +85,16 @@ public class GameCommands
 		{
 			case quit:
 				System.exit(0);
+				return true;
+			case help:
+				interfaces.file.Logging.getInstance().Write(interfaces.file.Logging.Type.OUT, "NAME------------------DESCRIPTION-------------");
+			
+				for(object.Command C : Commands.values())
+				{
+					System.out.println(C.Description());
+					interfaces.file.Logging.getInstance().Write(interfaces.file.Logging.Type.OUT, "%s                  %s", C.Name(), C.Description());
+				}
+				interfaces.file.Logging.getInstance().Write(interfaces.file.Logging.Type.OUT, "----------------------------------------------");
 				return true;
 		}
 		

@@ -64,7 +64,7 @@ public class Logging
 	 */
 	public void Write(Type MessageType, String Message, Object... args)
 	{
-		if (LogHandle != null && start.Main.GameObject != null && Message != LastMessage) // if it hasn't been initialized!
+		if (LogHandle != null && start.Main.GameObject != null) // if it hasn't been initialized!
 		{
 			LastMessage = Message;
 			DateFormat formatter = new SimpleDateFormat("HH:mm:ss");

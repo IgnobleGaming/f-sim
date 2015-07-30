@@ -230,7 +230,7 @@ public class Game
 		PlayerEnt = player;
 		PlayerEnt.MovementSpeed(1);
 		GameObjects.Add(PlayerEnt);
-		GameObjects.Add(cpu);
+		//GameObjects.Add(cpu);
 		CurrentState = State.INGAME;
 	}
 	
@@ -259,6 +259,7 @@ public class Game
 		GameVariables.Set(new object.Variable("m_tilesize", "the size ( in pixels ) of each tile", 32, 16, 128, object.Variable.Flag.Latched));
 		
 		GameCommands.GetInstance().Add(new object.Command("quit", "quit the game", GameCommands.CommandFunction.quit));
+		GameCommands.GetInstance().Add(new object.Command("help", "list all commands", GameCommands.CommandFunction.help));
 	}
 	
 	public long GameTime()
