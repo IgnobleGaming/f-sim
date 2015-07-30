@@ -96,9 +96,21 @@ public class Camera
 		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
 		
 		if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)	
+		{
+			if (potentialFocus.Position().y + ((Height / 2)- game.Map.GetInstance().TileSize() / 2) * Distance > mHeight || potentialFocus.Position().y - ((Height / 2) - game.Map.GetInstance().TileSize() / 2) * Distance  < 0)
+			{
+				Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, Focus.Position().y));
+			}
+			else
 			Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, potentialFocus.Position().y));
+		}
 		else if (potentialFocus.Position().y + ((Height / 2)- game.Map.GetInstance().TileSize() / 2) * Distance > mHeight || potentialFocus.Position().y - ((Height / 2) - game.Map.GetInstance().TileSize() / 2) * Distance  < 0)
-			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
+			if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)
+			{
+				Focus.SetPosition(new specifier.Vector2D(Focus.Position().x, Focus.Position().y));
+			}
+			else
+				Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
 		else
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));
 		
