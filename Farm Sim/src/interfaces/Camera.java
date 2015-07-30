@@ -42,7 +42,6 @@ public class Camera
 
 	public boolean inViewPlane(renderable.Renderable R)
 	{
-		boolean debug = false;
 		
 		
 		if (Focus == null)
@@ -56,12 +55,9 @@ public class Camera
 			int minWidth = (int) (Focus.Position().x - (Width / 2) * Distance);
 			int maxHeight = (int) (Focus.Position().y + (Height / 2) * Distance);
 			int minHeight = (int) (Focus.Position().y - (Height / 2) * Distance);
-
-			// System.out.println("MW - " + maxWidth + " mW " + minWidth + " MH - " + maxHeight + " mH - " + minHeight);
-
+			
 			if (R.Position().x < maxWidth && R.Position().x > minWidth - 32 && R.Position().y < maxHeight && R.Position().y > minHeight - 32)
 			{
-				// System.out.println(R.getClass() + " = P - " + Focus.Position().x + ", " + Focus.Position().y + " || R - " + R.Position().x + ", " + R.Position().y);
 				R.showing = true;
 				return true;
 			} else
@@ -71,8 +67,6 @@ public class Camera
 			}
 		} else
 			return false;
-
-		// Logging.getInstance().Write(Type.INFO, "x =  " + R.Position().x + " y = " + R.Position().y );
 	}
 
 	public boolean inViewPlane(game.Tile T)

@@ -199,9 +199,7 @@ public class Entity extends Renderable
 		interfaces.Render.DrawImage(Shadow, new Vector2D(Position.x, Position.y + 4));
 		interfaces.Render.DrawImage(CurrentSprite, Position);
 
-		// Trying to get hitboxes to draw, not going so well
-		// interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY, Color.orange);
-		// interfaces.Render.DrawLine(Position().x + this.HitboxOffsetX, Position().y + this.HitboxOffsetY + this.HitboxHeight, Position().x + this.HitboxOffsetX + this.HitboxWidth, Position().y + this.HitboxOffsetY + this.HitboxHeight, Color.orange);
+		interfaces.Render.DrawQuad(XPos, YPos + this.HitboxHeight / 2 + this.HitboxOffsetY, this.HitboxWidth, this.HitboxHeight, Color.orange);
 	}
 
 	/**
@@ -249,7 +247,7 @@ public class Entity extends Renderable
 				break;
 		}
 
-		Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
+		//Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
 
 		LastMoveTime += Game.GetInstance().Delta();
 
@@ -357,17 +355,16 @@ public class Entity extends Renderable
 	{
 		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
 		Renderable Target = null;
-		
-		
+
 		for (Renderable R : interfaces.Objects.GetInstance().Entities())
 		{
 			if (R.IsTargetedBy(Targeting))
 				Target = R;
 		}
-		
+
 		if (Target == null)
 			Target = game.Map.GetInstance().GetTileFromIndex(Targeting);
-		
+
 		Interact(Target);
 	}
 
@@ -380,18 +377,16 @@ public class Entity extends Renderable
 		{
 			if (((Tile) R).CheckFlag(Tile.Flag.INTERACTABLE))
 				R.Interact(this);
-		} 
-		else if (R instanceof Resource)
+		} else if (R instanceof Resource)
 		{
 			R.Interact(this);
-		}
-		else
+		} else
 		{
 
 		}
 	}
 
-	//THIS IS WHERE COLLISION NEEDS WORK.  THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
+	// THIS IS WHERE COLLISION NEEDS WORK. THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
 	private boolean Collide(int x, int y)
 	{
 		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
@@ -409,8 +404,7 @@ public class Entity extends Renderable
 					&& y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
 					&& y + this.HitboxOffsetY <= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight())
 			{
-				System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + 
-						" | R - " + (x + this.HitboxOffsetX  + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
+				System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + " | R - " + (x + this.HitboxOffsetX + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
 				return true;
 			}
 		}
