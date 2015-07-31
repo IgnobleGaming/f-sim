@@ -5,6 +5,7 @@ import specifier.Vector;
 import specifier.Vector2D;
 import game.Tile;
 import interfaces.Game;
+import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
@@ -51,7 +52,7 @@ public class Entity extends Renderable
 	protected double MovementSpeedScale = 2;
 	protected ArrayList<specifier.Animation> Animation;
 	protected game.Tile LastTile;
-	protected int CurrentTile;
+	protected int[] CurrentTile;
 	protected int CurrentStep = 0;
 	protected int TotalMoveTime = 0;
 	protected long LastMoveTime = 0;
@@ -96,7 +97,7 @@ public class Entity extends Renderable
 			Animation.add(null); // this is so we can access them by index later
 		}
 		LastTile = game.Map.GetInstance().GetTileFromIndex(Position.x, Position.y);
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y);
+		CurrentTile = game.Map.GetInstance().getIndexFromPos(Position.x, Position.y);
 		Position(Position);
 		LookAt = new Vector2D(0, 0);
 
@@ -213,7 +214,8 @@ public class Entity extends Renderable
 	{
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile = game.Map.GetInstance().GetCoordIndex(Position.x, Position.y + 12);
+		CurrentTile[0] = Position.x / (int)Variables.GetInstance().Get("m_tilesize").Current();
+		CurrentTile[1] = Position.y / (int)Variables.GetInstance().Get("m_tilesize").Current();
 
 		game.Tile CollisionTile = null;
 		int XPlus = 0;
@@ -222,25 +224,25 @@ public class Entity extends Renderable
 		switch (Dir)
 		{
 			case UP:
-				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.UP);
+				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
 				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = 0;
 				LookAt.y = -(CurrentSprite.Height() / 2);
 				break;
 			case DOWN:
-				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.DOWN);
+				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
 				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = 0;
 				LookAt.y = (CurrentSprite.Height() / 2);
 				break;
 			case LEFT:
-				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.LEFT);
+				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
 				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = -(CurrentSprite.Width() / 2);
 				LookAt.y = 0;
 				break;
 			case RIGHT:
-				CollisionTile = game.Map.GetInstance().GetNextTile(this.CurrentTile, specifier.Direction.Relative.RIGHT);
+				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
 				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = (CurrentSprite.Width() / 2);
 				LookAt.y = 0;
@@ -363,7 +365,7 @@ public class Entity extends Renderable
 		}
 
 		if (Target == null)
-			Target = game.Map.GetInstance().GetTileFromIndex(Targeting);
+			Target = game.Map.GetInstance().GetTileFromIndex(Targeting.x, Targeting.y);
 
 		Interact(Target);
 	}
@@ -398,7 +400,7 @@ public class Entity extends Renderable
 
 		for (int i = 0; i < Tiles.length; i++)
 		{
-			Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
+			/*Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
 
 			if (T.CheckFlag(Tile.Flag.BLOCKED) && x + this.HitboxOffsetX + this.HitboxWidth >= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX()
 					&& y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
@@ -406,7 +408,7 @@ public class Entity extends Renderable
 			{
 				System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + " | R - " + (x + this.HitboxOffsetX + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
 				return true;
-			}
+			}*/
 		}
 
 		return false;
@@ -417,7 +419,7 @@ public class Entity extends Renderable
 	 * T.Position().x + T.HitboxOffsetX() + T.HitboxWidth() && this.Position.y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY() + T.HitboxHeight()) return false; else return true; }
 	 */
 
-	public int TileID()
+	public int[] CurrentTile()
 	{
 		return CurrentTile;
 	}

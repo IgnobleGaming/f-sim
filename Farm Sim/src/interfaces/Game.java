@@ -312,10 +312,8 @@ public class Game
 	{
 		for (renderable.Renderable R : GameObjects.Objs())
 		{
-			if (R instanceof object.Entity)
-			{
-				((object.Entity) R).Update();
-			}
+			if (R instanceof object.Entity || R instanceof game.Map)
+				R.Update();
 		}
 		GameCamera.Update();
 	}

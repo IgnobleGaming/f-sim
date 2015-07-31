@@ -9,6 +9,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.LWJGLException;
 import org.newdawn.slick.Color;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.ByteOrder;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 
@@ -305,7 +308,7 @@ public class Render
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		GL11.glBegin(GL11.GL_QUADS);
-		for (specifier.MinimapItem M : Map)
+		/*for (specifier.MinimapItem M : Map)
 		{		
 		    GL11.glColor3f(M.Color.r, M.Color.g, M.Color.b);
 		    int x = tempPos.x + M.Position.x;
@@ -317,7 +320,28 @@ public class Render
 		    GL11.glVertex2i(x, y + 2);
 		    
 		    GL11.glColor3f(1, 1, 1);
-		}	
+		}	*/
+		 
+		
+		/*final ByteBuffer byteBuf = ByteBuffer.allocateDirect(320 * 240 * 16);
+        byteBuf.order(ByteOrder.nativeOrder());
+        final FloatBuffer floatBuf = byteBuf.asFloatBuffer();
+
+		int pixels[];
+		for(int y = 0; y < (int)Variables.GetInstance().Get("m_width").Current(); y++)
+		{
+		    for(int x = 0; x < (int)Variables.GetInstance().Get("m_width").Current(); x++)
+		    {
+		       // pixels[y * 320 * 4 + x * 4 + 0] = 0; // R
+		      //  pixels[y * 320 * 4 + x * 4 + 1] = 0;// G
+		       // pixels[y * 320 * 4 + x * 4 + 2] = 0; // B
+		       // pixels[y * 320 * 4 + x * 4 + 3] = 0; // A
+		       byteBuf.put((byte)0);
+		    }
+		}
+		
+		//GL11.glDrawPixels((int)Variables.GetInstance().Get("m_width").Current(), (int)Variables.GetInstance().Get("m_width").Current(), GL11.GL_RGB, GL11.GL_BYTE,  byteBuf);
+		*/
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}

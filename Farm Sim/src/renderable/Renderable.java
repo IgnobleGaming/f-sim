@@ -41,6 +41,10 @@ public abstract class Renderable
 	public void Draw()
 	{
 	}
+	
+	public void Update()
+	{
+	}
 
 	protected Renderable(int width, int height)
 	{
