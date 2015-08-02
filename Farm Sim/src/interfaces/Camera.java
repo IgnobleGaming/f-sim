@@ -1,6 +1,8 @@
 package interfaces;
 
+import game.Map;
 import object.Entity;
+import utilities.Maths;
 
 public class Camera
 {
@@ -92,9 +94,33 @@ public class Camera
 		if (potentialFocus == null)
 			return;
 		
-		int mWidth = (int)interfaces.Variables.GetInstance().Get("m_width").Current() * 32;
-		int mHeight = (int)interfaces.Variables.GetInstance().Get("m_height").Current() * 32;
+		int maxWidth = Map.GetInstance().maxPixelWidth();
+		int maxHeight = Map.GetInstance().maxPixelHeight();
 		
+		int curHorizontalViewMax = potentialFocus.Position().x + (Width / 2);
+		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2);
+		
+		int curVerticalViewMax = potentialFocus.Position().y + (Height / 2);
+		int curVerticalViewMin = potentialFocus.Position().y - (Height / 2);
+		
+		int newX = -1, newY = -1;
+		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
+		
+		if (curHorizontalViewMax < maxWidth && curHorizontalViewMin > -1)
+			newX = potentialFocus.Position().x;
+		if (curVerticalViewMax < maxHeight && curVerticalViewMin > -1)
+			newY = potentialFocus.Position().y;
+		
+		if (newX != -1)
+			newPos.x = newX;
+		if (newY != -1)
+			newPos.y = newY;
+		
+		Focus.SetPosition(newPos);
+		renderable.HUD.GetInstance().Position(Focus.Position());
+		
+		/*
+	
 		if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)	
 		{
 			if (potentialFocus.Position().y + ((Height / 2)- game.Map.GetInstance().TileSize() / 2) * Distance > mHeight || potentialFocus.Position().y - ((Height / 2) - game.Map.GetInstance().TileSize() / 2) * Distance  < 0)
@@ -112,7 +138,7 @@ public class Camera
 			else
 				Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, Focus.Position().y));		
 		else
-			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));
+			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));*/
 		
 		renderable.HUD.GetInstance().Position(Focus.Position());
 	}

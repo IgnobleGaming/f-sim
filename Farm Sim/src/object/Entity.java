@@ -214,35 +214,32 @@ public class Entity extends Renderable
 	{
 		int StepSize = (MovementSpeed / game.Map.GetInstance().TileSize());
 
-		CurrentTile[0] = Position.x / (int)Variables.GetInstance().Get("m_tilesize").Current();
-		CurrentTile[1] = Position.y / (int)Variables.GetInstance().Get("m_tilesize").Current();
-
-		game.Tile CollisionTile = null;
+		//game.Tile CollisionTile = null;
 		int XPlus = 0;
 		int YPlus = 0;
 
 		switch (Dir)
 		{
 			case UP:
-				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
+				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
 				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = 0;
 				LookAt.y = -(CurrentSprite.Height() / 2);
 				break;
 			case DOWN:
-				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
+				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
 				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = 0;
 				LookAt.y = (CurrentSprite.Height() / 2);
 				break;
 			case LEFT:
-				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
+				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
 				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = -(CurrentSprite.Width() / 2);
 				LookAt.y = 0;
 				break;
 			case RIGHT:
-				CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
+				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
 				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
 				LookAt.x = (CurrentSprite.Width() / 2);
 				LookAt.y = 0;
@@ -292,6 +289,9 @@ public class Entity extends Renderable
 			case INTERACTING:
 				this.Interact();
 		}
+		
+		CurrentTile[0] = Position.x / (int)Variables.GetInstance().Get("m_tilesize").Current();
+		CurrentTile[1] = Position.y / (int)Variables.GetInstance().Get("m_tilesize").Current();
 
 		if (Animation.size() > CurrentState.val && Animation.get(CurrentState.val) != null)
 		{

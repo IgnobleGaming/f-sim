@@ -27,7 +27,7 @@ public class Map extends renderable.Renderable
 	private int Dimension;
 	public boolean MM;
 	private Tile[][] activeTiles;
-	private int pTileWidth, pTileHeight;
+	private int activeTileWidth, activeTileHeight;
 	private int paddingTiles;
 	
 	public enum Direction
@@ -45,9 +45,9 @@ public class Map extends renderable.Renderable
 		TileSize = (int) Variables.GetInstance().Get("m_tilesize").Current();
 		paddingTiles = 2;
 		MapTiles = new Tile[HorizontalTileNum][VerticalTileNum];
-		pTileWidth = (int)Math.ceil(interfaces.Render.GetInstance().Width() / TileSize + paddingTiles);
-		pTileHeight = (int)Math.ceil(interfaces.Render.GetInstance().Height() / TileSize + paddingTiles);		
-		activeTiles = new Tile[pTileWidth][pTileHeight];
+		activeTileWidth = (int)Math.ceil(interfaces.Render.GetInstance().Width() / TileSize + paddingTiles);
+		activeTileHeight = (int)Math.ceil(interfaces.Render.GetInstance().Height() / TileSize + paddingTiles);		
+		activeTiles = new Tile[activeTileWidth][activeTileHeight];
 	}
 
 	public static Map GetInstance()
@@ -259,18 +259,16 @@ public class Map extends renderable.Renderable
 	 */
 	public void Draw()
 	{
-		for (int width = 0; width < pTileWidth; width++)
+		for (int width = 0; width < activeTileWidth; width++)
 		{
-			for (int height = 0; height < pTileHeight; height++)
+			for (int height = 0; height < activeTileHeight; height++)
 			{
 				Tile T = activeTiles[width][height];
-				if (T != null && T.CheckFlag(Flag.DRAWABLE))
+				if (T != null)
 					T.Draw();
 			}
 		}
 		
-		
-
 		if (MM)
 			interfaces.Render.DrawMap(GetMinimap());
 	}
@@ -455,19 +453,19 @@ public class Map extends renderable.Renderable
 		// here we need to update the tiles that are visible to camera.
 		int[] centerTile = Game.GetInstance().Controllable().CurrentTile();
 		
-		int x = Maths.Clamp(0, HorizontalTileNum - 1, centerTile[0] - pTileWidth / 2);
-		int y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - pTileHeight / 2);
+		int x = Maths.Clamp(0, HorizontalTileNum - 1, centerTile[0] - activeTileWidth / 2);
+		int y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - activeTileHeight / 2);
 		
 		//for (int width = Maths.Clamp(0, centerTile[0] - (interfaces.Render.GetInstance().Width() / TileSize) / 2); width < centerTile[0] + (interfaces.Render.GetInstance().Width() / TileSize) / 2; width++)
-		for(int width = 0; width < pTileWidth; width++)
+		for(int width = 0; width < activeTileWidth; width++)
 		{
 			//for (int height = Maths.Clamp(0, centerTile[1] - (interfaces.Render.GetInstance().Height() / TileSize) / 2); height < centerTile[1] + (interfaces.Render.GetInstance().Height() / TileSize) / 2; height++)
-			for (int height = 0; height < pTileHeight; height++)
+			for (int height = 0; height < activeTileHeight; height++)
 			{
 				activeTiles[width][height] = MapTiles[x][y];
 				y++;
 			}
-			y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - pTileHeight / 2);
+			y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - activeTileHeight / 2);
 			x = Maths.Clamp(0, HorizontalTileNum - 1, x + 1);
 			//x++;
 		}
@@ -493,4 +491,15 @@ public class Map extends renderable.Renderable
 		int[] pos = { x / TileSize, y / TileSize };
 		return pos;
 	}
+	
+	public int maxPixelWidth()
+	{
+		return HorizontalTileNum * TileSize;
+	}
+	
+	public int maxPixelHeight()
+	{
+		return VerticalTileNum * TileSize;
+	}
+	
 }

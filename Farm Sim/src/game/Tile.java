@@ -42,8 +42,8 @@ public class Tile extends renderable.Renderable
 		this.ZIndex(0);
 		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == true)
 		{
-			// debugText = new renderable.GUIFont(FontFamily.Consolas, "D", renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
-			// debugText.ZIndex(1337);
+			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.XPos / 32), renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
+			 debugText.ZIndex(1);
 		}
 		ChangeType(T);
 	}
@@ -271,12 +271,13 @@ public class Tile extends renderable.Renderable
 
 	public void Draw()
 	{
-		interfaces.Render.DrawImage(CurrentSprite, Position());
 		if (debugText != null)
 		{
 			debugText.Position(this.XPos, this.YPos);
 			debugText.Draw();
 		}
+		interfaces.Render.DrawImage(CurrentSprite, Position());
+	
 	}
 
 	public int ID()
