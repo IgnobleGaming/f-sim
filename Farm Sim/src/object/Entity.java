@@ -290,8 +290,8 @@ public class Entity extends Renderable
 				this.Interact();
 		}
 		
-		CurrentTile[0] = Position.x / (int)Variables.GetInstance().Get("m_tilesize").Current();
-		CurrentTile[1] = Position.y / (int)Variables.GetInstance().Get("m_tilesize").Current();
+		CurrentTile[0] = (int)Math.ceil(Position.x / (int)Variables.GetInstance().Get("m_tilesize").Current());
+		CurrentTile[1] = (int)Math.ceil(Position.y / (int)Variables.GetInstance().Get("m_tilesize").Current());
 
 		if (Animation.size() > CurrentState.val && Animation.get(CurrentState.val) != null)
 		{

@@ -1,5 +1,7 @@
 package interfaces;
 
+import org.newdawn.slick.Color;
+
 import game.Map;
 import object.Entity;
 import utilities.Maths;
@@ -98,7 +100,7 @@ public class Camera
 		int maxHeight = Map.GetInstance().maxPixelHeight();
 		
 		int curHorizontalViewMax = potentialFocus.Position().x + (Width / 2);
-		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2);
+		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2); // we want to hit that 0 index
 		
 		int curVerticalViewMax = potentialFocus.Position().y + (Height / 2);
 		int curVerticalViewMin = potentialFocus.Position().y - (Height / 2);
@@ -106,19 +108,27 @@ public class Camera
 		int newX = -1, newY = -1;
 		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
 		
-		if (curHorizontalViewMax < maxWidth && curHorizontalViewMin > -1)
+		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
 			newX = potentialFocus.Position().x;
-		if (curVerticalViewMax < maxHeight && curVerticalViewMin > -1)
+			
+		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
 			newY = potentialFocus.Position().y;
 		
-		if (newX != -1)
+		if (newX > 0)
 			newPos.x = newX;
-		if (newY != -1)
+		if (newY > 0)
 			newPos.y = newY;
 		
 		Focus.SetPosition(newPos);
 		renderable.HUD.GetInstance().Position(Focus.Position());
 		
+		//System.out.println(Maths.borderClampLeft(Width, Map.GetInstance().TileSize()));
+		System.out.println("at " + curHorizontalViewMax);
+		System.out.println("max " + maxWidth);
+		
+		
+		Render.DrawQuad(Focus.Position().x, Focus.Position().y, curHorizontalViewMax - curHorizontalViewMin, curVerticalViewMax - curVerticalViewMin, Color.red);
+			
 		/*
 	
 		if (potentialFocus.Position().x + ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance > mWidth || potentialFocus.Position().x - ((Width / 2) - game.Map.GetInstance().TileSize() / 2) * Distance < 0)	

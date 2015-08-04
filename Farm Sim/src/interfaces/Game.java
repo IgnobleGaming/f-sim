@@ -315,7 +315,7 @@ public class Game
 			if (R instanceof object.Entity || R instanceof game.Map)
 				R.Update();
 		}
-		GameCamera.Update();
+		//GameCamera.Update();
 	}
 	
 	public State State()

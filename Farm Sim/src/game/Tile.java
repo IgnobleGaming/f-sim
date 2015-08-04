@@ -39,11 +39,11 @@ public class Tile extends renderable.Renderable
 	{
 		super(32, 32);
 		Flags = EnumSet.of(Flag.DRAWABLE);
-		this.ZIndex(0);
+		this.ZIndex(-1);
 		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == true)
 		{
-			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.XPos / 32), renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
-			 debugText.ZIndex(1);
+			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.YPos), renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
+			 debugText.ZIndex(100);
 		}
 		ChangeType(T);
 	}
@@ -273,8 +273,9 @@ public class Tile extends renderable.Renderable
 	{
 		if (debugText != null)
 		{
-			debugText.Position(this.XPos, this.YPos);
-			debugText.Draw();
+			//debugText.Text("" + this.XPos);
+			//debugText.Position(this.XPos, this.YPos);
+			//debugText.Draw();
 		}
 		interfaces.Render.DrawImage(CurrentSprite, Position());
 	

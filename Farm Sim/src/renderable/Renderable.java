@@ -79,6 +79,7 @@ public abstract class Renderable
 
 	public specifier.Vector2D translatedRelativePos()
 	{
+		//return this.Position();
 		return new specifier.Vector2D((Camera.getInstance().cameraLookPoint().x - Render.GetInstance().Width() / 2) + this.Position().x, (Camera.getInstance().cameraLookPoint().y - Render.GetInstance().Height() / 2 ) + this.Position().y);
 	}
 

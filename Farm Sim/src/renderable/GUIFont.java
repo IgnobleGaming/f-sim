@@ -42,6 +42,7 @@ public class GUIFont extends Renderable
 
 		Sheet = new utilities.FontSheet();
 		Size = LoadFontInfo(FontSize);
+		this.ZIndex(100);
 	}
 
 	public void MoveUp()
@@ -53,6 +54,9 @@ public class GUIFont extends Renderable
 	{
 		
 		Render.DrawString(this.Text, translatedRelativePos().x,translatedRelativePos().y, Colour, Sheet);
+		//temp
+		//Render.DrawString(this.Text, this.XPos, this.YPos, Colour, Sheet);
+		
 	}
 
 	public void Text(String NewText)

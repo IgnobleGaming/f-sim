@@ -38,7 +38,7 @@ public class Map extends renderable.Renderable
 	private Map()
 	{
 		super(0, 0);
-		this.ZIndex(0);
+		this.ZIndex(-1);
 		Dimension = (int) Variables.GetInstance().Get("m_width").Current();
 		HorizontalTileNum = (int) Variables.GetInstance().Get("m_width").Current();
 		VerticalTileNum = (int) Variables.GetInstance().Get("m_height").Current();
@@ -142,7 +142,7 @@ public class Map extends renderable.Renderable
 
 		Resize(Dimension * TileSize, Dimension * TileSize);
 
-		System.out.println("Num of active tiles  = " + (interfaces.Render.GetInstance().Width() / TileSize ) * (interfaces.Render.GetInstance().Height() / TileSize));
+		System.out.println("Num of active tiles  = " + activeTileWidth * activeTileHeight);
 	}
 
 	/**
@@ -453,8 +453,8 @@ public class Map extends renderable.Renderable
 		// here we need to update the tiles that are visible to camera.
 		int[] centerTile = Game.GetInstance().Controllable().CurrentTile();
 		
-		int x = Maths.Clamp(0, HorizontalTileNum - 1, centerTile[0] - activeTileWidth / 2);
-		int y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - activeTileHeight / 2);
+		int x = Maths.Clamp(0, HorizontalTileNum, (centerTile[0] + 1- activeTileWidth / 2));
+		int y = Maths.Clamp(0, VerticalTileNum, centerTile[1] + 1 - activeTileHeight / 2);
 		
 		//for (int width = Maths.Clamp(0, centerTile[0] - (interfaces.Render.GetInstance().Width() / TileSize) / 2); width < centerTile[0] + (interfaces.Render.GetInstance().Width() / TileSize) / 2; width++)
 		for(int width = 0; width < activeTileWidth; width++)
@@ -463,9 +463,10 @@ public class Map extends renderable.Renderable
 			for (int height = 0; height < activeTileHeight; height++)
 			{
 				activeTiles[width][height] = MapTiles[x][y];
-				y++;
+				if (y + 1 < VerticalTileNum)
+					y++;
 			}
-			y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] - activeTileHeight / 2);
+			y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] + 1 - activeTileHeight / 2);
 			x = Maths.Clamp(0, HorizontalTileNum - 1, x + 1);
 			//x++;
 		}

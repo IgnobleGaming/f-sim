@@ -94,12 +94,7 @@ public class Render
 	 * @return ( true if the method completes, false if display needs to be closed )
 	 */
 	public boolean Update()
-	{
-		int counts [] = new int [2];
-		counts[0] = 0; // E
-		counts[1] = 0; // R
-		
-		
+	{		
 		if (!Display.isCloseRequested())
 		{
 			UpdateRenderable();
@@ -111,6 +106,7 @@ public class Render
 				Renderable R = RenderQueue.remove();				
 				R.Draw();
 			}
+			Camera.getInstance().Update();
 
 			Display.update();
 			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());
@@ -208,6 +204,7 @@ public class Render
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
+	
 	
 	public static void DrawQuad(int xCenter, int yCenter, int Width, int Height, Color Color)
 	{
