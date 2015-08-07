@@ -217,32 +217,31 @@ public class Entity extends Renderable
 		//game.Tile CollisionTile = null;
 		int XPlus = 0;
 		int YPlus = 0;
+		
+		LookAt.x = 0;
+		LookAt.y = 0;
 
 		switch (Dir)
 		{
 			case UP:
 				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
-				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
-				LookAt.x = 0;
+				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.y = -(CurrentSprite.Height() / 2);
 				break;
 			case DOWN:
 				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
-				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
-				LookAt.x = 0;
+				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.y = (CurrentSprite.Height() / 2);
 				break;
 			case LEFT:
 				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
-				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.x = -(CurrentSprite.Width() / 2);
-				LookAt.y = 0;
 				break;
 			case RIGHT:
 				//CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
-				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 5;
+				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.x = (CurrentSprite.Width() / 2);
-				LookAt.y = 0;
 				break;
 		}
 
@@ -393,18 +392,13 @@ public class Entity extends Renderable
 	{
 		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 		
-		if(x - HitboxOffsetX <= 0) // left border
-			return true;
+		boolean C1 = x - HitboxOffsetX <= 0;
+		boolean C2 = x + HitboxOffsetX >= game.Map.GetInstance().maxPixelWidth() - 40;
+		boolean C3 = y + HitboxOffsetY <= 0;
+		boolean C4 = y + HitboxOffsetX >= game.Map.GetInstance().maxPixelHeight() - 40;
 		
-		if ((x + HitboxOffsetX) >= game.Map.GetInstance().maxPixelWidth() - 40) // right border ( why is this fucked up )
+		if(C1 || C2 || C3 || C4)
 			return true;
-		
-		if (y + HitboxOffsetY <= 0) // top border
-			return true;
-		
-		if ((y + HitboxOffsetX) >= game.Map.GetInstance().maxPixelHeight() - 40) // bottom border ( also screwed up... )
-			return true;
-		
 		
 		for(Tile T : Tiles)
 		{

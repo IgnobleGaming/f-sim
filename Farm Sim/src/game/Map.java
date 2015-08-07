@@ -457,10 +457,10 @@ public class Map extends renderable.Renderable
 	public void Update()
 	{
 		// here we need to update the tiles that are visible to camera.
-		int[] centerTile = Game.GetInstance().Controllable().CurrentTile();
+		Tile centerTile = Camera.getInstance().CameraCenterTile(Game.GetInstance().Controllable());
 		
-		int x = Maths.Clamp(0, HorizontalTileNum, (centerTile[0] + 1- activeTileWidth / 2));
-		int y = Maths.Clamp(0, VerticalTileNum, centerTile[1] + 1 - activeTileHeight / 2);
+		int x = Maths.Clamp(0, HorizontalTileNum, ((centerTile.Position().x / 32) + 1- activeTileWidth / 2));
+		int y = Maths.Clamp(0, VerticalTileNum, (centerTile.Position().y / 32) + 1 - activeTileHeight / 2);
 		
 		//for (int width = Maths.Clamp(0, centerTile[0] - (interfaces.Render.GetInstance().Width() / TileSize) / 2); width < centerTile[0] + (interfaces.Render.GetInstance().Width() / TileSize) / 2; width++)
 		for(int width = 0; width < activeTileWidth; width++)
@@ -472,7 +472,7 @@ public class Map extends renderable.Renderable
 				if (y + 1 < VerticalTileNum)
 					y++;
 			}
-			y = Maths.Clamp(0, VerticalTileNum - 1, centerTile[1] + 1 - activeTileHeight / 2);
+			y = Maths.Clamp(0, VerticalTileNum - 1, (centerTile.Position().y / 32) + 1 - activeTileHeight / 2);
 			x = Maths.Clamp(0, HorizontalTileNum - 1, x + 1);
 			//x++;
 		}

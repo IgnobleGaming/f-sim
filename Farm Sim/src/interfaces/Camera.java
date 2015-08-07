@@ -3,7 +3,9 @@ package interfaces;
 import org.newdawn.slick.Color;
 
 import game.Map;
+import game.Tile;
 import object.Entity;
+import specifier.Vector2D;
 import utilities.Maths;
 
 public class Camera
@@ -96,34 +98,17 @@ public class Camera
 		if (potentialFocus == null)
 			return;
 		
-		int maxWidth = Map.GetInstance().maxPixelWidth();
-		int maxHeight = Map.GetInstance().maxPixelHeight();
 		
-		int curHorizontalViewMax = potentialFocus.Position().x + (Width / 2);
-		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2); // we want to hit that 0 index
 		
-		int curVerticalViewMax = potentialFocus.Position().y + (Height / 2);
-		int curVerticalViewMin = potentialFocus.Position().y - (Height / 2);
-		
-		int newX = -1, newY = -1;
-		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
-		
-		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
-			newX = potentialFocus.Position().x;
-			
-		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
-			newY = potentialFocus.Position().y;
-		
-		if (newX > 0)
-			newPos.x = newX;
-		if (newY > 0)
-			newPos.y = newY;
-		
-		Focus.SetPosition(newPos);
+		Focus.SetPosition(CameraCenterPos(potentialFocus));
 		renderable.HUD.GetInstance().Position(Focus.Position());
 		
-		//if((boolean)Variables.GetInstance().Get("g_debuginfo").Current())
-		//	Render.DrawQuad(Focus.Position().x, Focus.Position().y, curHorizontalViewMax - curHorizontalViewMin, curVerticalViewMax - curVerticalViewMin, Color.red);
+		//System.out.println(Maths.borderClampLeft(Width, Map.GetInstance().TileSize()));
+		//System.out.println("at " + curHorizontalViewMax);
+		//System.out.println("max " + maxWidth);
+		
+		
+		//Render.DrawQuad(Focus.Position().x, Focus.Position().y, curHorizontalViewMax - curHorizontalViewMin, curVerticalViewMax - curVerticalViewMin, Color.red);
 			
 		/*
 	
@@ -147,6 +132,62 @@ public class Camera
 			Focus.SetPosition(new specifier.Vector2D(potentialFocus.Position().x, potentialFocus.Position().y));*/
 		
 		renderable.HUD.GetInstance().Position(Focus.Position());
+	}
+	
+	private Vector2D CameraCenterPos(Entity potentialFocus)
+	{
+		int maxWidth = Map.GetInstance().maxPixelWidth();
+		int maxHeight = Map.GetInstance().maxPixelHeight();
+		
+		int curHorizontalViewMax = potentialFocus.Position().x + (Width / 2);
+		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2); // we want to hit that 0 index
+		
+		int curVerticalViewMax = potentialFocus.Position().y + (Height / 2);
+		int curVerticalViewMin = potentialFocus.Position().y - (Height / 2);
+		
+		int newX = -1, newY = -1;
+		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
+		
+		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
+			newX = potentialFocus.Position().x;
+			
+		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
+			newY = potentialFocus.Position().y;
+		
+		if (newX > 0)
+			newPos.x = newX;
+		if (newY > 0)
+			newPos.y = newY;
+		
+		return newPos;
+	}
+	
+	public Tile CameraCenterTile(Entity potentialFocus)
+	{
+		int maxWidth = Map.GetInstance().maxPixelWidth();
+		int maxHeight = Map.GetInstance().maxPixelHeight();
+		
+		int curHorizontalViewMax = potentialFocus.Position().x + (Width / 2);
+		int curHorizontalViewMin = potentialFocus.Position().x - (Width / 2); // we want to hit that 0 index
+		
+		int curVerticalViewMax = potentialFocus.Position().y + (Height / 2);
+		int curVerticalViewMin = potentialFocus.Position().y - (Height / 2);
+		
+		int newX = -1, newY = -1;
+		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
+		
+		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
+			newX = potentialFocus.Position().x;
+			
+		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
+			newY = potentialFocus.Position().y;
+		
+		if (newX > 0)
+			newPos.x = newX;
+		if (newY > 0)
+			newPos.y = newY;
+		
+		return Map.GetInstance().GetTileFromIndex(newPos.x, newPos.y);
 	}
 
 	public specifier.Vector2D cameraLookPoint()
