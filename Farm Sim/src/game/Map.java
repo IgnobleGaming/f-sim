@@ -293,17 +293,23 @@ public class Map extends renderable.Renderable
 		return MapTiles[CurTile[0]][CurTile[1]];
 	}
 
-	public int[] SurroundingTiles(Renderable R)
+	public Tile[] SurroundingTiles(Renderable R)
 	{
-		int[] Tiles;
-		int Curr = GetCoordIndex(R.Position().x, R.Position().y);
+		Tile[] Tiles = new Tile[4];
+		int[] Curr = Game.GetInstance().Controllable().CurrentTile();
+		
+		Tiles[0] = MapTiles[Curr[0]][Maths.Clamp(0, VerticalTileNum -1, Curr[1] - 1)]; // top
+		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum -1, Curr[0] + 1)][Curr[1]]; // left
+		Tiles[2] = MapTiles[Curr[0]][Maths.Clamp(0, VerticalTileNum - 1, Curr[1] + 1)]; // bottom
+		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum - 1, Curr[0] - 1)][Curr[1]];
+		
 
-		boolean Top = R.Position().y > 0 && R.Position().y < TileSize;
+		/*boolean Top = R.Position().y > 0 && R.Position().y < TileSize;
 		boolean Bottom = R.Position().y < Dimension * TileSize && R.Position().y > (Dimension * TileSize) - TileSize;
 		boolean Left = R.Position().x > 0 && R.Position().x < TileSize;
-		boolean Right = R.Position().x < Dimension * TileSize && R.Position().x > (Dimension * TileSize) - TileSize;
-
-		if (Top)
+		boolean Right = R.Position().x < Dimension * TileSize && R.Position().x > (Dimension * TileSize) - TileSize;	
+	
+		/*if (Top)
 		{
 			if (Left)
 			{
@@ -374,14 +380,14 @@ public class Map extends renderable.Renderable
 			Tiles[6] = Curr + Dimension - 1; // BL
 			Tiles[7] = Curr + Dimension; // BM
 			Tiles[8] = Curr + Dimension + 1; // BR
-		}
+		}*/
 
 		return Tiles;
 	}
 
-	public specifier.MinimapItem[] GetMinimap()
+	public specifier.MinimapItem[][] GetMinimap()
 	{
-		specifier.MinimapItem[] Minimap = new specifier.MinimapItem[HorizontalTileNum * VerticalTileNum];
+		specifier.MinimapItem[][] Minimap = new specifier.MinimapItem[HorizontalTileNum][VerticalTileNum];
 		for (int width = 0; width < HorizontalTileNum; width++)
 		{
 			for (int height = 0; height < VerticalTileNum; height++)
@@ -390,22 +396,22 @@ public class Map extends renderable.Renderable
 				switch (T.Type())
 				{
 					case GRASS:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.green, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.green, GetMinimapCoord(T.TileID));
 						break;
 					case OCEAN:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.blue, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.blue, GetMinimapCoord(T.TileID));
 						break;
 					case DIRT:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, new Color(115, 69, 3, 1), GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, new Color(115, 69, 3, 1), GetMinimapCoord(T.TileID));
 						break;
 					case SAND:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.yellow, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.yellow, GetMinimapCoord(T.TileID));
 						break;
 					case MOUNTAIN:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.darkGray, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.darkGray, GetMinimapCoord(T.TileID));
 						break;
 					default:
-						Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.black, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.black, GetMinimapCoord(T.TileID));
 				}
 
 				//if (T.TileID == Game.GetInstance().Player().TileID())

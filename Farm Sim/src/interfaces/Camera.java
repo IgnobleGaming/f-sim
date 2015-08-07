@@ -122,12 +122,8 @@ public class Camera
 		Focus.SetPosition(newPos);
 		renderable.HUD.GetInstance().Position(Focus.Position());
 		
-		//System.out.println(Maths.borderClampLeft(Width, Map.GetInstance().TileSize()));
-		System.out.println("at " + curHorizontalViewMax);
-		System.out.println("max " + maxWidth);
-		
-		
-		Render.DrawQuad(Focus.Position().x, Focus.Position().y, curHorizontalViewMax - curHorizontalViewMin, curVerticalViewMax - curVerticalViewMin, Color.red);
+		//if((boolean)Variables.GetInstance().Get("g_debuginfo").Current())
+		//	Render.DrawQuad(Focus.Position().x, Focus.Position().y, curHorizontalViewMax - curHorizontalViewMin, curVerticalViewMax - curVerticalViewMin, Color.red);
 			
 		/*
 	

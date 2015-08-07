@@ -391,8 +391,28 @@ public class Entity extends Renderable
 	// THIS IS WHERE COLLISION NEEDS WORK. THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
 	private boolean Collide(int x, int y)
 	{
-		int[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
-
+		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
+		
+		if(x - HitboxOffsetX <= 0) // left border
+			return true;
+		
+		if ((x + HitboxOffsetX) >= game.Map.GetInstance().maxPixelWidth() - 40) // right border ( why is this fucked up )
+			return true;
+		
+		if (y + HitboxOffsetY <= 0) // top border
+			return true;
+		
+		if ((y + HitboxOffsetX) >= game.Map.GetInstance().maxPixelHeight() - 40) // bottom border ( also screwed up... )
+			return true;
+		
+		
+		for(Tile T : Tiles)
+		{
+			// to do tile collision
+		}
+		
+		
+		/*
 		if (x - HitboxOffsetX <= 0 || x + HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y + HitboxOffsetY < 0 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize()))
 		{
 			return true;
@@ -400,7 +420,7 @@ public class Entity extends Renderable
 
 		for (int i = 0; i < Tiles.length; i++)
 		{
-			/*Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
+			Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
 
 			if (T.CheckFlag(Tile.Flag.BLOCKED) && x + this.HitboxOffsetX + this.HitboxWidth >= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX()
 					&& y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x + this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth()
@@ -408,8 +428,8 @@ public class Entity extends Renderable
 			{
 				System.out.println("Entity.Collide ||| L - " + (x + this.HitboxOffsetX) + " | R - " + (x + this.HitboxOffsetX + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight));
 				return true;
-			}*/
-		}
+			}
+		}*/
 
 		return false;
 	}

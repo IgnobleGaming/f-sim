@@ -21,6 +21,7 @@ import renderable.Renderable.PositionType;
 
 /**
  * Handles all OpenGl calls and image draws
+ * 
  * @author Michael
  *
  */
@@ -91,19 +92,20 @@ public class Render
 
 	/**
 	 * Updates the render queue, clears the OpenGL buffer, and renders all the items in Render Queue
+	 * 
 	 * @return ( true if the method completes, false if display needs to be closed )
 	 */
 	public boolean Update()
-	{		
+	{
 		if (!Display.isCloseRequested())
 		{
 			UpdateRenderable();
-			
+
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
 			while (RenderQueue.size() > 0)
 			{
-				Renderable R = RenderQueue.remove();				
+				Renderable R = RenderQueue.remove();
 				R.Draw();
 			}
 			Camera.getInstance().Update();
@@ -135,8 +137,10 @@ public class Render
 
 	/**
 	 * 
-	 * @param Mat ( Material file that contains the textures to be drawn )
-	 * @param Pos ( 2 dimensional position to draw the textures at )
+	 * @param Mat
+	 *            ( Material file that contains the textures to be drawn )
+	 * @param Pos
+	 *            ( 2 dimensional position to draw the textures at )
 	 */
 	public static void DrawImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos)
 	{
@@ -144,13 +148,12 @@ public class Render
 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		double[] orthoPos = Camera.getInstance().translatedOrtho();
-		
+
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(orthoPos[0],orthoPos[1],orthoPos[2],orthoPos[3], 1, -1);
+		GL11.glOrtho(orthoPos[0], orthoPos[1], orthoPos[2], orthoPos[3], 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		
-		
+
 		GL11.glBegin(GL11.GL_QUADS);
 
 		switch (Mat.Facing())
@@ -163,14 +166,14 @@ public class Render
 			case LEFT:
 				GL11.glRotatef(180, 0.0f, 0.0f, 1.0f);
 				break;
-			case RIGHT: 
+			case RIGHT:
 				GL11.glRotatef(0, 0.0f, 0.0f, 1.0f);
 				break;
 			case DOWN:
 				GL11.glRotatef(90, 0.0f, 0.0f, 1.0f);
 				break;
 		}
-		
+
 		// TOP LEFT
 		GL11.glTexCoord2f(0, 0);
 		GL11.glVertex2f(Pos.x - (Mat.Width() / 2), Pos.y - (Mat.Height() / 2));
@@ -185,33 +188,31 @@ public class Render
 		GL11.glVertex2f(Pos.x - Mat.Width() / 2, (Pos.y) + Mat.Height() / 2);
 
 		GL11.glEnd();
-		
+
 		Mat.SetOrientation(Orientation.NORMAL);
 
 	}
-	
-	
+
 	public static void DrawLine(int x1, int y1, int x2, int y2, Color Color)
 	{
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor3f(0.5f,0.5f,1.0f);
+		GL11.glColor3f(0.5f, 0.5f, 1.0f);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glVertex2f(x1, y1);
-		GL11.glVertex2f(100+200,100);
-		GL11.glVertex2f(100+200,100+200);
-		GL11.glVertex2f(100,100+200);
+		GL11.glVertex2f(100 + 200, 100);
+		GL11.glVertex2f(100 + 200, 100 + 200);
+		GL11.glVertex2f(100, 100 + 200);
 		GL11.glEnd();
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
-	
-	
+
 	public static void DrawQuad(int xCenter, int yCenter, int Width, int Height, Color Color)
 	{
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glColor4f(Color.r, Color.g, Color.b, 0.5f);
 		GL11.glBegin(GL11.GL_QUADS);
-		
+
 		// top left
 		GL11.glTexCoord2f(0, 0);
 		GL11.glVertex2f(xCenter - Width / 2, yCenter - Height / 2);
@@ -225,15 +226,15 @@ public class Render
 		GL11.glTexCoord2f(0, 1);
 		GL11.glVertex2f(xCenter - Width / 2, yCenter + Height / 2);
 		GL11.glEnd();
-		
+
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
-	
+
 	public static void DrawLine(specifier.Vector2D Pos, specifier.Vector2D Pos2, Color Color)
 	{
 		GL11.glBegin(GL11.GL_LINES);
-		GL11.glLineWidth(1.0f); 
+		GL11.glLineWidth(1.0f);
 		GL11.glColor3f(Color.r, Color.g, Color.b);
 		GL11.glVertex2i(Pos.x, Pos.y);
 		GL11.glVertex2i(Pos2.x, Pos.y);
@@ -248,7 +249,7 @@ public class Render
 		// TOP LEFT
 		GL11.glTexCoord2f(0 + HorizontalOffset, 0 + VerticalOffset);
 		GL11.glVertex2f(Pos.x - (Width / 2), Pos.y - (Height / 2));
-		// TOP RIGHT	
+		// TOP RIGHT
 		GL11.glTexCoord2f(1 - HorizontalOffset, 0 + VerticalOffset);
 		GL11.glVertex2f(Pos.x + Width / 2, Pos.y - (Height / 2));
 		// BOTTOM RIGHT
@@ -263,88 +264,88 @@ public class Render
 
 	/**
 	 * 
-	 * @param Text ( string of characters to be drawn )
-	 * @param x ( horizontal position -- absolute )
-	 * @param y ( vertical position -- absolute )
-	 * @param Colour ( color of text )
-	 * @param Sheet ( the font sheet which includes the material and coordinates of the characters )
+	 * @param Text
+	 *            ( string of characters to be drawn )
+	 * @param x
+	 *            ( horizontal position -- absolute )
+	 * @param y
+	 *            ( vertical position -- absolute )
+	 * @param Colour
+	 *            ( color of text )
+	 * @param Sheet
+	 *            ( the font sheet which includes the material and coordinates of the characters )
 	 */
 	public static void DrawString(String Text, int x, int y, org.newdawn.slick.Color Colour, utilities.FontSheet Sheet)
 	{
-		Sheet.BitMap.Bind();		
+		Sheet.BitMap.Bind();
 		GL11.glColor4f(Colour.r, Colour.g, Colour.b, Colour.a);
 		GL11.glBegin(GL11.GL_QUADS);
 		for (int c = 0; c < Text.length(); c++)
 		{
 			int i = Text.charAt(c) - 32;
-		
-			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t0f(i)); 
+
+			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t0f(i));
 			GL11.glVertex2f(x + Sheet.x0f(i), y + Sheet.y0f(i));
-			
-			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t1f(i)); 
+
+			GL11.glTexCoord2f(Sheet.s0f(i), Sheet.t1f(i));
 			GL11.glVertex2f(x + Sheet.x0f(i), y + Sheet.y1f(i));
 
-			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t1f(i)); 
+			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t1f(i));
 			GL11.glVertex2f(x + Sheet.x1f(i), y + Sheet.y1f(i));
 
-			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t0f(i)); 
+			GL11.glTexCoord2f(Sheet.s1f(i), Sheet.t0f(i));
 			GL11.glVertex2f(x + Sheet.x1f(i), y + Sheet.y0f(i));
-	     
-	        x += Sheet.Advancef(i);
+
+			x += Sheet.Advancef(i);
 		}
-		GL11.glColor4f(1,1,1,1);
-		GL11.glEnd();		
+		GL11.glColor4f(1, 1, 1, 1);
+		GL11.glEnd();
 	}
-	
+
 	/*
 	 * 
 	 */
-	public static void DrawMap(specifier.MinimapItem[] Map)
+	public static void DrawMap(specifier.MinimapItem[][] Map)
 	{
-		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - (int)Variables.GetInstance().Get("m_width").Current() / 2, Camera.getInstance().cameraLookPoint().y - (int)Variables.GetInstance().Get("m_width").Current() / 2);
+		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - (int) Variables.GetInstance().Get("m_width").Current() / 2, Camera.getInstance().cameraLookPoint().y
+				- (int) Variables.GetInstance().Get("m_width").Current() / 2);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		
-		GL11.glBegin(GL11.GL_QUADS);
-		/*for (specifier.MinimapItem M : Map)
-		{		
-		    GL11.glColor3f(M.Color.r, M.Color.g, M.Color.b);
-		    int x = tempPos.x + M.Position.x;
-		    int y = tempPos.y + M.Position.y;
-		    		
-		    GL11.glVertex2i(x, y);
-		    GL11.glVertex2i(x + 2, y);
-		    GL11.glVertex2i(x + 2, y + 2);
-		    GL11.glVertex2i(x, y + 2);
-		    
-		    GL11.glColor3f(1, 1, 1);
-		}	*/
-		 
-		
-		/*final ByteBuffer byteBuf = ByteBuffer.allocateDirect(320 * 240 * 16);
-        byteBuf.order(ByteOrder.nativeOrder());
-        final FloatBuffer floatBuf = byteBuf.asFloatBuffer();
 
-		int pixels[];
-		for(int y = 0; y < (int)Variables.GetInstance().Get("m_width").Current(); y++)
+		GL11.glBegin(GL11.GL_QUADS);
+		for (int width = 0; width < game.Map.GetInstance().HorizontalTileNum(); width++)
 		{
-		    for(int x = 0; x < (int)Variables.GetInstance().Get("m_width").Current(); x++)
-		    {
-		       // pixels[y * 320 * 4 + x * 4 + 0] = 0; // R
-		      //  pixels[y * 320 * 4 + x * 4 + 1] = 0;// G
-		       // pixels[y * 320 * 4 + x * 4 + 2] = 0; // B
-		       // pixels[y * 320 * 4 + x * 4 + 3] = 0; // A
-		       byteBuf.put((byte)0);
-		    }
+			for (int height = 0; height < game.Map.GetInstance().VerticalTileNum(); height++)
+			{
+
+				specifier.MinimapItem M = Map[width][height];
+
+				GL11.glColor3f(M.Color.r, M.Color.g, M.Color.b);
+				int x = tempPos.x + M.Position.x;
+				int y = tempPos.y + M.Position.y;
+
+				GL11.glVertex2i(x, y);
+				GL11.glVertex2i(x + 2, y);
+				GL11.glVertex2i(x + 2, y + 2);
+				GL11.glVertex2i(x, y + 2);
+
+				GL11.glColor3f(1, 1, 1);
+			}
 		}
-		
-		//GL11.glDrawPixels((int)Variables.GetInstance().Get("m_width").Current(), (int)Variables.GetInstance().Get("m_width").Current(), GL11.GL_RGB, GL11.GL_BYTE,  byteBuf);
-		*/
+
+		/*
+		 * final ByteBuffer byteBuf = ByteBuffer.allocateDirect(320 * 240 * 16); byteBuf.order(ByteOrder.nativeOrder()); final FloatBuffer floatBuf = byteBuf.asFloatBuffer();
+		 * 
+		 * int pixels[]; for(int y = 0; y < (int)Variables.GetInstance().Get("m_width").Current(); y++) { for(int x = 0; x < (int)Variables.GetInstance().Get("m_width").Current(); x++) { // pixels[y * 320 * 4 + x * 4 + 0] = 0; // R // pixels[y * 320 * 4 + x * 4 + 1] = 0;// G // pixels[y * 320 * 4 +
+		 * x * 4 + 2] = 0; // B // pixels[y * 320 * 4 + x * 4 + 3] = 0; // A byteBuf.put((byte)0); } }
+		 * 
+		 * //GL11.glDrawPixels((int)Variables.GetInstance().Get("m_width").Current(), (int)Variables.GetInstance().Get("m_width").Current(), GL11.GL_RGB, GL11.GL_BYTE, byteBuf);
+		 */
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	/**
-	 *  Updates the current frame counter ( called every frame )
+	 * Updates the current frame counter ( called every frame )
 	 */
 	public void updateFPS()
 	{
