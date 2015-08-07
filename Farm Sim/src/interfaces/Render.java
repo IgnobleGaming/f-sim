@@ -312,9 +312,9 @@ public class Render
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glBegin(GL11.GL_QUADS);
-		for (int width = 0; width < game.Map.GetInstance().HorizontalTileNum(); width++)
+		for (int height = 0; height < game.Map.GetInstance().VerticalTileNum(); height++)
 		{
-			for (int height = 0; height < game.Map.GetInstance().VerticalTileNum(); height++)
+			for (int width = 0; width < game.Map.GetInstance().HorizontalTileNum(); width++)
 			{
 
 				specifier.MinimapItem M = Map[width][height];

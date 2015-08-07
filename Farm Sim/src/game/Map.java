@@ -1,9 +1,7 @@
 package game;
 
-import game.Tile.Flag;
 import interfaces.Camera;
 import interfaces.Game;
-import interfaces.Render;
 import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.types.MaterialFile;
@@ -384,34 +382,34 @@ public class Map extends renderable.Renderable
 
 		return Tiles;
 	}
-
+	
 	public specifier.MinimapItem[][] GetMinimap()
 	{
 		specifier.MinimapItem[][] Minimap = new specifier.MinimapItem[HorizontalTileNum][VerticalTileNum];
-		for (int width = 0; width < HorizontalTileNum; width++)
+		for (int height = 0; height < VerticalTileNum; height++)
 		{
-			for (int height = 0; height < VerticalTileNum; height++)
+			for (int width = 0; width < HorizontalTileNum; width++)
 			{
 				Tile T = MapTiles[width][height];
 				switch (T.Type())
 				{
 					case GRASS:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.green, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.green, new Vector2D(width, height));
 						break;
 					case OCEAN:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.blue, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.blue, new Vector2D(width, height));
 						break;
 					case DIRT:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, new Color(115, 69, 3, 1), GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, new Color(115, 69, 3, 1), new Vector2D(width, height));
 						break;
 					case SAND:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.yellow, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.yellow, new Vector2D(width, height));
 						break;
 					case MOUNTAIN:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.darkGray, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.darkGray, new Vector2D(width, height));
 						break;
 					default:
-						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.black, GetMinimapCoord(T.TileID));
+						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.black, new Vector2D(width, height));
 				}
 
 				//if (T.TileID == Game.GetInstance().Player().TileID())
