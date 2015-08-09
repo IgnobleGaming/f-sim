@@ -1,6 +1,5 @@
 package game;
 
-import interfaces.Game;
 import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
@@ -169,13 +168,15 @@ public class Tile extends renderable.Renderable
 	{
 
 		// Sprites.clear();
+		
+
+		Random rand = new Random();
 
 		switch (TileType)
 		{
 			case GRASS:
-				Random rand = new Random();
-				int i = rand.nextInt(6);
-				switch (i)
+				int g = rand.nextInt(6);
+				switch (g)
 				{
 					case 0:
 						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\g1.png");
@@ -205,7 +206,28 @@ public class Tile extends renderable.Renderable
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\water.png");
 				break;
 			case SAND:
-				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand.png");
+				int s = rand.nextInt(6);
+				switch (s)
+				{
+					case 0:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand1.png");
+						break;
+					case 1:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand2.png");
+						break;
+					case 2:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand3.png");
+						break;
+					case 3:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand4.png");
+						break;
+					case 4:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand5.png");
+						break;
+					case 5:
+						CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\sand6.png");
+						break;
+				}
 				break;
 			case MOUNTAIN:
 				CurrentSprite = (MaterialFile) FileManager.getInstance().Retrieve("resources\\ingame\\tiles\\mountain.png");

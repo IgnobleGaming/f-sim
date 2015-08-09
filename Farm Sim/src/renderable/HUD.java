@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 public class HUD extends Renderable
 {
 	private GUIFont FPSCounter;
+	private MiniMap MiniMap;
 	private static HUD Instance;
 	
 	public HUD(int width, int height)
@@ -18,6 +19,7 @@ public class HUD extends Renderable
 	public void Init()
 	{
 		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, 0,0);
+		MiniMap = renderable.MiniMap.GetInstance();
 	}
 	
 	public static HUD GetInstance()
@@ -31,6 +33,9 @@ public class HUD extends Renderable
 	{
 		if (Console.GetInstance().Visible)
 			Console.GetInstance().Draw();
+		
+		if (MiniMap.Visible)
+			MiniMap.Draw();
 		
 		if (FPSCounter != null)
 		{

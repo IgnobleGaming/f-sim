@@ -303,7 +303,7 @@ public class Render
 	}
 
 	/*
-	 * 
+	 *  probably deprecated
 	 */
 	public static void DrawMap(specifier.MinimapItem[][] Map)
 	{
@@ -332,14 +332,25 @@ public class Render
 			}
 		}
 
-		/*
-		 * final ByteBuffer byteBuf = ByteBuffer.allocateDirect(320 * 240 * 16); byteBuf.order(ByteOrder.nativeOrder()); final FloatBuffer floatBuf = byteBuf.asFloatBuffer();
-		 * 
-		 * int pixels[]; for(int y = 0; y < (int)Variables.GetInstance().Get("m_width").Current(); y++) { for(int x = 0; x < (int)Variables.GetInstance().Get("m_width").Current(); x++) { // pixels[y * 320 * 4 + x * 4 + 0] = 0; // R // pixels[y * 320 * 4 + x * 4 + 1] = 0;// G // pixels[y * 320 * 4 +
-		 * x * 4 + 2] = 0; // B // pixels[y * 320 * 4 + x * 4 + 3] = 0; // A byteBuf.put((byte)0); } }
-		 * 
-		 * //GL11.glDrawPixels((int)Variables.GetInstance().Get("m_width").Current(), (int)Variables.GetInstance().Get("m_width").Current(), GL11.GL_RGB, GL11.GL_BYTE, byteBuf);
-		 */
+		final ByteBuffer byteBuf = ByteBuffer.allocateDirect(320 * 240 * 16);
+		byteBuf.order(ByteOrder.nativeOrder());
+		final FloatBuffer floatBuf = byteBuf.asFloatBuffer();
+
+		int pixels[] = new int[512 * 512];
+		for (int y = 0; y < (int) Variables.GetInstance().Get("m_width").Current(); y++)
+		{
+			for (int x = 0; x < (int) Variables.GetInstance().Get("m_width").Current(); x++)
+			{
+				pixels[y * 320 * 4 + x * 4 + 0] = 0;
+				pixels[y * 320 * 4 + x * 4 + 1] = 0;
+				pixels[y * 320 * 4 + x * 4 + 2] = 0;
+				pixels[y * 320 * 4 + x * 4 + 3] = 0;
+				byteBuf.put((byte) 0);
+			}
+		}
+
+		GL11.glDrawPixels((int) Variables.GetInstance().Get("m_width").Current(), (int) Variables.GetInstance().Get("m_width").Current(), GL11.GL_RGB, GL11.GL_BYTE, byteBuf);
+
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}

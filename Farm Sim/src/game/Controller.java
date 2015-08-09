@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import renderable.Console;
+import renderable.MiniMap;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -142,10 +143,10 @@ public class Controller
 						Game.GetInstance().Controllable().SetState(State.INTERACTING);
 						break;
 					case MAP:
-						if (Map.GetInstance().MM)
-							Map.GetInstance().MM = false;
+						if (MiniMap.GetInstance().Visible)
+							MiniMap.GetInstance().Visible = false;
 						else
-							Map.GetInstance().MM = true;
+							MiniMap.GetInstance().Visible = true;
 						break;
 					case NONE:
 						break;
@@ -263,7 +264,7 @@ public class Controller
 
 	private void ReadActionInput()
 	{
-		InputType In = InputType.NONE; // Input to Process
+		InputType In = InputType.RELEASE; // Input to Process
 
 		CT += Game.GetInstance().Delta(); // Current Time
 
@@ -272,7 +273,7 @@ public class Controller
 		{
 			if (Keyboard.isKeyDown(Keyboard.KEY_E))
 			{
-				ProcessInput(InputType.INTERACT);
+				In = InputType.INTERACT;
 				CT = 0;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_M))
 			{

@@ -115,10 +115,30 @@ public class Map extends renderable.Renderable
 		TileSprite4.Open();
 		FileManager.getInstance().Add(TileSprite4);
 
-		MaterialFile SandTile = new MaterialFile("resources\\ingame\\tiles\\sand.png", MaterialFile.Type.PNG);
-		SandTile.Open();
-		FileManager.getInstance().Add(SandTile);
+		MaterialFile Sand1 = new MaterialFile("resources\\ingame\\tiles\\sand1.png", MaterialFile.Type.PNG);
+		Sand1.Open();
+		FileManager.getInstance().Add(Sand1);
+		
+		MaterialFile Sand2 = new MaterialFile("resources\\ingame\\tiles\\sand2.png", MaterialFile.Type.PNG);
+		Sand2.Open();
+		FileManager.getInstance().Add(Sand2);
 
+		MaterialFile Sand3 = new MaterialFile("resources\\ingame\\tiles\\sand3.png", MaterialFile.Type.PNG);
+		Sand3.Open();
+		FileManager.getInstance().Add(Sand3);
+		
+		MaterialFile Sand4 = new MaterialFile("resources\\ingame\\tiles\\sand4.png", MaterialFile.Type.PNG);
+		Sand4.Open();
+		FileManager.getInstance().Add(Sand4);
+		
+		MaterialFile Sand5 = new MaterialFile("resources\\ingame\\tiles\\sand5.png", MaterialFile.Type.PNG);
+		Sand5.Open();
+		FileManager.getInstance().Add(Sand5);
+		
+		MaterialFile Sand6 = new MaterialFile("resources\\ingame\\tiles\\sand6.png", MaterialFile.Type.PNG);
+		Sand6.Open();
+		FileManager.getInstance().Add(Sand6);
+		
 		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
 		MountainTile.Open();
 		FileManager.getInstance().Add(MountainTile);
@@ -266,9 +286,6 @@ public class Map extends renderable.Renderable
 					T.Draw();
 			}
 		}
-		
-		if (MM)
-			interfaces.Render.DrawMap(GetMinimap());
 	}
 
 	public Tile GetNextTile(int[] CurTile, specifier.Direction.Relative Dir)
