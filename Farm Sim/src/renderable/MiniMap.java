@@ -45,11 +45,9 @@ public class MiniMap extends Renderable
 
 	public void Draw()
 	{
-		System.out.println(Camera.getInstance().cameraLookPoint().x);
-		System.out.println(Camera.getInstance().cameraLookPoint().y);
 		
-		Render.DrawImage(CurrentSprite, new Vector2D(Camera.getInstance().cameraLookPoint().x - (int) Variables.GetInstance().Get("m_width").Current() / 14, Camera.getInstance().cameraLookPoint().y
-				- (int) Variables.GetInstance().Get("m_width").Current() / 14));
+		Render.DrawImage(CurrentSprite, new Vector2D(Camera.getInstance().cameraLookPoint().x - (int) Variables.GetInstance().Get("m_width").Current() / 40, Camera.getInstance().cameraLookPoint().y
+				- (int) Variables.GetInstance().Get("m_width").Current() / 40));
 	}
 
 	private void writeMMImage(String Name, Map M)

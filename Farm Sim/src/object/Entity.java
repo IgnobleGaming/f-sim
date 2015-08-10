@@ -356,7 +356,7 @@ public class Entity extends Renderable
 	{
 		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
 		Renderable Target = null;
-
+		
 		for (Renderable R : interfaces.Objects.GetInstance().Entities())
 		{
 			if (R.IsTargetedBy(Targeting))
