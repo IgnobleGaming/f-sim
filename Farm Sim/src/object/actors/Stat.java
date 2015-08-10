@@ -11,6 +11,8 @@ public class Stat
 	
 	private Variable Value;
 	private Type Type;
+	private int DecModifier;
+	private int IncModifier;
 	private String Name;
 	private String Desc;
 	
@@ -20,6 +22,7 @@ public class Stat
 	 * @param M - Max Level for Stat
 	 * @param T - Type of Stat
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Stat(int Min, int L, int Max, Type T)
 	{
 		Type = T;
@@ -40,22 +43,36 @@ public class Stat
 	}
 	
 	/**
-	 * Get Actual Level of Stat
+	 * Max value of stat
 	 * @return
 	 */
-	public int CurrentCap()
+	public int Cap()
 	{
 		return (int)Value.Max();
 	}
 	
 	/**
-	 * Alter Current level
-	 * @param M - Mod
+	 * Increase Current Level
+	 * @return Current stat level
 	 */
-	public void Modify(int M)
+	public int Increment()
 	{
-		if ((int)Value.Current() + M >= (int)Value.Min() && (int)Value.Current() + M <= (int)Value.Max())
-			Value.Current((int)Value.Current() + M);
+		if ((int)Value.Current() + IncModifier <= (int)Value.Max())	
+			Value.Current((int)Value.Current() + IncModifier);
+		
+		return (int)Value.Current();
+	}
+	
+	/**
+	 * Decrease Current Level
+	 * @return Current stat level
+	 */
+	public int Decrement()
+	{
+		if ((int)Value.Current() - DecModifier >= (int)Value.Min())	
+			Value.Current((int)Value.Current() - DecModifier);
+		
+		return (int)Value.Current();
 	}
 	
 	/**
@@ -78,6 +95,16 @@ public class Stat
 		}
 		
 		return Name;
+	}
+	
+	public void SetIncrementalModifier(int I)
+	{
+		IncModifier = I;
+	}
+	
+	public void SetDecrementalModifier(int I)
+	{
+		DecModifier = I;
 	}
 	
 	public static String GetDesc(Type T)
