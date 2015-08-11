@@ -1,7 +1,5 @@
 package interfaces;
 
-import org.newdawn.slick.Color;
-
 import game.Map;
 import game.Tile;
 import object.Entity;
@@ -55,7 +53,7 @@ public class Camera
 		else if (R instanceof game.Map || R instanceof renderable.HUD)
 			return true;
 
-		else if (R instanceof object.Entity || R instanceof object.Resource)
+		else if (R instanceof object.Entity)
 		{
 			int maxWidth = (int) (Focus.Position().x + (Width / 2) * Distance);
 			int minWidth = (int) (Focus.Position().x - (Width / 2) * Distance);

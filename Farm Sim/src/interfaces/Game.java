@@ -13,6 +13,7 @@ import game.Map;
 
 import java.util.*;
 
+import object.actors.Actor;
 import game.Controller;
 import game.Mapbuilder;
 import game.Tile.Flag;
@@ -37,7 +38,7 @@ public class Game
 	private State CurrentState;
 	private Objects GameObjects;
 	public boolean IsRunning = true;
-	private object.Entity PlayerEnt;
+	private Actor PlayerEnt;
 	private Map Map;
 	private Camera GameCamera;
 
@@ -136,7 +137,7 @@ public class Game
 		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		object.Entity player = new object.Entity("Player", "Main Character", new specifier.Vector2D(1024, 1024), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
+		Actor player = new Actor("Player", "Main Character", new specifier.Vector2D(1024, 1024), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
 		
 		player.SetSprite(playersprite);		
 		

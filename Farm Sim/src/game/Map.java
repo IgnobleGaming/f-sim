@@ -219,11 +219,11 @@ public class Map extends renderable.Renderable
 	 *            ( vertical coordinate of location )
 	 * @return index of closest tile from the map array of tiles
 	 */
-	public int GetCoordIndex(int x, int y)
+	public Vector2D GetIndexFromCoord(int x, int y)
 	{
 		int TileX = x - (x % TileSize);
 		int TileY = y - (y % TileSize);
-		return GetTileIndex(TileX / TileSize, TileY / TileSize);
+		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
 
 	/**
@@ -311,12 +311,12 @@ public class Map extends renderable.Renderable
 	public Tile[] SurroundingTiles(Renderable R)
 	{
 		Tile[] Tiles = new Tile[4];
-		int[] Curr = Game.GetInstance().Controllable().CurrentTile();
+		Vector2D Curr = Game.GetInstance().Controllable().CurrentTile();
 		
-		Tiles[0] = MapTiles[Curr[0]][Maths.Clamp(0, VerticalTileNum -1, Curr[1] - 1)]; // top
-		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum -1, Curr[0] + 1)][Curr[1]]; // left
-		Tiles[2] = MapTiles[Curr[0]][Maths.Clamp(0, VerticalTileNum - 1, Curr[1] + 1)]; // bottom
-		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum - 1, Curr[0] - 1)][Curr[1]];
+		Tiles[0] = MapTiles[Curr.x][Maths.Clamp(0, VerticalTileNum -1, Curr.y - 1)]; // top
+		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum -1, Curr.x + 1)][Curr.y]; // left
+		Tiles[2] = MapTiles[Curr.x][Maths.Clamp(0, VerticalTileNum - 1, Curr.x + 1)]; // bottom
+		Tiles[3] = MapTiles[Maths.Clamp(0, HorizontalTileNum - 1, Curr.x - 1)][Curr.y];
 		
 
 		/*boolean Top = R.Position().y > 0 && R.Position().y < TileSize;

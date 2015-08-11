@@ -1,5 +1,7 @@
 package object.actors;
 
+import specifier.Stat;
+
 public class Stats
 {
 	private Stat Health;
@@ -8,9 +10,9 @@ public class Stats
 	
 	public Stats()
 	{
-		Health = new Stat(1, 1, 100, Stat.Type.HEALTH);
+		Health = new Stat(1, 100, 100, Stat.Type.HEALTH);
 		Fatigue = new Stat(0, 20, 100, Stat.Type.FATIGUE);
-		Hunger = new Stat(0, 100, 100, Stat.Type.HUNGER);
+		Hunger = new Stat(0, 10, 10, Stat.Type.HUNGER);
 	}
 	
 	public Stat Health()

@@ -1,4 +1,4 @@
-package object.actors;
+package specifier;
 
 import object.Variable;
 
@@ -75,6 +75,16 @@ public class Stat
 		return (int)Value.Current();
 	}
 	
+	public void SetIncrementalModifier(int I)
+	{
+		IncModifier = I;
+	}
+	
+	public void SetDecrementalModifier(int I)
+	{
+		DecModifier = I;
+	}
+	
 	/**
 	 * Get Name of a Type
 	 * 
@@ -96,17 +106,7 @@ public class Stat
 		
 		return Name;
 	}
-	
-	public void SetIncrementalModifier(int I)
-	{
-		IncModifier = I;
-	}
-	
-	public void SetDecrementalModifier(int I)
-	{
-		DecModifier = I;
-	}
-	
+
 	public static String GetDesc(Type T)
 	{
 		String Desc = "";

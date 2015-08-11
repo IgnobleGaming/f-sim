@@ -13,10 +13,6 @@ public abstract class Renderable
 	private int ZIndex;
 	private int Width;
 	private int Height;
-	protected int HitboxOffsetX;
-	protected int HitboxOffsetY;
-	protected int HitboxHeight;
-	protected int HitboxWidth;
 	public boolean Visible;
 	protected MaterialFile CurrentSprite;
 	protected RenderType R;
@@ -52,11 +48,6 @@ public abstract class Renderable
 		ZIndex = 0; // default zindex
 		Width = width;
 		Height = height;
-		
-		HitboxOffsetX = 0;
-		HitboxOffsetY = 0;
-		HitboxHeight = 0;
-		HitboxWidth = 0;
 		//Logging.getInstance().Write(Logging.Type.INFO, "New renderable object created! [ z=%d, visible=%b ]", ZIndex, Visible);
 	}
 	
@@ -200,40 +191,5 @@ public abstract class Renderable
 		}
 	}
 	
-	public int HitboxOffsetX()
-	{
-		return HitboxOffsetX;
-	}
-	
-	public int HitboxOffsetY()
-	{
-		return HitboxOffsetY;
-	}
 
-	public int HitboxHeight()
-	{
-		return HitboxHeight;
-	}
-
-	
-	public int HitboxWidth()
-	{
-		return HitboxWidth;
-	}
-	
-	public boolean IsTargetedBy(Vector2D V)
-	{
-		if (V.x >= this.XPos + this.HitboxOffsetX && V.x <= this.XPos + this.HitboxOffsetX + this.HitboxWidth && V.y >= this.YPos + this.HitboxOffsetY && V.y <= this.YPos + this.HitboxOffsetY + this.HitboxHeight)
-		{
-			return true;
-		}
-		else 
-			return false;
-	}
-
-	public void Interact(Renderable R)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 }

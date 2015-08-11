@@ -9,12 +9,13 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import object.Entity;
+import object.WorldObject;
 
 import org.newdawn.slick.Color;
 
 import renderable.GUIFont.FontFamily;
 
-public class Tile extends renderable.Renderable
+public class Tile extends WorldObject
 {
 
 	public enum Flag
@@ -31,7 +32,6 @@ public class Tile extends renderable.Renderable
 	private Type TileType;
 	// private int hash;
 	public int TileID = 0;
-	private object.Resource Resource;
 	private renderable.GUIFont debugText;
 
 	public Tile(Type T)
@@ -65,13 +65,6 @@ public class Tile extends renderable.Renderable
 		return true;
 	}
 
-	public object.Resource Resource()
-	{
-		if (Resource != null)
-			return Resource;
-		return null;
-	}
-
 	public void Interact(renderable.Renderable R)
 	{
 		if (this.CheckFlag(Flag.LOCKED))
@@ -79,23 +72,7 @@ public class Tile extends renderable.Renderable
 
 		if (R instanceof Entity)
 		{
-			if (this.CheckFlag(Flag.RESOURCE))
-			{
-				Resource.Interact(R);
-				if (Resource.Depleted())
-				{
-					Resource = null;
-					Flags.remove(Flag.RESOURCE);
-					Flags.remove(Flag.BLOCKED);
-					HitboxOffsetX = 0;
-					HitboxOffsetY = 0;
-					HitboxHeight = 0;
-					HitboxWidth = 0;
-					
-					if ((TileType == Type.GRASS || TileType == Type.DIRT) && !CheckFlag(Flag.FARMABLE))
-						AddFlag(Flag.FARMABLE);
-				}
-			} else if (TileType.equals(Type.GRASS))
+			if (TileType.equals(Type.GRASS))
 			{
 				this.ChangeType(Type.DIRT);
 
@@ -103,27 +80,6 @@ public class Tile extends renderable.Renderable
 			else 
 			{
 			}
-		}
-	}
-
-	public void Resource(object.Resource Resource)
-	{
-		if (!Flags.contains(Flag.RESOURCE) && Resource != null)
-		{
-			Flags.add(Flag.INTERACTABLE);
-			Flags.add(Flag.RESOURCE);
-			Flags.add(Flag.BLOCKED);
-
-			if (CheckFlag(Flag.FARMABLE))
-				RemoveFlag(Flag.FARMABLE);
-
-			HitboxOffsetX = 2;
-			HitboxOffsetY = 7;
-			HitboxHeight = 18;
-			HitboxWidth = 28;
-
-			this.Resource = Resource;
-			this.Resource.Init(Position());
 		}
 	}
 
