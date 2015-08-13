@@ -1,11 +1,16 @@
 package object.actors;
 
+import org.newdawn.slick.Color;
+
+import game.Map;
+import game.Tile;
 import interfaces.Game;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import object.Entity;
 import object.Entity.Flag;
+import object.WorldObject;
 import renderable.Renderable;
 import specifier.Direction.Relative;
 import specifier.Vector;
@@ -72,9 +77,9 @@ public class Actor extends Entity
 		
 		CurrentTile = game.Map.GetInstance().GetIndexFromCoord(Position.x, Position.y);
 
-		if (Animation.size() > CurrentState.State() && Animation.get(CurrentState.State()) != null)
+		if (Animation.size() > CurrentState.Value() && Animation.get(CurrentState.Value()) != null)
 		{
-			MaterialFile NewSprite = Animation.get(CurrentState.State()).RequestNextFrame();
+			MaterialFile NewSprite = Animation.get(CurrentState.Value()).RequestNextFrame();
 			if (NewSprite != null)
 				CurrentSprite = NewSprite;
 		} else
@@ -98,12 +103,12 @@ public class Actor extends Entity
 			case UP:
 				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
 				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
-				LookAt.y = -(CurrentSprite.Height() / 2);
+				LookAt.y = -(CurrentSprite.Height() / 4) * 3;
 				break;
 			case DOWN:
 				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
 				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
-				LookAt.y = (CurrentSprite.Height() / 2);
+				LookAt.y = (CurrentSprite.Height() / 4) * 3;
 				break;
 			case LEFT:
 				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
@@ -116,7 +121,10 @@ public class Actor extends Entity
 				LookAt.x = (CurrentSprite.Width() / 2);
 				break;
 		}
-
+		
+		System.out.println("Lookat X, Y - " + LookAt.x + ", " + LookAt.y);
+		System.out.println("Position X, Y - " + XPos + ", " + YPos);
+		
 		// Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
 
 		LastMoveTime += Game.GetInstance().Delta();
@@ -138,8 +146,9 @@ public class Actor extends Entity
 	
 	public void Interact()
 	{
+		System.out.println("Actor.Interact - Ding");
 		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
-		Renderable Target = null;
+		WorldObject Target = null;
 
 		for (Entity E : interfaces.Objects.GetInstance().Entities())
 		{
@@ -151,18 +160,37 @@ public class Actor extends Entity
 			Target = game.Map.GetInstance().GetTileFromIndex(Targeting.x, Targeting.y);
 
 		Interact(Target);
+		SetState(State.STATIONARY);
 	}
 	
 	@Override
-	public void Interact(Renderable R)
+	public void Interact(WorldObject R)
 	{
-		
+		if (R instanceof Tile)
+		{
+			switch (((Tile) R).Type())
+			{
+				case GRASS:
+					((Tile) R).ChangeType(Tile.Type.DIRT);
+					break;
+				default:
+					break;
+			}
+		}
 	}
 	
-
 	public double MovementSpeed()
 	{
 		return MovementSpeed;
+	}
+	
+	public void Draw()
+	{
+		super.Draw();
+	
+		Tile T = Map.GetInstance().GetTileFromIndex(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		
+		interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);
 	}
 
 	/**

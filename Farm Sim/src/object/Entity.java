@@ -4,11 +4,6 @@ import specifier.Direction;
 import specifier.Vector;
 import specifier.Vector2D;
 import game.Tile;
-import interfaces.Game;
-import interfaces.Variables;
-import interfaces.file.FileManager;
-import interfaces.file.Logging;
-import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
 
@@ -39,7 +34,7 @@ public class Entity extends WorldObject
 			this.val = val;
 		}
 		
-		public int State()
+		public int Value()
 		{
 			return val;
 		}
@@ -254,7 +249,7 @@ public class Entity extends WorldObject
 	}
 
 	@Override
-	public void Interact(Renderable R)
+	public void Interact(WorldObject R)
 	{
 		
 	}

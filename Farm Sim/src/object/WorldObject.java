@@ -52,7 +52,7 @@ public class WorldObject extends Renderable
 			return false;
 	}
 
-	public void Interact(Renderable R)
+	public void Interact(WorldObject R)
 	{
 		// TODO Auto-generated method stub
 		

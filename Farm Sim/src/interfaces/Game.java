@@ -13,6 +13,8 @@ import game.Map;
 
 import java.util.*;
 
+import org.lwjgl.input.Keyboard;
+
 import object.actors.Actor;
 import game.Controller;
 import game.Mapbuilder;
@@ -254,6 +256,18 @@ public class Game
 		GameVariables.Set(new object.Variable("vid_height", "vertical screen resolution", 720, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
+		
+		GameVariables.Set(new object.Variable("ctrl_UP", "Up", Keyboard.KEY_UP, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_DOWN", "Down", Keyboard.KEY_DOWN, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_LEFT", "Left", Keyboard.KEY_LEFT, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_RIGHT", "Right", Keyboard.KEY_RIGHT, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_INTERACT", "Interact", Keyboard.KEY_E, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_CONSOLE", "Console", Keyboard.KEY_GRAVE, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_MAP", "Map", Keyboard.KEY_M, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_RETURN", "Line Return", Keyboard.KEY_RETURN, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_BACK", "BACK", Keyboard.KEY_BACK, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		
+		
 		
 		GameVariables.Set(new object.Variable("m_width", "maximum width (in tiles ) of map", 512, 1, 1000, object.Variable.Flag.Latched));
 		GameVariables.Set(new object.Variable("m_height", "maximum height (in tiles ) of map", 512, 1, 1000, object.Variable.Flag.Latched));	

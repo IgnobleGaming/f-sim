@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 
 import renderable.Console;
 import renderable.MiniMap;
+import utilities.KeyCommands;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -25,6 +26,7 @@ public class Controller
 	private int CT = 0;
 	private int TT = 300;
 	private PriorityBlockingQueue<InputOrder> keyBuffer;
+	private KeyCommands Commands;
 
 	private class InputOrder implements Comparable<InputOrder>
 	{
@@ -51,6 +53,7 @@ public class Controller
 		InputChars = new ArrayList<Character>();
 		Keyboard.enableRepeatEvents(true);
 		keyBuffer = new PriorityBlockingQueue<InputOrder>();
+		Commands = new KeyCommands();
 	}
 
 	public void Update()
@@ -213,11 +216,10 @@ public class Controller
 					return;
 			}
 
-
+			/*
 			switch (pressedKey)
 			{
-				case Keyboard.KEY_W:
-				case Keyboard.KEY_UP:
+				case Commands.UP:
 					keyOrd.Key = InputType.UP;
 					break;
 				case Keyboard.KEY_S:
@@ -236,6 +238,18 @@ public class Controller
 					return;
 
 			}
+			*/
+			
+			if (pressedKey == Commands.UP)
+				keyOrd.Key = InputType.UP;
+			else if (pressedKey == Commands.DOWN)
+				keyOrd.Key = InputType.DOWN;
+			else if (pressedKey == Commands.LEFT)
+				keyOrd.Key = InputType.LEFT;
+			else if (pressedKey == Commands.RIGHT)
+				keyOrd.Key = InputType.RIGHT;
+			else
+				break;
 
 			if (Keyboard.getEventKeyState())
 			{
@@ -271,23 +285,23 @@ public class Controller
 		// Checks to see if another action can be processed //
 		if (CT > TT)
 		{
-			if (Keyboard.isKeyDown(Keyboard.KEY_E))
+			if (Keyboard.isKeyDown(Commands.INTERACT))
 			{
 				In = InputType.INTERACT;
 				CT = 0;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_M))
+			} else if (Keyboard.isKeyDown(Commands.MAP))
 			{
 				ProcessInput(InputType.MAP);
 				CT = 0;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_GRAVE))
+			} else if (Keyboard.isKeyDown(Commands.CONSOLE))
 			{
 				In = InputType.CONSOLE;
 				CT = 0;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+			} else if (Keyboard.isKeyDown(Commands.RETURN))
 			{
 				In = InputType.ENTER;
 				CT = 0;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_BACK))
+			} else if (Keyboard.isKeyDown(Commands.BACK))
 			{
 				In = InputType.BACK;
 				CT = 0;
