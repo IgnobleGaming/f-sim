@@ -223,6 +223,7 @@ public class Map extends renderable.Renderable
 	{
 		int TileX = x - (x % TileSize);
 		int TileY = y - (y % TileSize);
+		
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
 
@@ -236,11 +237,26 @@ public class Map extends renderable.Renderable
 	 * @return closest tile from the map array of tiles
 	 * 
 	 */
-	public Tile GetTileFromIndex(int x, int y)
+	public Tile GetTileFromPosition(int x, int y)
 	{
 		return MapTiles[x / TileSize][y / TileSize];
 	}
+	
+	public Tile GetTileFromPosition(Vector2D V)
+	{
+		return MapTiles[V.x / TileSize][V.y / TileSize];
+	}
 
+	public Tile GetTileFromIndex(int x, int y)
+	{
+		return MapTiles[x][y];
+	}
+	
+	public Tile GetTileFromIndex(Vector2D V)
+	{
+		return MapTiles[V.x][V.y];
+	}
+	
 	/*
 	 * public Tile GetTileFromIndex(Vector2D V) { int index = GetTileIndex(V.x, V.y); if (index > -1 && index < MapTiles.length) return MapTiles[index]; else return new Tile(Tile.Type.GRASS); }
 	 * 

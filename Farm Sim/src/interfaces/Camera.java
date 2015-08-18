@@ -185,7 +185,7 @@ public class Camera
 		if (newY > 0)
 			newPos.y = newY;
 		
-		return Map.GetInstance().GetTileFromIndex(newPos.x, newPos.y);
+		return Map.GetInstance().GetTileFromPosition(newPos.x, newPos.y);
 	}
 
 	public specifier.Vector2D cameraLookPoint()
@@ -212,12 +212,12 @@ public class Camera
 	{
 		if (Focus == null)
 			Focus = Game.GetInstance().Player();
-
-		double left = Focus.Position().x - Width / 2 * Distance;
-		double right = Focus.Position().x + Width / 2 * Distance;
-		double top = Focus.Position().y - Height / 2 * Distance;
-		double bottom = Focus.Position().y + Height / 2 * Distance;
-
+		
+		double left = Focus.Position().x - (Width / 2) * Distance;
+		double right = Focus.Position().x + (Width / 2) * Distance;
+		double top = Focus.Position().y - (Height / 2) * Distance;
+		double bottom = Focus.Position().y + (Height / 2) * Distance;
+		
 		return new double[] { left, right, bottom, top };
 	}
 }

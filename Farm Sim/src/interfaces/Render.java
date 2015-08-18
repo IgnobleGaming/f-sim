@@ -16,8 +16,7 @@ import java.util.Hashtable;
 import java.util.PriorityQueue;
 
 import renderable.Renderable;
-import renderable.Renderable.Position;
-import renderable.Renderable.PositionType;
+import specifier.Vector2D;
 
 /**
  * Handles all OpenGl calls and image draws
@@ -206,6 +205,16 @@ public class Render
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
+	
+	public static void DrawGrid()
+	{
+		for (int u = 0; u < 512 * 32; u += 32) {
+			DrawLine(new Vector2D(u, 0), new Vector2D(u, 512 * 32), Color.black);
+		}
+		for (int y = 0; y < 512 * 32; y += 32) {
+			//DrawLine(new Vector2D(0, y), new Vector2D(512 * 32, y), Color.black);
+		}
+	}
 
 	public static void DrawQuad(int xCenter, int yCenter, int Width, int Height, Color Color)
 	{
@@ -233,12 +242,16 @@ public class Render
 
 	public static void DrawLine(specifier.Vector2D Pos, specifier.Vector2D Pos2, Color Color)
 	{
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glBegin(GL11.GL_LINES);
 		GL11.glLineWidth(1.0f);
 		GL11.glColor3f(Color.r, Color.g, Color.b);
 		GL11.glVertex2i(Pos.x, Pos.y);
 		GL11.glVertex2i(Pos2.x, Pos.y);
 		GL11.glEnd();
+		
+		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	public static void DrawPartialImage(interfaces.file.types.MaterialFile Mat, specifier.Vector2D Pos, float VerticalOffset, float HorizontalOffset, int Width, int Height)

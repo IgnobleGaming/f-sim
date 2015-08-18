@@ -190,8 +190,6 @@ public class Entity extends WorldObject
 
 		interfaces.Render.DrawImage(Shadow, new Vector2D(Position.x, Position.y + 4));
 		interfaces.Render.DrawImage(CurrentSprite, Position);
-
-		interfaces.Render.DrawQuad(XPos, YPos + this.HitboxHeight / 2 + this.HitboxOffsetY, this.HitboxWidth, this.HitboxHeight, Color.orange);
 	}
 
 	/**

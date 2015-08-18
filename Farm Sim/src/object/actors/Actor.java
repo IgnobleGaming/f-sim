@@ -76,7 +76,7 @@ public class Actor extends Entity
 		}
 		
 		CurrentTile = game.Map.GetInstance().GetIndexFromCoord(Position.x, Position.y);
-
+		
 		if (Animation.size() > CurrentState.Value() && Animation.get(CurrentState.Value()) != null)
 		{
 			MaterialFile NewSprite = Animation.get(CurrentState.Value()).RequestNextFrame();
@@ -113,17 +113,14 @@ public class Actor extends Entity
 			case LEFT:
 				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
 				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
-				LookAt.x = -(CurrentSprite.Width() / 2);
+				LookAt.x = -(CurrentSprite.Width());
 				break;
 			case RIGHT:
 				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
 				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
-				LookAt.x = (CurrentSprite.Width() / 2);
+				LookAt.x = (CurrentSprite.Width());
 				break;
 		}
-		
-		System.out.println("Lookat X, Y - " + LookAt.x + ", " + LookAt.y);
-		System.out.println("Position X, Y - " + XPos + ", " + YPos);
 		
 		// Logging.getInstance().Write(Type.DEBUG, "moving from tile index %d [ %d, %d ] => %d [ %d, %d ]", CurrentTile, this.Position().x, this.Position().y, CollisionTile.TileID, CollisionTile.Position().x, CollisionTile.Position().y);
 
@@ -146,7 +143,6 @@ public class Actor extends Entity
 	
 	public void Interact()
 	{
-		System.out.println("Actor.Interact - Ding");
 		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
 		WorldObject Target = null;
 
@@ -157,7 +153,7 @@ public class Actor extends Entity
 		}
 
 		if (Target == null)
-			Target = game.Map.GetInstance().GetTileFromIndex(Targeting.x, Targeting.y);
+			Target = game.Map.GetInstance().GetTileFromPosition(Targeting.x, Targeting.y);
 
 		Interact(Target);
 		SetState(State.STATIONARY);
@@ -188,8 +184,10 @@ public class Actor extends Entity
 	{
 		super.Draw();
 	
-		Tile T = Map.GetInstance().GetTileFromIndex(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
 		
+		//System.out.println("t " + T.Position().x + " " + T.Position().y + " p " + this.XPos + " " + this.YPos);
+		interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
 		interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);
 	}
 

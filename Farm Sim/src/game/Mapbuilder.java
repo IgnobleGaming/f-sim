@@ -34,7 +34,7 @@ public class Mapbuilder
 				{
 					for (int x = 0; x < M.HorizontalTileNum(); x++)
 					{
-						M.GetTileFromIndex(x * M.TileSize(), y * M.TileSize()).ChangeType(ProcessSimplex(Map[x][y], T));
+						M.GetTileFromPosition(x * M.TileSize(), y * M.TileSize()).ChangeType(ProcessSimplex(Map[x][y], T));
 					}
 				}
 			}
