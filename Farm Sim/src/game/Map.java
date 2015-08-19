@@ -226,6 +226,14 @@ public class Map extends renderable.Renderable
 		
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
+	
+	public Vector2D GetIndexFromCoord(Vector2D V)
+	{
+		int TileX = V.x - (V.x % TileSize);
+		int TileY = V.y - (V.y % TileSize);
+		
+		return new Vector2D(TileX / TileSize, TileY / TileSize);
+	}
 
 	/**
 	 * Get a tile based off of a 2D position
@@ -326,94 +334,108 @@ public class Map extends renderable.Renderable
 
 	public Tile[] SurroundingTiles(Renderable R)
 	{
-		Tile[] Tiles = new Tile[4];
+		Tile[] Tiles;
 		Vector2D Curr = Game.GetInstance().Controllable().CurrentTile();
-		
-		Tiles[0] = MapTiles[Curr.x][Maths.Clamp(0, VerticalTileNum -1, Curr.y - 1)]; // top
-		Tiles[1] = MapTiles[Maths.Clamp(0, HorizontalTileNum -1, Curr.x + 1)][Curr.y]; // left
-		Tiles[2] = MapTiles[Curr.x][Maths.Clamp(0, VerticalTileNum - 1, Curr.x + 1)]; // bottom
-		Tiles[3] = MapTiles[Maths.Clamp(0, HorizontalTileNum - 1, Curr.x - 1)][Curr.y];
-		
 
-		/*boolean Top = R.Position().y > 0 && R.Position().y < TileSize;
-		boolean Bottom = R.Position().y < Dimension * TileSize && R.Position().y > (Dimension * TileSize) - TileSize;
-		boolean Left = R.Position().x > 0 && R.Position().x < TileSize;
-		boolean Right = R.Position().x < Dimension * TileSize && R.Position().x > (Dimension * TileSize) - TileSize;	
+		boolean Top    = R.Position().y < TileSize / 2;
+		boolean Bottom = R.Position().y > (Dimension * TileSize) - TileSize / 2;
+		boolean Left   = R.Position().x < TileSize / 2;
+		boolean Right  = R.Position().x > (Dimension * TileSize) - TileSize / 2;	
 	
-		/*if (Top)
+		if (Top && Left || Top && Right || Bottom && Left || Bottom && Right)
+			Tiles = new Tile[3];
+		else if (Left || Right || Top || Bottom)
+			Tiles = new Tile[5];
+		else 
+			Tiles = new Tile[8];
+		
+		switch(STOrient(R.Position()))
 		{
-			if (Left)
-			{
-				Tiles = new int[4];
-
-				Tiles[0] = Curr + 1; // MR
-				Tiles[1] = Curr + Dimension; // BM
-				Tiles[2] = Curr + Dimension + 1; // BR
-				Tiles[3] = Curr;
-			} else if (Right)
-			{
-				Tiles = new int[4];
-
-				Tiles[0] = Curr - 1; // ML
-				Tiles[1] = Curr + Dimension - 1; // BL
-				Tiles[2] = Curr + Dimension; // BM
-				Tiles[3] = Curr;
-			} else
-			{
-				Tiles = new int[6];
-
-				Tiles[0] = Curr - 1; // ML
-				Tiles[1] = Curr;
-				Tiles[2] = Curr + 1; // MR
-				Tiles[3] = Curr + Dimension - 1; // BL
-				Tiles[4] = Curr + Dimension; // BM
-				Tiles[5] = Curr + Dimension + 1; // BR
-			}
-		} else if (Bottom)
-		{
-			if (Left)
-			{
-				Tiles = new int[4];
-
-				Tiles[0] = Curr - Dimension; // TM
-				Tiles[1] = Curr - Dimension + 1; // TR
-				Tiles[2] = Curr + 1; // MR
-				Tiles[3] = Curr;
-			} else if (Right)
-			{
-				Tiles = new int[4];
-
-				Tiles[0] = Curr - 1; // ML
-				Tiles[1] = Curr - Dimension - 1; // TL
-				Tiles[2] = Curr - Dimension; // TM
-				Tiles[3] = Curr;
-			} else
-			{
-				Tiles = new int[6];
-
-				Tiles[0] = Curr - Dimension - 1; // TL
-				Tiles[1] = Curr - Dimension; // TM
-				Tiles[2] = Curr - Dimension + 1; // TR
-				Tiles[3] = Curr - 1; // ML
-				Tiles[4] = Curr;
-				Tiles[5] = Curr + 1; // MR
-			}
-		} else
-		{
-			Tiles = new int[9];
-
-			Tiles[0] = Curr - Dimension - 1; // TL
-			Tiles[1] = Curr - Dimension; // TM
-			Tiles[2] = Curr - Dimension + 1; // TR
-			Tiles[3] = Curr - 1; // ML
-			Tiles[4] = Curr;
-			Tiles[5] = Curr + 1; // MR
-			Tiles[6] = Curr + Dimension - 1; // BL
-			Tiles[7] = Curr + Dimension; // BM
-			Tiles[8] = Curr + Dimension + 1; // BR
-		}*/
+			case 0: // nw
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				break;
+			case 1: // n
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+			case 2: // ne
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				break;
+			case 3: // w
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+			case 4: // c
+			case 5: // e
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+			case 6: // sw
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				break;
+			case 7: //s
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
+				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
+				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+				break;
+			case 8: // se
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1];
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1];
+				Tiles[2] = MapTiles[Curr.x - 1][Curr.y];
+		}
 
 		return Tiles;
+	}
+	
+	private int STOrient(Vector2D V)
+	{
+		boolean Top    = V.y < TileSize / 2;
+		boolean Bottom = V.y > (Dimension * TileSize) - TileSize / 2;
+		boolean Left   = V.x < TileSize / 2;
+		boolean Right  = V.x > (Dimension * TileSize) - TileSize / 2;
+		
+		if (Top)
+		{
+			if (Left)
+				return 0;
+			else if (Right)
+				return 2;
+			else 
+				return 1;
+		}
+		else if (Bottom)
+		{
+			if (Left)
+				return 6;
+			else if (Right)
+				return 8;
+			else 
+				return 7;
+		}
+		else if (Left)
+			return 3;
+		else if (Right)
+			return 5;
+		else 
+			return 4;
 	}
 	
 	public specifier.MinimapItem[][] GetMinimap()

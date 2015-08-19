@@ -39,7 +39,7 @@ public class Tile extends WorldObject
 		super(32, 32);
 		Flags = EnumSet.of(Flag.DRAWABLE);
 		this.ZIndex(-1);
-		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == true)
+		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == false)
 		{
 			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.YPos), renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
 			 debugText.ZIndex(100);
@@ -90,13 +90,14 @@ public class Tile extends WorldObject
 		
 		TileType = T;
 
-		if (TileType == Type.OCEAN)
+		if (TileType == Type.OCEAN || TileType == Type.MOUNTAIN)
 		{
 			if (CheckFlag(Flag.FARMABLE))
 				RemoveFlag(Flag.FARMABLE);
-			AddFlag(Flag.BLOCKED);
-			HitboxOffsetX = 0;
-			HitboxOffsetY = 0;
+			if (!CheckFlag(Flag.BLOCKED))
+				AddFlag(Flag.BLOCKED);
+			HitboxOffsetX = -16;
+			HitboxOffsetY = -16;
 			HitboxHeight = 32;
 			HitboxWidth = 32;
 		} else if (TileType == Type.GRASS)

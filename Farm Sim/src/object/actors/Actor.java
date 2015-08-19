@@ -10,7 +10,7 @@ import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import object.Entity;
-import object.Entity.Flag;
+import object.WorldObject.Flag;
 import object.WorldObject;
 import renderable.Renderable;
 import specifier.Direction.Relative;
@@ -130,7 +130,7 @@ public class Actor extends Entity
 		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
-		if ((XPlus != 0 || YPlus != 0) && !Collide(Position().x + XPlus, Position().y + YPlus))
+		if ((XPlus != 0 || YPlus != 0) && !Collide(Position().x + XPlus, Position().y + HitboxOffsetY + (HitboxHeight / 2) + YPlus))
 		{
 			Position(new Vector2D(Position.x + XPlus, Position.y + YPlus));
 			if (TotalMoveTime >= MovementSpeed)

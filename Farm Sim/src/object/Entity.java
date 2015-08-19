@@ -20,10 +20,6 @@ public class Entity extends WorldObject
 	 * @author Michael
 	 *
 	 */
-	public enum Flag
-	{
-		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED, NONE
-	}
 
 	public enum State
 	{
@@ -34,7 +30,7 @@ public class Entity extends WorldObject
 		{
 			this.val = val;
 		}
-		
+
 		public int Value()
 		{
 			return val;
@@ -46,7 +42,6 @@ public class Entity extends WorldObject
 	protected String Description;
 	protected Vector2D Position;
 	protected Vector Velocity;
-	protected EnumSet<Flag> Flags;
 	protected State CurrentState;
 	protected ArrayList<specifier.Animation> Animation;
 	protected Vector2D CurrentTile;
@@ -210,7 +205,7 @@ public class Entity extends WorldObject
 	 */
 	public void Update()
 	{
-		
+
 	}
 
 	/**
@@ -250,7 +245,7 @@ public class Entity extends WorldObject
 	@Override
 	public void Interact(WorldObject R)
 	{
-		
+
 	}
 
 	// THIS IS WHERE COLLISION NEEDS WORK. THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
@@ -268,18 +263,14 @@ public class Entity extends WorldObject
 
 		for (Tile T : Tiles)
 		{
-			// to do tile collision
-		}
+			C1 = x + this.HitboxOffsetX <= T.Position().x + T.HitboxOffsetX + T.HitboxWidth;
+			C2 = x + this.HitboxOffsetX + this.HitboxWidth >= T.Position().x + T.HitboxOffsetX();
+			C3 = y + this.HitboxOffsetY <= T.Position().y + T.HitboxOffsetY + T.HitboxHeight;
+			C4 = y + this.HitboxOffsetY + this.HitboxHeight >= T.Position().y + T.HitboxOffsetY();
 
-		/*
-		 * if (x - HitboxOffsetX <= 0 || x + HitboxOffsetX > (game.Map.GetInstance().VerticalTileNum() * game.Map.GetInstance().TileSize()) || y + HitboxOffsetY < 0 || y > (game.Map.GetInstance().HorizontalTileNum() * game.Map.GetInstance().TileSize())) { return true; }
-		 * 
-		 * for (int i = 0; i < Tiles.length; i++) { Tile T = game.Map.GetInstance().GetTileFromIndex(Tiles[i]);
-		 * 
-		 * if (T.CheckFlag(Tile.Flag.BLOCKED) && x + this.HitboxOffsetX + this.HitboxWidth >= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() && y + this.HitboxOffsetY + this.HitboxHeight >= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() && x +
-		 * this.HitboxOffsetX <= game.Map.GetInstance().GetCoordPos(Tiles[i]).x + T.HitboxOffsetX() + T.HitboxWidth() && y + this.HitboxOffsetY <= game.Map.GetInstance().GetCoordPos(Tiles[i]).y + T.HitboxOffsetY() + T.HitboxHeight()) { System.out.println("Entity.Collide ||| L - " + (x +
-		 * this.HitboxOffsetX) + " | R - " + (x + this.HitboxOffsetX + this.HitboxWidth) + " | T - " + (y + this.HitboxOffsetY) + " | B - " + (y + this.HitboxOffsetY + this.HitboxHeight)); return true; } }
-		 */
+			if (T.CheckFlag(Tile.Flag.BLOCKED) && C1 && C2 && C3 && C4)
+				return true;
+		}
 
 		return false;
 	}
