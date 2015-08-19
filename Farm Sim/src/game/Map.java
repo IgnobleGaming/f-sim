@@ -352,54 +352,50 @@ public class Map extends renderable.Renderable
 		switch(STOrient(R.Position()))
 		{
 			case 0: // nw
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[1] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
 				break;
 			case 1: // n
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
-				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
+				Tiles[1] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[2] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
+				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
 			case 2: // ne
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
+				Tiles[1] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
+				Tiles[2] = MapTiles[Curr.x][Curr.y + 1]; // S
 				break;
 			case 3: // w
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
-				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x][Curr.y - 1]; // N
+				Tiles[1] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
 			case 4: // c
 			case 5: // e
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
-				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; //W
+				Tiles[3] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
+				Tiles[4] = MapTiles[Curr.x][Curr.y + 1]; // S
 			case 6: // sw
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x + 1][Curr.y - 1]; // N
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // NE
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
 				break;
 			case 7: //s
-				Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[1] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1];
-				Tiles[3] = Tiles[0] = MapTiles[Curr.x + 1][Curr.y];
-				Tiles[4] = MapTiles[Curr.x][Curr.y + 1];
-				Tiles[5] = MapTiles[Curr.x + 1][Curr.y + 1];
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
+				Tiles[3] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[4] = MapTiles[Curr.x - 1][Curr.y]; // W
 				break;
 			case 8: // se
-				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1];
-				Tiles[1] = MapTiles[Curr.x][Curr.y - 1];
-				Tiles[2] = MapTiles[Curr.x - 1][Curr.y];
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
+				Tiles[2] = MapTiles[Curr.x - 1][Curr.y]; // W
 		}
 
 		return Tiles;
@@ -411,6 +407,9 @@ public class Map extends renderable.Renderable
 		boolean Bottom = V.y > (Dimension * TileSize) - TileSize / 2;
 		boolean Left   = V.x < TileSize / 2;
 		boolean Right  = V.x > (Dimension * TileSize) - TileSize / 2;
+		
+		if(!Top || !Bottom || !Left || !Right)
+			return 4;
 		
 		if (Top)
 		{
