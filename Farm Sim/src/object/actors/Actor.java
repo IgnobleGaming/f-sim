@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import game.Map;
 import game.Tile;
 import interfaces.Game;
+import interfaces.Render;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
@@ -184,11 +185,12 @@ public class Actor extends Entity
 	{
 		super.Draw();
 	
-		Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
-		
+		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
+		Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos, YPos));
+		Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
 		//System.out.println("t " + T.Position().x + " " + T.Position().y + " p " + this.XPos + " " + this.YPos);
-		interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
-		interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);
+		//interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
+		//interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);
 	}
 
 	/**

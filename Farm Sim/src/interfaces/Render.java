@@ -219,7 +219,7 @@ public class Render
 	public static void DrawQuad(int xCenter, int yCenter, int Width, int Height, Color Color)
 	{
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor4f(Color.r, Color.g, Color.b, 0.5f);
+		GL11.glColor4f(Color.r, Color.g, Color.b, 1f);
 		GL11.glBegin(GL11.GL_QUADS);
 
 		// top left

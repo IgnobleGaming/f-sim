@@ -2,6 +2,7 @@ package interfaces;
 
 import game.Map;
 import game.Tile;
+import game.Tile.Flag;
 import object.Entity;
 import specifier.Vector2D;
 import utilities.Maths;
@@ -22,7 +23,7 @@ public class Camera
 		this.Distance = Distance;
 
 		// Focus = new object.Entity("CameraFocus", "Entity that the camera points at", new specifier.Vector2D(0,0), new specifier.Vector(), 1, 1, object.Entity.Flag.VISIBLE);
-		Focus = new Entity("Camera Focus", "Position where the camera is cented", new specifier.Vector2D(0, 0), new specifier.Vector(), 0, 0, null);
+		Focus = new Entity("Camera Focus", "Position where the camera is centered", new specifier.Vector2D(0, 0), new specifier.Vector(), 0, 0, object.Entity.Flag.NONE);
 	}
 
 	public static Camera getInstance()
@@ -73,7 +74,8 @@ public class Camera
 			return false;
 	}
 
-	public boolean inViewPlane(game.Tile T)
+	// depreciated
+	/*public boolean inViewPlane(game.Tile T)
 	{
 		if (Focus == null)
 			return false;
@@ -87,7 +89,7 @@ public class Camera
 			return true;
 
 		return false;
-	}
+	}*/
 
 	public void Update()
 	{
@@ -95,9 +97,7 @@ public class Camera
 		
 		if (potentialFocus == null)
 			return;
-		
-		
-		
+			
 		Focus.SetPosition(CameraCenterPos(potentialFocus));
 		renderable.HUD.GetInstance().Position(Focus.Position());
 		
@@ -146,10 +146,10 @@ public class Camera
 		int newX = -1, newY = -1;
 		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
 		
-		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
+		if (curHorizontalViewMax < maxWidth - Map.GetInstance().TileSize() / 2 && curHorizontalViewMin > -Map.GetInstance().TileSize() / 2)
 			newX = potentialFocus.Position().x;
 			
-		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
+		if (curVerticalViewMax < maxHeight - Map.GetInstance().TileSize() / 2 && curVerticalViewMin > -Map.GetInstance().TileSize() / 2)
 			newY = potentialFocus.Position().y;
 		
 		if (newX > 0)
@@ -174,10 +174,10 @@ public class Camera
 		int newX = -1, newY = -1;
 		specifier.Vector2D newPos = new specifier.Vector2D(Focus.Position().x, Focus.Position().y);
 		
-		if (curHorizontalViewMax < maxWidth - 12 && curHorizontalViewMin > Maths.borderClampLeft(Width, Map.GetInstance().TileSize()))
+		if (curHorizontalViewMax < maxWidth - Map.GetInstance().TileSize() / 2 && curHorizontalViewMin > -Map.GetInstance().TileSize() / 2)
 			newX = potentialFocus.Position().x;
 			
-		if (curVerticalViewMax < maxHeight - 14 && curVerticalViewMin > Maths.borderClampTop(Height, Map.GetInstance().TileSize()))
+		if (curVerticalViewMax < maxHeight - Map.GetInstance().TileSize() / 2 && curVerticalViewMin > -Map.GetInstance().TileSize() / 2)
 			newY = potentialFocus.Position().y;
 		
 		if (newX > 0)

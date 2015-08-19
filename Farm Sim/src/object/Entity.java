@@ -3,6 +3,7 @@ package object;
 import specifier.Direction;
 import specifier.Vector;
 import specifier.Vector2D;
+import game.Map;
 import game.Tile;
 import interfaces.file.types.MaterialFile;
 import renderable.Renderable;
@@ -21,7 +22,7 @@ public class Entity extends WorldObject
 	 */
 	public enum Flag
 	{
-		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED
+		COLLIDABLE, VISIBLE, INTERACTABLE, LOCKED, NONE
 	}
 
 	public enum State
@@ -257,10 +258,10 @@ public class Entity extends WorldObject
 	{
 		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
 
-		boolean C1 = x - HitboxOffsetX <= 0;
-		boolean C2 = x + HitboxOffsetX >= game.Map.GetInstance().maxPixelWidth() - 40;
-		boolean C3 = y + HitboxOffsetY <= 0;
-		boolean C4 = y + HitboxOffsetX >= game.Map.GetInstance().maxPixelHeight() - 40;
+		boolean C1 = x + HitboxOffsetX <= -Map.GetInstance().TileSize() / 2;
+		boolean C2 = x + HitboxOffsetX + HitboxWidth >= game.Map.GetInstance().maxPixelWidth() - Map.GetInstance().TileSize() / 2;
+		boolean C3 = y + HitboxOffsetY <= -Map.GetInstance().TileSize() / 2;
+		boolean C4 = y + HitboxOffsetY + HitboxHeight >= game.Map.GetInstance().maxPixelHeight() - Map.GetInstance().TileSize() / 2;
 
 		if (C1 || C2 || C3 || C4)
 			return true;
