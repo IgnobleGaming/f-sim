@@ -221,16 +221,32 @@ public class Map extends renderable.Renderable
 	 */
 	public Vector2D GetIndexFromCoord(int x, int y)
 	{
-		int TileX = x - (x % TileSize);
-		int TileY = y - (y % TileSize);
+		int x1 = x;
+		int y1 = y;
+		
+		if (x1 < 0)
+			x1 = 0;
+		if (y1 < 0)
+			y1 = 0;
+		
+		int TileX = x1 - (x1 % TileSize);
+		int TileY = y1 - (y1 % TileSize);
 		
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
 	
 	public Vector2D GetIndexFromCoord(Vector2D V)
 	{
-		int TileX = V.x - (V.x % TileSize);
-		int TileY = V.y - (V.y % TileSize);
+		int x = V.x;
+		int y = V.y;
+		
+		if (x < 0)
+			x = 0;
+		if (y < 0)
+			y = 0;
+		
+		int TileX = x - (x % TileSize);
+		int TileY = y - (y % TileSize);
 		
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
@@ -332,7 +348,7 @@ public class Map extends renderable.Renderable
 		return MapTiles[CurTile[0]][CurTile[1]];
 	}
 
-	public Tile[] SurroundingTiles(Renderable R)
+	public Tile[] SurroundingTiles(Entity R)
 	{
 		Tile[] Tiles;
 		Vector2D Curr = Game.GetInstance().Controllable().CurrentTile();
@@ -362,6 +378,7 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
 				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				break;
 			case 2: // ne
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
 				Tiles[1] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
@@ -373,13 +390,24 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
 				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				break;
 			case 4: // c
+				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
+				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
+				Tiles[3] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[4] = MapTiles[Curr.x + 1][Curr.y]; //W
+				Tiles[5] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
+				Tiles[6] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[7] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				break;
 			case 5: // e
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; //W
 				Tiles[3] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[4] = MapTiles[Curr.x][Curr.y + 1]; // S
+				break;
 			case 6: // sw
 				Tiles[0] = MapTiles[Curr.x + 1][Curr.y - 1]; // N
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // NE
@@ -396,6 +424,7 @@ public class Map extends renderable.Renderable
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
 				Tiles[2] = MapTiles[Curr.x - 1][Curr.y]; // W
+				break;
 		}
 
 		return Tiles;
@@ -408,7 +437,7 @@ public class Map extends renderable.Renderable
 		boolean Left   = V.x < TileSize / 2;
 		boolean Right  = V.x > (Dimension * TileSize) - TileSize / 2;
 		
-		if(!Top || !Bottom || !Left || !Right)
+		if(!Top && !Bottom && !Left && !Right)
 			return 4;
 		
 		if (Top)
