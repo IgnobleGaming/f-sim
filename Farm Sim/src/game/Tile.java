@@ -1,5 +1,6 @@
 package game;
 
+import interfaces.Render;
 import interfaces.Variables;
 import interfaces.file.FileManager;
 import interfaces.file.Logging;
@@ -18,26 +19,22 @@ import renderable.GUIFont.FontFamily;
 public class Tile extends WorldObject
 {
 
-	public enum Flag
-	{
-		BLOCKED, RESOURCE, COLLIDABLE, DRAWABLE, INTERACTABLE, FARMABLE, LOCKED
-	}
-
 	public enum Type
 	{
 		OCEAN, SAND, GRASS, POND, DIRT, MOUNTAIN, NONE
 	}
 
-	private EnumSet<Flag> Flags;
+	//private EnumSet<Flag> Flags;
 	private Type TileType;
 	// private int hash;
 	public int TileID = 0;
 	private renderable.GUIFont debugText;
+	public boolean Hitbox = false;
 
 	public Tile(Type T)
 	{
 		super(32, 32);
-		Flags = EnumSet.of(Flag.DRAWABLE);
+		Flags = EnumSet.of(Flag.VISIBLE);
 		this.ZIndex(-1);
 		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == false)
 		{
@@ -92,28 +89,29 @@ public class Tile extends WorldObject
 
 		if (TileType == Type.OCEAN || TileType == Type.MOUNTAIN)
 		{
-			if (CheckFlag(Flag.FARMABLE))
-				RemoveFlag(Flag.FARMABLE);
-			if (!CheckFlag(Flag.BLOCKED))
-				AddFlag(Flag.BLOCKED);
+			if (CheckFlag(Flag.INTERACTABLE))
+				RemoveFlag(Flag.INTERACTABLE);
+			if (!CheckFlag(Flag.COLLIDABLE))
+				AddFlag(Flag.COLLIDABLE);
 			HitboxOffsetX = -16;
 			HitboxOffsetY = -16;
 			HitboxHeight = 32;
 			HitboxWidth = 32;
 		} else if (TileType == Type.GRASS)
 		{
+			if(CheckFlag(Flag.COLLIDABLE))
+				RemoveFlag(Flag.COLLIDABLE);
 			if (!CheckFlag(Flag.INTERACTABLE))
 				AddFlag(Flag.INTERACTABLE);
-			if (!CheckFlag(Flag.FARMABLE))
-				AddFlag(Flag.FARMABLE);
 		} else
 		{
-			if (CheckFlag(Flag.FARMABLE))
-				RemoveFlag(Flag.FARMABLE);
-			RemoveFlag(Flag.BLOCKED);
+			if (CheckFlag(Flag.INTERACTABLE))
+				RemoveFlag(Flag.INTERACTABLE);
+			if (CheckFlag(Flag.COLLIDABLE))
+				RemoveFlag(Flag.COLLIDABLE);
 
-			this.HitboxOffsetX = 0;
-			this.HitboxOffsetY = 0;
+			this.HitboxOffsetX = -16;
+			this.HitboxOffsetY = -16;
 			this.HitboxHeight = 32;
 			this.HitboxWidth = 32;
 		}
@@ -257,6 +255,9 @@ public class Tile extends WorldObject
 			//debugText.Draw();
 		}
 		interfaces.Render.DrawImage(CurrentSprite, Position());
+		
+		if(Hitbox)
+			Render.DrawQuad(Position().x, Position().y, HitboxWidth, HitboxHeight, Color.red);
 	
 	}
 

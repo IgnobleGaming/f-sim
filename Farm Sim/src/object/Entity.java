@@ -92,8 +92,8 @@ public class Entity extends WorldObject
 		Shadow.Open();
 
 		HitboxOffsetX = -11;
-		HitboxOffsetY = 9;
-		HitboxHeight = 7;
+		HitboxOffsetY = 0;
+		HitboxHeight = 16;
 		HitboxWidth = 22;
 	}
 
@@ -251,24 +251,27 @@ public class Entity extends WorldObject
 	// THIS IS WHERE COLLISION NEEDS WORK. THE FIRST 2 ARGS OF THE FIRST CONDITIONAL ARE RIGHT
 	protected boolean Collide(int x, int y)
 	{
-		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(this);
-
 		boolean C1 = x + HitboxOffsetX <= -Map.GetInstance().TileSize() / 2;
 		boolean C2 = x + HitboxOffsetX + HitboxWidth >= game.Map.GetInstance().maxPixelWidth() - Map.GetInstance().TileSize() / 2;
-		boolean C3 = y + HitboxOffsetY <= -Map.GetInstance().TileSize() / 2;
+		boolean C3 = y + HitboxOffsetY <= Map.GetInstance().TileSize() / 2;
 		boolean C4 = y + HitboxOffsetY + HitboxHeight >= game.Map.GetInstance().maxPixelHeight() - Map.GetInstance().TileSize() / 2;
 
 		if (C1 || C2 || C3 || C4)
 			return true;
 
+		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(x, y, this);
+		
+		System.out.println("x, y - " + x + ", " + y);
+		
 		for (Tile T : Tiles)
 		{
-			C1 = x + this.HitboxOffsetX <= T.Position().x + T.HitboxOffsetX + T.HitboxWidth;
-			C2 = x + this.HitboxOffsetX + this.HitboxWidth >= T.Position().x + T.HitboxOffsetX();
-			C3 = y + this.HitboxOffsetY <= T.Position().y + T.HitboxOffsetY + T.HitboxHeight;
-			C4 = y + this.HitboxOffsetY + this.HitboxHeight >= T.Position().y + T.HitboxOffsetY();
+			
+			C1 = x + this.HitboxOffsetX < T.Position().x + T.HitboxOffsetX + T.HitboxWidth;
+			C2 = (x + this.HitboxOffsetX + this.HitboxWidth) > (T.Position().x + T.HitboxOffsetX());
+			C3 = y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY + T.HitboxHeight;
+			C4 = y + this.HitboxOffsetY + this.HitboxHeight > T.Position().y + T.HitboxOffsetY();
 
-			if (T.CheckFlag(Tile.Flag.BLOCKED) && C1 && C2 && C3 && C4)
+			if (T.CheckFlag(Tile.Flag.COLLIDABLE) && C1 && C2 && C3 && C4)
 				return true;
 		}
 
@@ -282,6 +285,7 @@ public class Entity extends WorldObject
 
 	public Vector2D CurrentTile()
 	{
+		System.out.println(CurrentTile.x + ", " + CurrentTile.y);
 		return CurrentTile;
 	}
 }

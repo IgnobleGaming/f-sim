@@ -21,7 +21,7 @@ public class GameCommands
 	
 	public enum CommandFunction
 	{
-		quit, map, help
+		quit, map, help, move
 	}
 	
 	private GameCommands()

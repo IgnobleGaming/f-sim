@@ -12,6 +12,7 @@ import utilities.Maths;
 import java.util.Random;
 
 import object.Entity;
+import object.WorldObject.Flag;
 
 import org.newdawn.slick.Color;
 
@@ -27,7 +28,7 @@ public class Map extends renderable.Renderable
 	private Tile[][] activeTiles;
 	private int activeTileWidth, activeTileHeight;
 	private int paddingTiles;
-	
+
 	public enum Direction
 	{
 		NORTH, SOUTH, EAST, WEST, CURRENT, UNKNOWN
@@ -43,8 +44,8 @@ public class Map extends renderable.Renderable
 		TileSize = (int) Variables.GetInstance().Get("m_tilesize").Current();
 		paddingTiles = 2;
 		MapTiles = new Tile[HorizontalTileNum][VerticalTileNum];
-		activeTileWidth = (int)Math.ceil(interfaces.Render.GetInstance().Width() / TileSize + paddingTiles);
-		activeTileHeight = (int)Math.ceil(interfaces.Render.GetInstance().Height() / TileSize + paddingTiles);		
+		activeTileWidth = (int) Math.ceil(interfaces.Render.GetInstance().Width() / TileSize + paddingTiles);
+		activeTileHeight = (int) Math.ceil(interfaces.Render.GetInstance().Height() / TileSize + paddingTiles);
 		activeTiles = new Tile[activeTileWidth][activeTileHeight];
 	}
 
@@ -118,7 +119,7 @@ public class Map extends renderable.Renderable
 		MaterialFile Sand1 = new MaterialFile("resources\\ingame\\tiles\\sand1.png", MaterialFile.Type.PNG);
 		Sand1.Open();
 		FileManager.getInstance().Add(Sand1);
-		
+
 		MaterialFile Sand2 = new MaterialFile("resources\\ingame\\tiles\\sand2.png", MaterialFile.Type.PNG);
 		Sand2.Open();
 		FileManager.getInstance().Add(Sand2);
@@ -126,19 +127,19 @@ public class Map extends renderable.Renderable
 		MaterialFile Sand3 = new MaterialFile("resources\\ingame\\tiles\\sand3.png", MaterialFile.Type.PNG);
 		Sand3.Open();
 		FileManager.getInstance().Add(Sand3);
-		
+
 		MaterialFile Sand4 = new MaterialFile("resources\\ingame\\tiles\\sand4.png", MaterialFile.Type.PNG);
 		Sand4.Open();
 		FileManager.getInstance().Add(Sand4);
-		
+
 		MaterialFile Sand5 = new MaterialFile("resources\\ingame\\tiles\\sand5.png", MaterialFile.Type.PNG);
 		Sand5.Open();
 		FileManager.getInstance().Add(Sand5);
-		
+
 		MaterialFile Sand6 = new MaterialFile("resources\\ingame\\tiles\\sand6.png", MaterialFile.Type.PNG);
 		Sand6.Open();
 		FileManager.getInstance().Add(Sand6);
-		
+
 		MaterialFile MountainTile = new MaterialFile("resources\\ingame\\tiles\\mountain.png", MaterialFile.Type.PNG);
 		MountainTile.Open();
 		FileManager.getInstance().Add(MountainTile);
@@ -223,31 +224,31 @@ public class Map extends renderable.Renderable
 	{
 		int x1 = x;
 		int y1 = y;
-		
+
 		if (x1 < 0)
 			x1 = 0;
 		if (y1 < 0)
 			y1 = 0;
-		
+
 		int TileX = x1 - (x1 % TileSize);
 		int TileY = y1 - (y1 % TileSize);
-		
+
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
-	
+
 	public Vector2D GetIndexFromCoord(Vector2D V)
 	{
 		int x = V.x;
 		int y = V.y;
-		
+
 		if (x < 0)
 			x = 0;
 		if (y < 0)
 			y = 0;
-		
+
 		int TileX = x - (x % TileSize);
 		int TileY = y - (y % TileSize);
-		
+
 		return new Vector2D(TileX / TileSize, TileY / TileSize);
 	}
 
@@ -265,7 +266,7 @@ public class Map extends renderable.Renderable
 	{
 		return MapTiles[x / TileSize][y / TileSize];
 	}
-	
+
 	public Tile GetTileFromPosition(Vector2D V)
 	{
 		return MapTiles[V.x / TileSize][V.y / TileSize];
@@ -275,12 +276,12 @@ public class Map extends renderable.Renderable
 	{
 		return MapTiles[x][y];
 	}
-	
+
 	public Tile GetTileFromIndex(Vector2D V)
 	{
 		return MapTiles[V.x][V.y];
 	}
-	
+
 	/*
 	 * public Tile GetTileFromIndex(Vector2D V) { int index = GetTileIndex(V.x, V.y); if (index > -1 && index < MapTiles.length) return MapTiles[index]; else return new Tile(Tile.Type.GRASS); }
 	 * 
@@ -348,24 +349,23 @@ public class Map extends renderable.Renderable
 		return MapTiles[CurTile[0]][CurTile[1]];
 	}
 
-	public Tile[] SurroundingTiles(Entity R)
+	public Tile[] SurroundingTiles(int x, int y, Entity E)
 	{
 		Tile[] Tiles;
-		Vector2D Curr = Game.GetInstance().Controllable().CurrentTile();
+		Vector2D Curr = E.CurrentTile();
+		boolean Top = Curr.y == 0;
+		boolean Bottom = Curr.y == VerticalTileNum;
+		boolean Left = Curr.x == 0;
+		boolean Right = Curr.x == HorizontalTileNum;
 
-		boolean Top    = R.Position().y < TileSize / 2;
-		boolean Bottom = R.Position().y > (Dimension * TileSize) - TileSize / 2;
-		boolean Left   = R.Position().x < TileSize / 2;
-		boolean Right  = R.Position().x > (Dimension * TileSize) - TileSize / 2;	
-	
 		if (Top && Left || Top && Right || Bottom && Left || Bottom && Right)
 			Tiles = new Tile[3];
 		else if (Left || Right || Top || Bottom)
 			Tiles = new Tile[5];
-		else 
+		else
 			Tiles = new Tile[8];
-		
-		switch(STOrient(R.Position()))
+
+		switch (STOrient(Curr))
 		{
 			case 0: // nw
 				Tiles[0] = MapTiles[Curr.x + 1][Curr.y]; // E
@@ -375,13 +375,13 @@ public class Map extends renderable.Renderable
 			case 1: // n
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
 				Tiles[1] = MapTiles[Curr.x + 1][Curr.y]; // E
-				Tiles[2] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
+				Tiles[2] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
 				break;
 			case 2: // ne
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
-				Tiles[1] = MapTiles[Curr.x - 1][Curr.y + 1]; //SW
+				Tiles[1] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[2] = MapTiles[Curr.x][Curr.y + 1]; // S
 				break;
 			case 3: // w
@@ -396,7 +396,7 @@ public class Map extends renderable.Renderable
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
 				Tiles[3] = MapTiles[Curr.x + 1][Curr.y]; // E
-				Tiles[4] = MapTiles[Curr.x + 1][Curr.y]; //W
+				Tiles[4] = MapTiles[Curr.x + 1][Curr.y]; // W
 				Tiles[5] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[6] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[7] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
@@ -404,7 +404,7 @@ public class Map extends renderable.Renderable
 			case 5: // e
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
-				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; //W
+				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // W
 				Tiles[3] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[4] = MapTiles[Curr.x][Curr.y + 1]; // S
 				break;
@@ -413,7 +413,7 @@ public class Map extends renderable.Renderable
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // NE
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
 				break;
-			case 7: //s
+			case 7: // s
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
@@ -429,43 +429,41 @@ public class Map extends renderable.Renderable
 
 		return Tiles;
 	}
-	
-	private int STOrient(Vector2D V)
+
+	private int STOrient(Vector2D Curr)
 	{
-		boolean Top    = V.y < TileSize / 2;
-		boolean Bottom = V.y > (Dimension * TileSize) - TileSize / 2;
-		boolean Left   = V.x < TileSize / 2;
-		boolean Right  = V.x > (Dimension * TileSize) - TileSize / 2;
-		
-		if(!Top && !Bottom && !Left && !Right)
+		boolean Top = Curr.y == 0;
+		boolean Bottom = Curr.y == VerticalTileNum;
+		boolean Left = Curr.x == 0;
+		boolean Right = Curr.x == HorizontalTileNum;
+
+		if (!Top && !Bottom && !Left && !Right)
 			return 4;
-		
+
 		if (Top)
 		{
 			if (Left)
 				return 0;
 			else if (Right)
 				return 2;
-			else 
+			else
 				return 1;
-		}
-		else if (Bottom)
+		} else if (Bottom)
 		{
 			if (Left)
 				return 6;
 			else if (Right)
 				return 8;
-			else 
+			else
 				return 7;
-		}
-		else if (Left)
+		} else if (Left)
 			return 3;
 		else if (Right)
 			return 5;
-		else 
+		else
 			return 4;
 	}
-	
+
 	public specifier.MinimapItem[][] GetMinimap()
 	{
 		specifier.MinimapItem[][] Minimap = new specifier.MinimapItem[HorizontalTileNum][VerticalTileNum];
@@ -495,8 +493,8 @@ public class Map extends renderable.Renderable
 						Minimap[width][height] = new specifier.MinimapItem(T.TileID, Color.black, new Vector2D(width, height));
 				}
 
-				//if (T.TileID == Game.GetInstance().Player().TileID())
-					//Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.red, GetMinimapCoord(T.TileID));
+				// if (T.TileID == Game.GetInstance().Player().TileID())
+				// Minimap[T.TileID] = new specifier.MinimapItem(T.TileID, Color.red, GetMinimapCoord(T.TileID));
 			}
 		}
 		return Minimap;
@@ -539,14 +537,14 @@ public class Map extends renderable.Renderable
 	{
 		// here we need to update the tiles that are visible to camera.
 		Tile centerTile = Camera.getInstance().CameraCenterTile(Game.GetInstance().Controllable());
-		
-		int x = Maths.Clamp(0, HorizontalTileNum, ((centerTile.Position().x / 32) + 1- activeTileWidth / 2));
+
+		int x = Maths.Clamp(0, HorizontalTileNum, ((centerTile.Position().x / 32) + 1 - activeTileWidth / 2));
 		int y = Maths.Clamp(0, VerticalTileNum, (centerTile.Position().y / 32) + 1 - activeTileHeight / 2);
-		
-		//for (int width = Maths.Clamp(0, centerTile[0] - (interfaces.Render.GetInstance().Width() / TileSize) / 2); width < centerTile[0] + (interfaces.Render.GetInstance().Width() / TileSize) / 2; width++)
-		for(int width = 0; width < activeTileWidth; width++)
+
+		// for (int width = Maths.Clamp(0, centerTile[0] - (interfaces.Render.GetInstance().Width() / TileSize) / 2); width < centerTile[0] + (interfaces.Render.GetInstance().Width() / TileSize) / 2; width++)
+		for (int width = 0; width < activeTileWidth; width++)
 		{
-			//for (int height = Maths.Clamp(0, centerTile[1] - (interfaces.Render.GetInstance().Height() / TileSize) / 2); height < centerTile[1] + (interfaces.Render.GetInstance().Height() / TileSize) / 2; height++)
+			// for (int height = Maths.Clamp(0, centerTile[1] - (interfaces.Render.GetInstance().Height() / TileSize) / 2); height < centerTile[1] + (interfaces.Render.GetInstance().Height() / TileSize) / 2; height++)
 			for (int height = 0; height < activeTileHeight; height++)
 			{
 				activeTiles[width][height] = MapTiles[x][y];
@@ -555,7 +553,7 @@ public class Map extends renderable.Renderable
 			}
 			y = Maths.Clamp(0, VerticalTileNum - 1, (centerTile.Position().y / 32) + 1 - activeTileHeight / 2);
 			x = Maths.Clamp(0, HorizontalTileNum - 1, x + 1);
-			//x++;
+			// x++;
 		}
 	}
 
@@ -573,21 +571,21 @@ public class Map extends renderable.Renderable
 	{
 		return VerticalTileNum;
 	}
-	
+
 	public int[] getIndexFromPos(int x, int y)
 	{
 		int[] pos = { x / TileSize, y / TileSize };
 		return pos;
 	}
-	
+
 	public int maxPixelWidth()
 	{
 		return HorizontalTileNum * TileSize;
 	}
-	
+
 	public int maxPixelHeight()
 	{
 		return VerticalTileNum * TileSize;
 	}
-	
+
 }

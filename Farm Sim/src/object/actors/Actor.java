@@ -25,7 +25,6 @@ public class Actor extends Entity
 	
 	protected int MovementSpeed = 5000;
 	protected double MovementSpeedScale = 2;
-	protected Vector2D CurrentTile;
 	protected int CurrentStep = 0;
 	protected int TotalMoveTime = 0;
 	protected long LastMoveTime = 0;
@@ -77,6 +76,8 @@ public class Actor extends Entity
 		}
 		
 		CurrentTile = game.Map.GetInstance().GetIndexFromCoord(Position.x, Position.y);
+		
+		//System.out.println(CurrentTile.x + ", " + CurrentTile.y);
 		
 		if (Animation.size() > CurrentState.Value() && Animation.get(CurrentState.Value()) != null)
 		{
@@ -130,7 +131,7 @@ public class Actor extends Entity
 		if (LastMoveTime >= StepSize)
 			TotalMoveTime += StepSize;
 
-		if ((XPlus != 0 || YPlus != 0) && !Collide(Position().x + XPlus, Position().y + HitboxOffsetY + (HitboxHeight / 2) + YPlus))
+		if ((XPlus != 0 || YPlus != 0) && !Collide(Position().x + XPlus, Position().y + YPlus))
 		{
 			Position(new Vector2D(Position.x + XPlus, Position.y + YPlus));
 			if (TotalMoveTime >= MovementSpeed)

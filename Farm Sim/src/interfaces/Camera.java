@@ -2,7 +2,6 @@ package interfaces;
 
 import game.Map;
 import game.Tile;
-import game.Tile.Flag;
 import object.Entity;
 import specifier.Vector2D;
 import utilities.Maths;

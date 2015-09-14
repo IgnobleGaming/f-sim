@@ -19,7 +19,6 @@ import object.actors.Actor;
 import game.Controller;
 import game.Mapbuilder;
 import game.Tile;
-import game.Tile.Flag;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 /**
