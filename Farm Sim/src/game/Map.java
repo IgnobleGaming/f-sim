@@ -359,11 +359,11 @@ public class Map extends renderable.Renderable
 		boolean Right = Curr.x == HorizontalTileNum;
 
 		if (Top && Left || Top && Right || Bottom && Left || Bottom && Right)
-			Tiles = new Tile[3];
+			Tiles = new Tile[4];
 		else if (Left || Right || Top || Bottom)
-			Tiles = new Tile[5];
+			Tiles = new Tile[6];
 		else
-			Tiles = new Tile[8];
+			Tiles = new Tile[9];
 
 		switch (STOrient(Curr))
 		{
@@ -371,6 +371,7 @@ public class Map extends renderable.Renderable
 				Tiles[0] = MapTiles[Curr.x + 1][Curr.y]; // E
 				Tiles[1] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				Tiles[3] = GetTileFromIndex(Curr);
 				break;
 			case 1: // n
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
@@ -378,11 +379,13 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				Tiles[5] = GetTileFromIndex(Curr);
 				break;
 			case 2: // ne
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y]; // W
 				Tiles[1] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[2] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[3] = GetTileFromIndex(Curr);
 				break;
 			case 3: // w
 				Tiles[0] = MapTiles[Curr.x][Curr.y - 1]; // N
@@ -390,6 +393,7 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
 				Tiles[3] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[4] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				Tiles[5] = GetTileFromIndex(Curr);
 				break;
 			case 4: // c
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
@@ -400,6 +404,7 @@ public class Map extends renderable.Renderable
 				Tiles[5] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[6] = MapTiles[Curr.x][Curr.y + 1]; // S
 				Tiles[7] = MapTiles[Curr.x + 1][Curr.y + 1]; // SE
+				Tiles[8] = GetTileFromIndex(Curr);
 				break;
 			case 5: // e
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
@@ -407,11 +412,13 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // W
 				Tiles[3] = MapTiles[Curr.x - 1][Curr.y + 1]; // SW
 				Tiles[4] = MapTiles[Curr.x][Curr.y + 1]; // S
+				Tiles[5] = GetTileFromIndex(Curr);
 				break;
 			case 6: // sw
 				Tiles[0] = MapTiles[Curr.x + 1][Curr.y - 1]; // N
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // NE
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y]; // E
+				Tiles[3] = GetTileFromIndex(Curr);
 				break;
 			case 7: // s
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
@@ -419,11 +426,13 @@ public class Map extends renderable.Renderable
 				Tiles[2] = MapTiles[Curr.x + 1][Curr.y - 1]; // NE
 				Tiles[3] = MapTiles[Curr.x + 1][Curr.y]; // E
 				Tiles[4] = MapTiles[Curr.x - 1][Curr.y]; // W
+				Tiles[5] = GetTileFromIndex(Curr);
 				break;
 			case 8: // se
 				Tiles[0] = MapTiles[Curr.x - 1][Curr.y - 1]; // NW
 				Tiles[1] = MapTiles[Curr.x][Curr.y - 1]; // N
 				Tiles[2] = MapTiles[Curr.x - 1][Curr.y]; // W
+				Tiles[3] = GetTileFromIndex(Curr);
 				break;
 		}
 

@@ -261,13 +261,10 @@ public class Entity extends WorldObject
 
 		Tile[] Tiles = game.Map.GetInstance().SurroundingTiles(x, y, this);
 		
-		System.out.println("x, y - " + x + ", " + y);
-		
 		for (Tile T : Tiles)
 		{
-			
 			C1 = x + this.HitboxOffsetX < T.Position().x + T.HitboxOffsetX + T.HitboxWidth;
-			C2 = (x + this.HitboxOffsetX + this.HitboxWidth) > (T.Position().x + T.HitboxOffsetX());
+			C2 = x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX();
 			C3 = y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY + T.HitboxHeight;
 			C4 = y + this.HitboxOffsetY + this.HitboxHeight > T.Position().y + T.HitboxOffsetY();
 
@@ -285,7 +282,6 @@ public class Entity extends WorldObject
 
 	public Vector2D CurrentTile()
 	{
-		System.out.println(CurrentTile.x + ", " + CurrentTile.y);
 		return CurrentTile;
 	}
 }
