@@ -31,12 +31,15 @@ public class Main
 					GameObject.Testing();
 					break;
 				case MENU:
+					Render.Clear();
+					Menus.getInstance().getCurrentMenu().Draw();
 					break;
 				case INGAME:
 					GameObject.UpdateWorld(); // process all the changes that need to be made (locations/states etc)
+					GameObject.Output().Update(); // render all renderables
 					break;
 			}
-			GameObject.Output().Update(); // render all renderables
+			GameObject.Output().Sync();
 			GameObject.Output().updateFPS(); // how long did this frame take?
 		}
 	}

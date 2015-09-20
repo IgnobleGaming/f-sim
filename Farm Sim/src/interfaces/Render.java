@@ -96,26 +96,29 @@ public class Render
 	 */
 	public boolean Update()
 	{
+		UpdateRenderable();
+
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+		while (RenderQueue.size() > 0)
+		{
+			Renderable R = RenderQueue.remove();
+			R.Draw();
+		}
+		Camera.getInstance().Update();
+		return true;
+
+	}
+
+	public void Sync()
+	{
 		if (!Display.isCloseRequested())
 		{
-			UpdateRenderable();
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-			while (RenderQueue.size() > 0)
-			{
-				Renderable R = RenderQueue.remove();
-				R.Draw();
-			}
-			Camera.getInstance().Update();
-
 			Display.update();
 			Display.sync((int) Variables.GetInstance().Get("vid_maxfps").Current());
-			return true;
 		}
-
-		start.Main.GameObject.IsRunning = false;
-		return false;
+		else
+			start.Main.GameObject.IsRunning = false;
 	}
 
 	private void UpdateRenderable()
@@ -132,6 +135,11 @@ public class Render
 	public void AddRenderElement(Renderable R)
 	{
 		RenderQueue.add(R);
+	}
+
+	public static void Clear()
+	{
+		GL11.glClear(0);
 	}
 
 	/**
@@ -205,14 +213,16 @@ public class Render
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
-	
+
 	public static void DrawGrid()
 	{
-		for (int u = 0; u < 512 * 32; u += 32) {
+		for (int u = 0; u < 512 * 32; u += 32)
+		{
 			DrawLine(new Vector2D(u, 0), new Vector2D(u, 512 * 32), Color.black);
 		}
-		for (int y = 0; y < 512 * 32; y += 32) {
-			//DrawLine(new Vector2D(0, y), new Vector2D(512 * 32, y), Color.black);
+		for (int y = 0; y < 512 * 32; y += 32)
+		{
+			// DrawLine(new Vector2D(0, y), new Vector2D(512 * 32, y), Color.black);
 		}
 	}
 
@@ -249,7 +259,7 @@ public class Render
 		GL11.glVertex2i(Pos.x, Pos.y);
 		GL11.glVertex2i(Pos2.x, Pos.y);
 		GL11.glEnd();
-		
+
 		GL11.glColor3f(Color.white.r, Color.white.g, Color.white.b);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
@@ -316,12 +326,12 @@ public class Render
 	}
 
 	/*
-	 *  probably deprecated
+	 * probably deprecated
 	 */
 	public static void DrawMap(specifier.MinimapItem[][] Map)
 	{
-		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - (int) Variables.GetInstance().Get("m_width").Current() / 2, Camera.getInstance().cameraLookPoint().y
-				- (int) Variables.GetInstance().Get("m_width").Current() / 2);
+		specifier.Vector2D tempPos = new specifier.Vector2D(Camera.getInstance().cameraLookPoint().x - (int) Variables.GetInstance().Get("m_width").Current() / 2,
+				Camera.getInstance().cameraLookPoint().y - (int) Variables.GetInstance().Get("m_width").Current() / 2);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glBegin(GL11.GL_QUADS);

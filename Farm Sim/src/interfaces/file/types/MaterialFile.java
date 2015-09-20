@@ -134,4 +134,9 @@ public class MaterialFile extends IFile
 	{
 		return ID;
 	}
+	
+	public String toString()
+	{
+		return String.format("Material File: %dx%d -- %d KB -- %s", this.Width, this.Height, this.Size / 1024, this.Hash);
+	}
 }

@@ -196,7 +196,18 @@ public class Game
 		test.Open();
 		Files.Add(test);
 		
+		/********** MENU STUFF ************/
 		
+		MaterialFile default_button = new MaterialFile("resources\\ui\\buttons\\button_default.png", MaterialFile.Type.PNG);
+		default_button.Open();
+		Files.Add(default_button);
+		
+		MaterialFile default_menu = new MaterialFile("resources\\ui\\menus\\menu_default.png", MaterialFile.Type.PNG);
+		default_menu.Open();
+		Files.Add(default_menu);
+		
+		/******* END ********/
+				
 		if (Files.Retrieve(test.getHash()) instanceof TextFile)
 		{
 			TextFile test2 = (TextFile)Files.Retrieve(test.getHash());
@@ -408,6 +419,11 @@ public class Game
 				R.Update();
 		}
 		//GameCamera.Update();
+	}
+	
+	public void updateMenus()
+	{
+		
 	}
 	
 	public State State()

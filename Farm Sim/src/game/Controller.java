@@ -118,6 +118,9 @@ public class Controller
 							InputStr = InputStr.substring(0, InputStr.length() - 1);
 						}
 						break;
+					case ESCAPE:
+						Game.GetInstance().State(Game.State.INGAME);
+						break;
 				}
 				Console.GetInstance().Input().InputText.Text("> " + InputStr + "_");
 				break;
@@ -141,6 +144,9 @@ public class Controller
 						break;
 					case CONSOLE:
 						Console.GetInstance().ToggleVisibility();
+						break;
+					case ESCAPE:
+						Game.GetInstance().State(Game.State.MENU);
 						break;
 					case INTERACT:
 						Game.GetInstance().Controllable().SetState(State.INTERACTING);
@@ -304,6 +310,10 @@ public class Controller
 			} else if (Keyboard.isKeyDown(Commands.BACK))
 			{
 				In = InputType.BACK;
+				CT = 0;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+			{
+				In = InputType.ESCAPE;
 				CT = 0;
 			}
 			

@@ -17,4 +17,9 @@ public class Vector2D
 		else 
 			return false;
 	}
+	
+	public String toString()
+	{
+		return String.format("Vector2D: (%d, %d)", x, y);
+	}
 }
