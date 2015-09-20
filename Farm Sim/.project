@@ -14,16 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>resources/ui/button_default.png</name>
-			<type>1</type>
-			<locationURI>PROJECT_LOC/resources/ui/buttons/button_default.png</locationURI>
-		</link>
-		<link>
-			<name>resources/ui/menus</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/menus</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
