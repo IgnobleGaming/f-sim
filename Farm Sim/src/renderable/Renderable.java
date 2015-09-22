@@ -11,8 +11,8 @@ public abstract class Renderable
 	protected int XPos;
 	protected int YPos;
 	private int ZIndex;
-	private int Width;
-	private int Height;
+	protected int Width;
+	protected int Height;
 	public boolean Visible;
 	protected MaterialFile CurrentSprite;
 	protected RenderType R;
@@ -104,7 +104,7 @@ public abstract class Renderable
 
 	public void SetSprite(MaterialFile S) // for object with no animation
 	{
-		S.Resize(this.Width, this.Height); // so the texture scales to the size of the object
+		//S.Resize(this.Width, this.Height); // so the texture scales to the size of the object
 		CurrentSprite = S;
 	}
 

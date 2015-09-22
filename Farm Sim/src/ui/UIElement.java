@@ -39,7 +39,7 @@ public class UIElement extends Renderable
 	
 	public void Draw()
 	{
-		Render.DrawImage(this.CurrentSprite, this.translatedRelativePos());
+		Render.DrawImage(this.CurrentSprite, this.translatedRelativePos(), Width, Height);
 		Label.Draw();
 	}
 	
