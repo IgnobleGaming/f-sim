@@ -8,19 +8,18 @@ import interfaces.Game;
 import interfaces.Render;
 import interfaces.file.FileManager;
 
-public class Menu extends Renderable
+public class Menu extends UIElement
 {
 	private UIElement Background;
 	private ArrayList<UIElement> Members;
 	
 	public Menu(int Width, int Height)
 	{
-		super(Width, Height);
-		int Wid = Render.GetInstance().Width();
-		int Hei = Render.GetInstance().Height();
+		super("MENU", "MENU ELEMENT", "TEST", Width, Height, new specifier.Vector2D(Width / 2, Height / 2), null);
 		Members = new ArrayList<UIElement>();
-		Background = new UIElement("Menu Element", "Parent Menu", "", Wid, Hei, new specifier.Vector2D(Wid / 2, Height /2));
-		Background.SetSprite((MaterialFile)FileManager.getInstance().Retrieve("resources\\ui\\menus\\menu_default.png"));
+		MaterialFile Mat = (MaterialFile)FileManager.getInstance().Retrieve("resources\\ui\\menus\\menu_default.png");
+		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Width, new specifier.Vector2D(Width / 2, Height / 2), this);
+		Background.SetSprite(Mat);
 	}
 	
 	public void Draw()

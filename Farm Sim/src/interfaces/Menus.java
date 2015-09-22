@@ -12,13 +12,13 @@ public class Menus
 	private Menus()
 	{
 		availableMenus = new ArrayList<Menu>();
-		currentMenu = new Menu(1920, 1080);
+		currentMenu = new Menu(Render.GetInstance().Width(), Render.GetInstance().Height());
 	}
 	
 	public static Menus getInstance()
 	{
 		if (Instance == null)
-			return new Menus();
+			Instance = new Menus();
 		return Instance;
 	}
 	

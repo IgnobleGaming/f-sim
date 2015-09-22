@@ -16,16 +16,16 @@ public class UIElement extends Renderable
 	private GUIFont Label;
 	protected UIElement Parent;
 	
-	public UIElement(String Name, String Description, String Label, int Width, int Height, Vector2D initialPos)
+	public UIElement(String Name, String Description, String Label, int Width, int Height, Vector2D initialPos, UIElement Parent)
 	{
 		super(Width, Height);
 		this.Name = Name;
 		this.Description = Description;
 		this.XPos = initialPos.x;
 		this.YPos = initialPos.y;
-		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, this.XPos, this.YPos);
-		this.ZIndex(1000);
-		this.Label.ZIndex(1000);
+		this.Parent = Parent;
+		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, this.Width() / 2, this.Height() / 2);
+		this.Label.ZIndex(10002);
 	}
 	
 	public void setLabel(String newLabel)
@@ -36,6 +36,7 @@ public class UIElement extends Renderable
 	public void Draw()
 	{
 		Render.DrawImage(this.CurrentSprite, this.translatedRelativePos());
+		System.out.println(this.translatedRelativePos());
 		Label.Draw();
 	}
 }

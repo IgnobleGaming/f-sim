@@ -231,7 +231,7 @@ public class Game
 		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		Actor player = new Actor("Player", "Main Character", new specifier.Vector2D(1024, 1024), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
+		Actor player = new Actor("Player", "Main Character", new specifier.Vector2D(640, 360), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
 		
 		player.SetSprite(playersprite);
 		
