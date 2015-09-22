@@ -206,6 +206,9 @@ public class Game
 		default_menu.Open();
 		Files.Add(default_menu);
 		
+		ui.Menu curMenu = Menus.getInstance().getCurrentMenu();	
+		curMenu.addChild(new ui.Button("Button_01", curMenu, new Vector2D(0,0) , 256, 50));
+		
 		/******* END ********/
 				
 		if (Files.Retrieve(test.getHash()) instanceof TextFile)

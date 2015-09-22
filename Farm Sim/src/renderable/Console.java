@@ -29,7 +29,7 @@ public class Console extends HUD
 		for (int i = 0; i < 36; i++)
 		{
 
-			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, 0, 0);
+			GUIFont Adding = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.SMALL, Color.white, new specifier.Vector2D(0,0));
 			specifier.Vector2D FontPos = GetPosFromLocation(Renderable.Position.TOPLEFT, Renderable.PositionType.RELATIVE, Adding.Width(), Adding.Height(), 50, i * (Adding.Height() + 8), this);
 			Adding.Position(FontPos);
 			Lines.add(Adding);

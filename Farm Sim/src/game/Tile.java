@@ -38,7 +38,7 @@ public class Tile extends WorldObject
 		this.ZIndex(-1);
 		if ((boolean) Variables.GetInstance().Get("g_debuginfo").Current() == false)
 		{
-			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.YPos), renderable.GUIFont.Size.LARGE, Color.red, this.XPos, this.YPos);
+			 debugText = new renderable.GUIFont(FontFamily.Consolas, "" + (this.YPos), renderable.GUIFont.Size.LARGE, Color.red, new specifier.Vector2D(XPos,YPos));
 			 debugText.ZIndex(100);
 		}
 		ChangeType(T);

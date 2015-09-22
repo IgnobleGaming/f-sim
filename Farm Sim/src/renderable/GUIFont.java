@@ -31,13 +31,13 @@ public class GUIFont extends Renderable
 		Consolas
 	}
 
-	public GUIFont(FontFamily FF, String Text, Size FontSize, Color FontColor, int x, int y)
+	public GUIFont(FontFamily FF, String Text, Size FontSize, Color FontColor, specifier.Vector2D initialPos)
 	{
 		super(0, 0);
 
 		this.Text = Text;
-		this.XPos = x;
-		this.YPos = y;
+		this.XPos = initialPos.x;
+		this.YPos = initialPos.y;
 		Colour = FontColor;
 
 		Sheet = new utilities.FontSheet();
@@ -156,12 +156,12 @@ public class GUIFont extends Renderable
 		return Sheet;
 	}
 	
-	public int Width()
+	public int fontWidth()
 	{
 		return Sheet.Advance(0) * Text.length();
 	}
 	
-	public int Height()
+	public int fontHeight()
 	{
 		return Sheet.LineSpacing;
 	}

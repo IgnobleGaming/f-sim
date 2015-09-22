@@ -12,6 +12,7 @@ public class Menu extends UIElement
 {
 	private UIElement Background;
 	private ArrayList<UIElement> Members;
+	protected UIElement selectedElem;
 	
 	public Menu(int Width, int Height)
 	{
@@ -20,6 +21,7 @@ public class Menu extends UIElement
 		MaterialFile Mat = (MaterialFile)FileManager.getInstance().Retrieve("resources\\ui\\menus\\menu_default.png");
 		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Width, new specifier.Vector2D(Width / 2, Height / 2), this);
 		Background.SetSprite(Mat);
+		selectedElem = this;
 	}
 	
 	public void Draw()
@@ -31,6 +33,20 @@ public class Menu extends UIElement
 			if (E.Visible)
 				E.Draw();
 		}
+	}
+	
+	public void Update()
+	{
+		Background.Update();
+		
+		for (UIElement E : Members)
+		{
+			E.Update();
+			if (E.inSelectionRange())
+				E.onHover();
+			else // needs to be changed because not always leaving
+				E.onLeave();
+		}		
 	}
 	
 	public void addChild(UIElement Child)

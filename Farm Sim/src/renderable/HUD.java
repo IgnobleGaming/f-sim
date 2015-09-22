@@ -18,7 +18,7 @@ public class HUD extends Renderable
 	
 	public void Init()
 	{
-		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, 0,0);
+		FPSCounter = new GUIFont(GUIFont.FontFamily.Consolas, "", GUIFont.Size.MEDIUM, Color.white, new specifier.Vector2D(0,0));
 		MiniMap = renderable.MiniMap.GetInstance();
 	}
 	

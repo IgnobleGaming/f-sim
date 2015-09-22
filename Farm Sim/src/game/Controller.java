@@ -320,4 +320,9 @@ public class Controller
 			ProcessInput(In);
 		}
 	}
+	
+	public static specifier.Vector2D getMousePosition()
+	{
+		return new specifier.Vector2D(Mouse.getX(), Mouse.getY());
+	}
 }

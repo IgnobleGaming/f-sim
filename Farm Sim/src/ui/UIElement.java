@@ -4,6 +4,7 @@ import specifier.Vector2D;
 
 import org.newdawn.slick.Color;
 
+import game.Controller;
 import interfaces.Render;
 import renderable.GUIFont;
 import renderable.GUIFont.FontFamily;
@@ -11,8 +12,8 @@ import renderable.GUIFont.Size;
 
 public class UIElement extends Renderable
 {
-	private String Name;
-	private String Description;
+	protected String Name;
+	protected String Description;
 	private GUIFont Label;
 	protected UIElement Parent;
 	
@@ -24,8 +25,11 @@ public class UIElement extends Renderable
 		this.XPos = initialPos.x;
 		this.YPos = initialPos.y;
 		this.Parent = Parent;
-		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, this.Width() / 2, this.Height() / 2);
-		this.Label.ZIndex(10002);
+		Vector2D labelPos = new Vector2D(initialPos.x, initialPos.y);
+		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, labelPos);
+		
+		if (Parent != null)
+			this.Label.Position(GetPosFromLocation(Position.CENTERCENTER, PositionType.RELATIVE, this.Label.fontWidth(), this.Label.fontHeight(), 0, 0, this.Parent));
 	}
 	
 	public void setLabel(String newLabel)
@@ -36,7 +40,26 @@ public class UIElement extends Renderable
 	public void Draw()
 	{
 		Render.DrawImage(this.CurrentSprite, this.translatedRelativePos());
-		System.out.println(this.translatedRelativePos());
 		Label.Draw();
+	}
+	
+	public boolean inSelectionRange()
+	{
+		Vector2D mousePosition = Controller.getMousePosition();
+		return (mousePosition.x <= this.XPos + this.Width() / 2 && mousePosition.x >= this.XPos - this.Width() / 2 && mousePosition.y >= this.YPos - this.Height() / 2 && mousePosition.y <= this.YPos + this.Height() / 2 );
+	}
+	
+	public void Update()
+	{
+	}
+	
+	public void onHover()
+	{
+		this.Visible = false;
+	}
+	
+	public void onLeave()
+	{
+		this.Visible = true;
 	}
 }

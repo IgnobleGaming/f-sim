@@ -32,6 +32,7 @@ public class Main
 					break;
 				case MENU:
 					Render.Clear();
+					Menus.getInstance().getCurrentMenu().Update();
 					Menus.getInstance().getCurrentMenu().Draw();
 					break;
 				case INGAME:

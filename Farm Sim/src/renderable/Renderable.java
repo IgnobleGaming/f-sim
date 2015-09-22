@@ -155,7 +155,7 @@ public abstract class Renderable
 				if (Pt == PositionType.ABSOLUTE)
 					return new Vector2D(Render.GetInstance().Width()/2 + padx, Render.GetInstance().Height()/2 + pady);
 				if (Pt == PositionType.RELATIVE)
-					return new Vector2D(parent.XPos + padx - width, parent.YPos + pady - height);
+					return new Vector2D(parent.XPos + padx - (width / 2), parent.YPos + pady - ( height / 2 ));
 			case TOPRIGHT:
 				if (Pt == PositionType.ABSOLUTE)
 					return new Vector2D(Render.GetInstance().Width() + padx, 0 + pady);
