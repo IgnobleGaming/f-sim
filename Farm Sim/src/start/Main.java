@@ -31,7 +31,6 @@ public class Main
 					GameObject.Testing();
 					break;
 				case MENU:
-					Render.Clear();
 					Menus.getInstance().getCurrentMenu().Update();
 					Menus.getInstance().getCurrentMenu().Draw();
 					break;

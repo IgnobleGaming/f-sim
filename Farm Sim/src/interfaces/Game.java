@@ -202,12 +202,17 @@ public class Game
 		default_button.Open();
 		Files.Add(default_button);
 		
+		MaterialFile default_button_selected = new MaterialFile("resources\\ui\\buttons\\button_default_selected.png", MaterialFile.Type.PNG);
+		default_button_selected.Open();
+		Files.Add(default_button_selected);
+		
+		
 		MaterialFile default_menu = new MaterialFile("resources\\ui\\menus\\menu_default.png", MaterialFile.Type.PNG);
 		default_menu.Open();
 		Files.Add(default_menu);
 		
 		ui.Menu curMenu = Menus.getInstance().getCurrentMenu();	
-		curMenu.addChild(new ui.Button("Button_01", curMenu, new Vector2D(0,0) , 256, 50));
+		curMenu.addChild(new ui.Button("Close", curMenu, new Vector2D(0,0) , 256, 50));
 		
 		/******* END ********/
 				

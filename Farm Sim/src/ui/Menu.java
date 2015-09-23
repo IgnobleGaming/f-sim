@@ -1,12 +1,13 @@
 package ui;
 
-import renderable.Renderable;
 import ui.UIElement;
+
 import java.util.ArrayList;
+
+import game.Controller;
 import interfaces.file.types.*;
-import interfaces.Game;
-import interfaces.Render;
 import interfaces.file.FileManager;
+import specifier.*;
 
 public class Menu extends UIElement
 {
@@ -16,9 +17,9 @@ public class Menu extends UIElement
 	
 	public Menu(int Width, int Height)
 	{
-		super("MENU", "MENU ELEMENT", "TEST", Width, Height, new specifier.Vector2D(Width / 2, Height / 2), null);
+		super("MENU", "MENU ELEMENT", "TEST", Width, Height, new Vector2D(Width / 2, Height / 2), null);
 		Members = new ArrayList<UIElement>();
-		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Width, new specifier.Vector2D(Width / 2, Height / 2), this);
+		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Width, new Vector2D(Width / 2, Height / 2), this);
 		Background.SetSprite((MaterialFile)FileManager.getInstance().Retrieve("resources\\ui\\menus\\menu_default.png"));
 		selectedElem = this;
 	}
@@ -42,7 +43,11 @@ public class Menu extends UIElement
 		{
 			E.Update();
 			if (E.inSelectionRange())
+			{
 				E.onHover();
+				if (Controller.primaryDown())
+					E.Action();
+			}
 			else // needs to be changed because not always leaving
 				E.onLeave();
 		}		

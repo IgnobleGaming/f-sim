@@ -215,37 +215,6 @@ public class Controller
 			InputOrder keyOrd = new InputOrder();
 			keyOrd.timePressed = Game.GetInstance().GameTime();
 			
-			
-			if (Game.GetInstance().State() == Game.State.MENU)
-			{
-					ProcessInput(InputType.NONE, Keyboard.getEventCharacter()); 
-					return;
-			}
-
-			/*
-			switch (pressedKey)
-			{
-				case Commands.UP:
-					keyOrd.Key = InputType.UP;
-					break;
-				case Keyboard.KEY_S:
-				case Keyboard.KEY_DOWN:
-					keyOrd.Key = InputType.DOWN;
-					break;
-				case Keyboard.KEY_A:
-				case Keyboard.KEY_LEFT:
-					keyOrd.Key = InputType.LEFT;
-					break;
-				case Keyboard.KEY_D:
-				case Keyboard.KEY_RIGHT:
-					keyOrd.Key = InputType.RIGHT;
-					break;
-				default:    
-					return;
-
-			}
-			*/
-			
 			if (pressedKey == Commands.UP)
 				keyOrd.Key = InputType.UP;
 			else if (pressedKey == Commands.DOWN)
@@ -254,8 +223,6 @@ public class Controller
 				keyOrd.Key = InputType.LEFT;
 			else if (pressedKey == Commands.RIGHT)
 				keyOrd.Key = InputType.RIGHT;
-			else
-				break;
 
 			if (Keyboard.getEventKeyState())
 			{
@@ -324,5 +291,10 @@ public class Controller
 	public static specifier.Vector2D getMousePosition()
 	{
 		return new specifier.Vector2D(Mouse.getX(), Mouse.getY());
+	}
+	
+	public static boolean primaryDown()
+	{
+		return Mouse.isButtonDown(0);
 	}
 }

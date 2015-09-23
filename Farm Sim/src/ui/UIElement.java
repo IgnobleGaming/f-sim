@@ -55,11 +55,16 @@ public class UIElement extends Renderable
 	
 	public void onHover()
 	{
-		this.Visible = false;
+		
 	}
 	
 	public void onLeave()
 	{
-		this.Visible = true;
+		
+	}
+	
+	public void Action()
+	{
+		
 	}
 }

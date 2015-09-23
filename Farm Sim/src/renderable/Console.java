@@ -105,7 +105,7 @@ public class Console extends HUD
 		{
 			Visible = true;
 			Logging.getInstance().Write(Logging.Type.INFO, "Console is now visible");
-			Game.GetInstance().State(Game.State.MENU);
+			//Game.GetInstance().State(Game.State.MENU);
 		}
 	}
 
