@@ -87,6 +87,11 @@ public class Actor extends Entity
 		} else
 			Logging.getInstance().Write(Type.WARNING, "entity \"%s\" has has no animation for current state \"%s\"", this.Name, this.CurrentState.toString());
 	
+		
+		HitboxOffsetX = -8;
+		HitboxOffsetY = 0;
+		HitboxHeight = 16;
+		HitboxWidth = 16;
 	}
 	
 	public void Move(Relative Dir)
@@ -103,22 +108,22 @@ public class Actor extends Entity
 		switch (Dir)
 		{
 			case UP:
-				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.UP);
 				YPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
+				//YPlus -= 5;
 				LookAt.y = -(CurrentSprite.Height() / 4) * 3;
 				break;
 			case DOWN:
-				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.DOWN);
+				//YPlus += 5;
 				YPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.y = (CurrentSprite.Height() / 4) * 3;
 				break;
 			case LEFT:
-				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.LEFT);
+				//XPlus -= 5;
 				XPlus -= game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.x = -(CurrentSprite.Width());
 				break;
 			case RIGHT:
-				// CollisionTile = game.Map.GetInstance().GetNextTile(CurrentTile, specifier.Direction.Relative.RIGHT);
+				//XPlus += 5;
 				XPlus += game.Map.GetInstance().TileSize() / StepSize / 2 * 7;
 				LookAt.x = (CurrentSprite.Width());
 				break;
@@ -188,7 +193,7 @@ public class Actor extends Entity
 	
 		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
 		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos, YPos));
-		//Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
+		Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
 		//System.out.println("t " + T.Position().x + " " + T.Position().y + " p " + this.XPos + " " + this.YPos);
 		//interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
 		//interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);

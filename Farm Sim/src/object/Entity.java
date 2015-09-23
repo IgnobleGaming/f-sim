@@ -91,10 +91,10 @@ public class Entity extends WorldObject
 		Shadow = new MaterialFile("resources\\test_shadow.png", MaterialFile.Type.PNG);
 		Shadow.Open();
 
-		HitboxOffsetX = -11;
-		HitboxOffsetY = 0;
+		HitboxOffsetX = -10;
+		HitboxOffsetY = 2;
 		HitboxHeight = 16;
-		HitboxWidth = 22;
+		HitboxWidth = 19;
 	}
 
 	/**
@@ -205,7 +205,10 @@ public class Entity extends WorldObject
 	 */
 	public void Update()
 	{
-
+		HitboxOffsetX = -10;
+		HitboxOffsetY = 2;
+		HitboxHeight = 16;
+		HitboxWidth = 19;
 	}
 
 	/**
@@ -269,10 +272,38 @@ public class Entity extends WorldObject
 			C4 = y + this.HitboxOffsetY + this.HitboxHeight > T.Position().y + T.HitboxOffsetY();
 
 			if (T.CheckFlag(Tile.Flag.COLLIDABLE) && C1 && C2 && C3 && C4)
+			{
+				MoveNearest(T);
 				return true;
+			}
 		}
 
 		return false;
+	}
+	
+	private void MoveNearest(Tile T)
+	{
+		game.Map.Direction D = Map.GetCardinalPositionOfTarget(T.Position(), this.Position());
+		
+		switch (D)
+		{
+			case EAST:
+				this.Position(new Vector2D(T.Position().x - (T.Width() - (T.Width() / 4)), this.Position().y));
+				break;
+			case NORTH:
+				this.Position(new Vector2D(this.Position().x, T.Position().y + (T.Width() / 2)));
+				break;
+			case SOUTH:
+				this.Position(new Vector2D(this.Position().x, T.Position().y - T.Width()));
+				break;
+			case WEST:
+				this.Position(new Vector2D(T.Position().x + (T.Width() - (T.Width() / 4)), this.Position().y));
+				break;
+			case UNKNOWN:
+			case CURRENT:
+			default:
+				break;
+		}
 	}
 
 	/*
