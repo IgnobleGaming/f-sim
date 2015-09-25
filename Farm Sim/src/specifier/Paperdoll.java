@@ -2,6 +2,9 @@ package specifier;
 
 import java.util.ArrayList;
 
+import interfaces.file.types.MaterialFile;
+import object.Entity.State;
+
 public class Paperdoll
 {
 	public enum Set
@@ -75,5 +78,26 @@ public class Paperdoll
 		}
 	}
 	
+	private ArrayList<Animation> GetAnimations(State state)
+	{
+		ArrayList<Animation> Animations = new ArrayList<Animation>();
+		
+		Animations.add(Hair.get(state.Value()));
+		Animations.add(Body.get(state.Value()));
+		Animations.add(Shirt.get(state.Value()));
+		Animations.add(Pants.get(state.Value()));
+		Animations.add(Shoes.get(state.Value()));
+		
+		return Animations;
+	}
 	
+	public ArrayList<MaterialFile> CurrentImages(State AnimState)
+	{
+		ArrayList<MaterialFile> Image = new ArrayList<MaterialFile>();
+		
+		for(Animation A : GetAnimations(AnimState))
+			Image.add(A.RequestNextFrame());
+		
+		return Image;
+	}
 }

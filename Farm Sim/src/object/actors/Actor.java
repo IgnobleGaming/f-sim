@@ -193,7 +193,7 @@ public class Actor extends Entity
 	
 		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
 		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos, YPos));
-		Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
+		//Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
 		//System.out.println("t " + T.Position().x + " " + T.Position().y + " p " + this.XPos + " " + this.YPos);
 		//interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
 		//interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);

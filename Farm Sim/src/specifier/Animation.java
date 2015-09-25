@@ -131,4 +131,9 @@ public class Animation
 		for (MaterialFile M : Frames)
 			M.setOverlayColor(C);
 	}
+	
+	public void ResetCFI()
+	{
+		CurrentFrameIndex = 0;
+	}
 }
