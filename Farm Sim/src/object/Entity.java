@@ -316,4 +316,11 @@ public class Entity extends WorldObject
 	{
 		return Animation.get(index);
 	}
+	
+	//later this will take in an arg that tells it what group of animations to update
+	public void UpdateAnimSetColor(Color C)
+	{
+		for (specifier.Animation A : this.Animation)
+			A.updateColorOverlay(C);
+	}
 }
