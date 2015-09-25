@@ -288,7 +288,7 @@ public class Map extends renderable.Renderable
 	 * public Tile GetTileFromIndex(int i) { if (i > -1 && i < MapTiles.length) return MapTiles[i]; else return new Tile(Tile.Type.GRASS); }
 	 */
 
-	public Direction GetCardinalPositionOfTarget(Vector2D TV, Vector2D CV)
+	public static Direction GetCardinalPositionOfTarget(Vector2D TV, Vector2D CV)
 	{
 		int x = TV.x - CV.x;
 		int y = TV.y - CV.y;
