@@ -19,7 +19,7 @@ public class Menu extends UIElement
 	{
 		super("MENU", "MENU ELEMENT", "TEST", Width, Height, new Vector2D(Width / 2, Height / 2), null);
 		Members = new ArrayList<UIElement>();
-		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Width, new Vector2D(Width / 2, Height / 2), this);
+		Background = new UIElement("Menu Element", "Parent Menu", "", Width, Height, new Vector2D(0, 0), this);
 		Background.SetSprite((MaterialFile)FileManager.getInstance().Retrieve("resources\\ui\\menus\\menu_default.png"));
 		selectedElem = this;
 	}

@@ -2,6 +2,7 @@ package game;
 
 import interfaces.Camera;
 import interfaces.Game;
+import interfaces.Render;
 import interfaces.Variables;
 import object.Entity;
 import object.Entity.State;
@@ -290,7 +291,7 @@ public class Controller
 	
 	public static specifier.Vector2D getMousePosition()
 	{
-		return new specifier.Vector2D(Mouse.getX(), Mouse.getY());
+		return new specifier.Vector2D(Mouse.getX(), Math.abs(Render.GetInstance().Height() - Mouse.getY()));
 	}
 	
 	public static boolean primaryDown()

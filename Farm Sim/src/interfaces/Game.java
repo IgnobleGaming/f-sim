@@ -213,6 +213,27 @@ public class Game
 		
 		ui.Menu curMenu = Menus.getInstance().getCurrentMenu();	
 		curMenu.addChild(new ui.Button("Close", curMenu, new Vector2D(0,0) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 2", curMenu, new Vector2D(0,75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 3", curMenu, new Vector2D(0,150) , 256, 50));
+		
+		curMenu.addChild(new ui.Button("Button 4", curMenu, new Vector2D(300, 0) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 5", curMenu, new Vector2D(300, 75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 6", curMenu, new Vector2D(300, 150) , 256, 50));
+		
+		curMenu.addChild(new ui.Button("Button 7", curMenu, new Vector2D(-300, 0) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 8", curMenu, new Vector2D(-300, 75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 9", curMenu, new Vector2D(-300, 150) , 256, 50));
+		
+		curMenu.addChild(new ui.Button("Button 10", curMenu, new Vector2D(-300, -75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 11", curMenu, new Vector2D(-300, -150) , 256, 50));
+		
+		curMenu.addChild(new ui.Button("Button 12", curMenu, new Vector2D(0, -75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 13", curMenu, new Vector2D(0, -150) , 256, 50));
+		
+		curMenu.addChild(new ui.Button("Button 14", curMenu, new Vector2D(300, -75) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 15", curMenu, new Vector2D(300, -150) , 256, 50));
+		
+										// label   parent    position / offset     width height
 		
 		/******* END ********/
 				

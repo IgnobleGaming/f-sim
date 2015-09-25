@@ -29,7 +29,13 @@ public class UIElement extends Renderable
 		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, labelPos);
 		
 		if (Parent != null)
-			this.Label.Position(GetPosFromLocation(Position.CENTERCENTER, PositionType.RELATIVE, this.Label.fontWidth(), this.Label.fontHeight(), 0, 0, this.Parent));
+		{
+			labelPos = GetPosFromLocation(Position.CENTERCENTER, PositionType.RELATIVE, this.Label.fontWidth(), this.Label.fontHeight(), initialPos.x, initialPos.y, this.Parent);
+			this.Label.Position(labelPos);
+			
+			this.XPos = initialPos.x + Parent.XPos;
+			this.YPos = initialPos.y + Parent.YPos;
+		}
 	}
 	
 	public void setLabel(String newLabel)
@@ -51,6 +57,7 @@ public class UIElement extends Renderable
 	
 	public void Update()
 	{
+		
 	}
 	
 	public void onHover()
