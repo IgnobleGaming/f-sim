@@ -1,6 +1,7 @@
 package object;
 
 import specifier.Direction;
+import specifier.Paperdoll;
 import specifier.Vector;
 import specifier.Vector2D;
 import game.Map;
@@ -44,6 +45,7 @@ public class Entity extends WorldObject
 	protected Vector Velocity;
 	protected State CurrentState;
 	protected ArrayList<specifier.Animation> Animation;
+	protected Paperdoll Paperdoll;
 	protected Vector2D CurrentTile;
 	protected MaterialFile Shadow;
 
@@ -238,6 +240,13 @@ public class Entity extends WorldObject
 		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
 		if (NewAnim.Valid)
 			Animation.add(AnimState.val, NewAnim);
+	}
+	
+	public void AddAnimation(State AnimState, Paperdoll.Set Set, int length, MaterialFile... Textures)
+	{
+		specifier.Animation NewAnim = new specifier.Animation(length, Textures);
+		if (NewAnim.Valid)
+			Paperdoll.GetSet(Set).add(AnimState.val, NewAnim);
 	}
 
 	public void Interact()

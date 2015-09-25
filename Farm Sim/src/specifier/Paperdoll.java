@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class Paperdoll
 {
-	private enum Set
+	public enum Set
 	{
-		BODY, SHIRT, PANTS, SHOES
+		HAIR, BODY, SHIRT, PANTS, SHOES
 	}
 
+	protected ArrayList<Animation> Hair;
 	protected ArrayList<Animation> Body;
 	protected ArrayList<Animation> Shirt;
 	protected ArrayList<Animation> Pants;
@@ -19,8 +20,9 @@ public class Paperdoll
 
 	}
 
-	public void LoadPaperDoll(ArrayList<Animation> Body, ArrayList<Animation> Shirt, ArrayList<Animation> Pants, ArrayList<Animation> Shoes)
+	public void LoadPaperDoll(ArrayList<Animation> Hair, ArrayList<Animation> Body, ArrayList<Animation> Shirt, ArrayList<Animation> Pants, ArrayList<Animation> Shoes)
 	{
+		this.Hair = Hair;
 		this.Body = Body;
 		this.Shirt = Shirt;
 		this.Pants = Pants;
@@ -33,6 +35,9 @@ public class Paperdoll
 		{
 			switch (S)
 			{
+				case HAIR:
+					Hair = Update;
+					break;
 				case BODY:
 					Body = Update;
 					break;
@@ -55,6 +60,8 @@ public class Paperdoll
 	{
 		switch (S)
 		{
+			case HAIR:
+				return Hair;
 			case BODY:
 				return Body;
 			case PANTS:
@@ -67,4 +74,6 @@ public class Paperdoll
 				return new ArrayList<Animation>();
 		}
 	}
+	
+	
 }
