@@ -306,13 +306,14 @@ public class Entity extends WorldObject
 		}
 	}
 
-	/*
-	 * private boolean Collide(Tile T) { if (T.CheckFlag(Tile.Flag.BLOCKED) && this.Position.x + this.HitboxOffsetX + this.HitboxWidth > T.Position().x + T.HitboxOffsetX() && this.Position.y + HitboxOffsetY + HitboxHeight > T.Position().y + T.HitboxOffsetY() && this.Position.x + this.HitboxOffsetX <
-	 * T.Position().x + T.HitboxOffsetX() + T.HitboxWidth() && this.Position.y + this.HitboxOffsetY < T.Position().y + T.HitboxOffsetY() + T.HitboxHeight()) return false; else return true; }
-	 */
 
 	public Vector2D CurrentTile()
 	{
 		return CurrentTile;
+	}
+	
+	public specifier.Animation getAnimation(int index)
+	{
+		return Animation.get(index);
 	}
 }

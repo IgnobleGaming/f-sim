@@ -233,6 +233,7 @@ public class Game
 		curMenu.addChild(new ui.Button("Button 14", curMenu, new Vector2D(300, -75) , 256, 50));
 		curMenu.addChild(new ui.Button("Button 15", curMenu, new Vector2D(300, -150) , 256, 50));
 		
+		
 										// label   parent    position / offset     width height
 		
 		/******* END ********/
@@ -260,9 +261,10 @@ public class Game
 		 ***************************************************************************************************/
 		MaterialFile playersprite = new MaterialFile("resources\\player.png", MaterialFile.Type.PNG);
 		playersprite.Open();
-		Actor player = new Actor("Player", "Main Character", new specifier.Vector2D(640, 360), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);		
+		Actor player = new Actor("Player", "Main Character", new specifier.Vector2D(640, 360), new specifier.Vector(), 32, 32, object.Entity.Flag.VISIBLE);
 		
 		player.SetSprite(playersprite);
+
 		
 		/*~~~~~~~~~~ Stationary animation ~~~~~~~~~~*/
 		MaterialFile playeranim_0 = new MaterialFile("resources\\player_stationary_0.png", MaterialFile.Type.PNG);
@@ -343,6 +345,12 @@ public class Game
 		playerwalkdown_2.Open();
 		
 		player.AddAnimation(object.Entity.State.MOVINGDOWN, 250, playerwalkdown_0.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN));
+		
+		player.getAnimation(0).updateColorOverlay(org.newdawn.slick.Color.red);
+		player.getAnimation(1).updateColorOverlay(org.newdawn.slick.Color.red);
+		player.getAnimation(2).updateColorOverlay(org.newdawn.slick.Color.red);
+		player.getAnimation(3).updateColorOverlay(org.newdawn.slick.Color.red);
+		player.getAnimation(4).updateColorOverlay(org.newdawn.slick.Color.red);
 
 		
 		/******************************************************************************************************/

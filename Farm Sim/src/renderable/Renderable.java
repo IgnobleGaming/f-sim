@@ -107,6 +107,11 @@ public abstract class Renderable
 		//S.Resize(this.Width, this.Height); // so the texture scales to the size of the object
 		CurrentSprite = S;
 	}
+	
+	public MaterialFile getSprite()
+	{
+		return CurrentSprite;
+	}
 
 	public int ZIndex()
 	{

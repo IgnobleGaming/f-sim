@@ -1,6 +1,7 @@
 package interfaces.file.types;
 
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import interfaces.file.IFile;
@@ -17,6 +18,7 @@ public class MaterialFile extends IFile
 	private int Height = 0;
 	private int ID = 0;
 	private Orientation FacingDirection;
+	private Color overlayColor = null;
 
 	public enum Type
 	{
@@ -138,5 +140,15 @@ public class MaterialFile extends IFile
 	public String toString()
 	{
 		return String.format("Material File: %dx%d -- %d KB -- %s", this.Width, this.Height, this.Size / 1024, this.Hash);
+	}
+	
+	public Color getOverlayColor()
+	{
+		return this.overlayColor;
+	}
+	
+	public void setOverlayColor(Color C)
+	{
+		this.overlayColor = C;
 	}
 }

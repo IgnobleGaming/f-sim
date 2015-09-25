@@ -4,7 +4,7 @@ import interfaces.Game;
 import interfaces.Render;
 import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
-//import java.util.ArrayList;
+import org.newdawn.slick.Color;
 import interfaces.file.types.MaterialFile;
 
 /**
@@ -97,7 +97,7 @@ public class Animation
 	 */
 	public MaterialFile RequestNextFrame() // if animation frame time > delta we increment
 	{
-		if (FrameTimes[CurrentFrameIndex] != 0)
+		if (AnimationTime != 0)
 		{
 			LastFrameChange += Game.GetInstance().Delta(); // how much time has changed between last request
 
@@ -124,5 +124,11 @@ public class Animation
 	public void UpdateSpeedScale(double Sc)
 	{
 		SpeedScale = Sc;
+	}
+	
+	public void updateColorOverlay(Color C)
+	{
+		for (MaterialFile M : Frames)
+			M.setOverlayColor(C);
 	}
 }

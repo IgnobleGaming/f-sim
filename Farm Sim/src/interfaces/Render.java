@@ -160,6 +160,9 @@ public class Render
 		GL11.glLoadIdentity();
 		GL11.glOrtho(orthoPos[0], orthoPos[1], orthoPos[2], orthoPos[3], 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
+		if (Mat.getOverlayColor() != null)
+			GL11.glColor3f(Mat.getOverlayColor().r, Mat.getOverlayColor().g, Mat.getOverlayColor().b);
 
 		GL11.glBegin(GL11.GL_QUADS);
 
@@ -211,6 +214,9 @@ public class Render
 		GL11.glLoadIdentity();
 		GL11.glOrtho(orthoPos[0], orthoPos[1], orthoPos[2], orthoPos[3], 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
+		if (Mat.getOverlayColor() != null)
+			GL11.glColor3f(Mat.getOverlayColor().r, Mat.getOverlayColor().g, Mat.getOverlayColor().b);
 
 		GL11.glBegin(GL11.GL_QUADS);
 
