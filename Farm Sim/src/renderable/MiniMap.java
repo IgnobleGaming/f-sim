@@ -52,7 +52,7 @@ public class MiniMap extends Renderable
 
 	private void writeMMImage(String Name, Map M)
 	{
-		String path = "resources\\hud\\" + Name + ".png";
+		String path = "resources\\hud\\MiniMaps\\" + Name + ".png";
 
 		MinimapItem[][] MM = M.GetMinimap();
 
