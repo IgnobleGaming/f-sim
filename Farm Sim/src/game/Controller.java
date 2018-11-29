@@ -175,7 +175,7 @@ public class Controller
 		// this is polled
 		if (Game.GetInstance().Controllable() != null && !Game.GetInstance().Controllable().CheckFlag(Entity.Flag.LOCKED))
 		{
-			if ((boolean) Variables.GetInstance().Get("g_developer").Current())
+			/*if ((boolean) Variables.GetInstance().Get("g_developer").Current())
 			{
 				int MouseWheelDir = Mouse.getDWheel();
 
@@ -196,7 +196,7 @@ public class Controller
 
 					Camera.getInstance().SetDistance(ZoomDelta);
 				}
-			}
+			}*/
 
 			ReadMovementInput();
 			ReadActionInput();

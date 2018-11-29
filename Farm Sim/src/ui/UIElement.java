@@ -16,8 +16,9 @@ public class UIElement extends Renderable
 	protected String Description;
 	private GUIFont Label;
 	protected UIElement Parent;
+	protected boolean isActive;
 	
-	public UIElement(String Name, String Description, String Label, int Width, int Height, Vector2D initialPos, UIElement Parent)
+	public UIElement(String Name, String Description, String Label, int Width, int Height, Vector2D initialPos, UIElement Parent, boolean active)
 	{
 		super(Width, Height);
 		this.Name = Name;
@@ -25,6 +26,7 @@ public class UIElement extends Renderable
 		this.XPos = initialPos.x;
 		this.YPos = initialPos.y;
 		this.Parent = Parent;
+		this.isActive = active;
 		Vector2D labelPos = new Vector2D(initialPos.x, initialPos.y);
 		this.Label = new GUIFont(FontFamily.Consolas, Label, Size.SMALL, Color.white, labelPos);
 		

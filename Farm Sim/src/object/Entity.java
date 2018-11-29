@@ -207,10 +207,6 @@ public class Entity extends WorldObject
 	 */
 	public void Update()
 	{
-		HitboxOffsetX = -10;
-		HitboxOffsetY = 2;
-		HitboxHeight = 16;
-		HitboxWidth = 19;
 	}
 
 	/**

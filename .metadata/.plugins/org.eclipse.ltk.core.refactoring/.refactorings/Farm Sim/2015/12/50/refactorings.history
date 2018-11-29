@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;game.controller.GameController.java&apos; to &apos;Controller.java&apos;&#x0D;&#x0A;- Original project: &apos;Farm Sim&apos;&#x0D;&#x0A;- Original element: &apos;game.controller.GameController.java&apos;&#x0D;&#x0A;- Renamed element: &apos;game.controller.Controller.java&apos;" description="Rename compilation unit &apos;GameController.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;game.controller{GameController.java" name="Controller.java" references="false" stamp="1449788733350" version="1.0"/>
+</session>

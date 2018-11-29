@@ -10,9 +10,7 @@ import interfaces.file.Logging;
 import interfaces.file.Logging.Type;
 import interfaces.file.types.MaterialFile;
 import object.Entity;
-import object.WorldObject.Flag;
 import object.WorldObject;
-import renderable.Renderable;
 import specifier.Direction.Relative;
 import specifier.Vector;
 import specifier.Vector2D;
@@ -150,9 +148,13 @@ public class Actor extends Entity
 	
 	public void Interact()
 	{
-		Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		//Vector2D Targeting = new Vector2D(XPos + HitboxOffsetX + (HitboxWidth / 2) + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y);
+		Vector2D Targeting = new Vector2D(XPos + HitboxWidth + LookAt.x, YPos + (HitboxHeight) + LookAt.y);
 		WorldObject Target = null;
 
+		System.out.println("X: " + XPos + " | Y: " + YPos + "\n" +
+						   "");
+		
 		for (Entity E : interfaces.Objects.GetInstance().Entities())
 		{
 			if (E.IsTargetedBy(Targeting))
@@ -191,11 +193,11 @@ public class Actor extends Entity
 	{
 		super.Draw();
 	
-		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
+		Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos + LookAt.x + (Map.GetInstance().TileSize() / 2), YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y + (Map.GetInstance().TileSize() / 2)));
 		//Tile T = Map.GetInstance().GetTileFromIndex(Map.GetInstance().GetIndexFromCoord(XPos, YPos));
-		//Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
+		Render.DrawQuad(XPos + HitboxOffsetX + (HitboxWidth / 2), YPos + HitboxOffsetY + (HitboxHeight / 2), HitboxWidth, HitboxHeight, Color.cyan);
 		//System.out.println("t " + T.Position().x + " " + T.Position().y + " p " + this.XPos + " " + this.YPos);
-		//interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
+		interfaces.Render.DrawQuad(XPos + LookAt.x, YPos + HitboxOffsetY + (HitboxHeight / 2) + LookAt.y, 2, 2, Color.black);
 		//interfaces.Render.DrawQuad(T.Position().x, T.Position().y , T.Width(), T.Height(), Color.red);
 	}
 

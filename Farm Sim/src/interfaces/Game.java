@@ -212,26 +212,26 @@ public class Game
 		Files.Add(default_menu);
 		
 		ui.Menu curMenu = Menus.getInstance().getCurrentMenu();	
-		curMenu.addChild(new ui.Button("Close", curMenu, new Vector2D(0,0) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 2", curMenu, new Vector2D(0,75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 3", curMenu, new Vector2D(0,150) , 256, 50));
+		curMenu.addChild(new ui.Button("Close", curMenu, new Vector2D(0,0) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 2", curMenu, new Vector2D(0,75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 3", curMenu, new Vector2D(0,150) , 256, 50, "", "", true));
 		
-		curMenu.addChild(new ui.Button("Button 4", curMenu, new Vector2D(300, 0) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 5", curMenu, new Vector2D(300, 75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 6", curMenu, new Vector2D(300, 150) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 4", curMenu, new Vector2D(300, 0) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 5", curMenu, new Vector2D(300, 75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 6", curMenu, new Vector2D(300, 150) , 256, 50, "", "", true));
 		
-		curMenu.addChild(new ui.Button("Button 7", curMenu, new Vector2D(-300, 0) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 8", curMenu, new Vector2D(-300, 75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 9", curMenu, new Vector2D(-300, 150) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 7", curMenu, new Vector2D(-300, 0) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 8", curMenu, new Vector2D(-300, 75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 9", curMenu, new Vector2D(-300, 150) , 256, 50, "", "", true));
 		
-		curMenu.addChild(new ui.Button("Button 10", curMenu, new Vector2D(-300, -75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 11", curMenu, new Vector2D(-300, -150) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 10", curMenu, new Vector2D(-300, -75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 11", curMenu, new Vector2D(-300, -150) , 256, 50, "", "", true));
 		
-		curMenu.addChild(new ui.Button("Button 12", curMenu, new Vector2D(0, -75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 13", curMenu, new Vector2D(0, -150) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 12", curMenu, new Vector2D(0, -75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 13", curMenu, new Vector2D(0, -150) , 256, 50, "", "", true));
 		
-		curMenu.addChild(new ui.Button("Button 14", curMenu, new Vector2D(300, -75) , 256, 50));
-		curMenu.addChild(new ui.Button("Button 15", curMenu, new Vector2D(300, -150) , 256, 50));
+		curMenu.addChild(new ui.Button("Button 14", curMenu, new Vector2D(300, -75) , 256, 50, "", "", true));
+		curMenu.addChild(new ui.Button("Button 15", curMenu, new Vector2D(300, -150) , 256, 50, "", "", true));
 		
 		
 										// label   parent    position / offset     width height
@@ -265,7 +265,6 @@ public class Game
 		
 		player.SetSprite(playersprite);
 
-		
 		/*~~~~~~~~~~ Stationary animation ~~~~~~~~~~*/
 		MaterialFile playeranim_0 = new MaterialFile("resources\\player_stationary_0.png", MaterialFile.Type.PNG);
 		playeranim_0.Open();
@@ -346,11 +345,7 @@ public class Game
 		
 		player.AddAnimation(object.Entity.State.MOVINGDOWN, 250, playerwalkdown_0.SetOrientation(Orientation.DOWN), playerwalkdown_1.SetOrientation(Orientation.DOWN));
 		
-		player.getAnimation(0).updateColorOverlay(org.newdawn.slick.Color.red);
-		player.getAnimation(1).updateColorOverlay(org.newdawn.slick.Color.red);
-		player.getAnimation(2).updateColorOverlay(org.newdawn.slick.Color.red);
-		player.getAnimation(3).updateColorOverlay(org.newdawn.slick.Color.red);
-		player.getAnimation(4).updateColorOverlay(org.newdawn.slick.Color.red);
+
 
 		
 		/******************************************************************************************************/
@@ -384,10 +379,10 @@ public class Game
 		GameVariables.Set(new object.Variable("vid_vsync", "vertical sync enabled", false, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("vid_maxfps", "max user frame rate", 60, 1, 1000, object.Variable.Flag.Configuration));
 		
-		GameVariables.Set(new object.Variable("ctrl_UP", "Up", Keyboard.KEY_UP, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("ctrl_DOWN", "Down", Keyboard.KEY_DOWN, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("ctrl_LEFT", "Left", Keyboard.KEY_LEFT, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
-		GameVariables.Set(new object.Variable("ctrl_RIGHT", "Right", Keyboard.KEY_RIGHT, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_UP", "Up", Keyboard.KEY_W, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_DOWN", "Down", Keyboard.KEY_S, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_LEFT", "Left", Keyboard.KEY_A, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
+		GameVariables.Set(new object.Variable("ctrl_RIGHT", "Right", Keyboard.KEY_D, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("ctrl_INTERACT", "Interact", Keyboard.KEY_E, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("ctrl_CONSOLE", "Console", Keyboard.KEY_GRAVE, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
 		GameVariables.Set(new object.Variable("ctrl_MAP", "Map", Keyboard.KEY_M, Keyboard.CHAR_NONE, Keyboard.KEY_DELETE, object.Variable.Flag.Configuration));
